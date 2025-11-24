@@ -18,7 +18,7 @@ On cherche à répartir correctement les personnes, pour avoir un projet axé su
     - Noémie
 - Back
     - Rémi
-    - Gwentzal
+    - Gweltaz
     - Katel *1/2*
 - Front
     - Noémie
@@ -28,3 +28,8 @@ On cherche à répartir correctement les personnes, pour avoir un projet axé su
 - Relecture
     - Noémie
     - Katel
+
+- User Story  
+   - Gweltaz modèle
+>faire un questionnaire aux proches pour recolter les besoins et avis. Rédaction faites en consequences  
+ 
