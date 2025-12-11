@@ -1,3 +1,16 @@
-<properties>
-  <sonar.organization>esgi-iwal</sonar.organization>
-</properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>esgi.iwal</groupId>
+    <artifactId>ProjetPretObjets</artifactId>
+    <version>1.0.0</version>
+
+    <properties>
+        <sonar.organization>esgi-iwal</sonar.organization>
+        <sonar.projectKey>ESGI-IWAL_ProjetPretObjets</sonar.projectKey>
+    </properties>
+
+</project>
