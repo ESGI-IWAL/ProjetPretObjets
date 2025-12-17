@@ -100,3 +100,15 @@
           +----------+                           +-------------+
 
 ```
+
+## Personas 
+
+### Premier persona : le preteur
+Julien aimerait préter un livre a son ami, mais en a marre de ne jamais revoir son livre et ne plus se rappeler à qui et quand il l'a prété.
+
+A l'aide de "Prete moi ça" il peut renseigner son pret sur le site web, et ainsi savoir quand il a prété un objet et à qui.
+
+### Deuxieme persona : l'emprunteur (périmètre étendu, pas présent dans la v1)
+Noémie aurait besoin d'une perceuse pour refaire son appartement ce week-end. Malgrès son appetance pour le bricolage, elle n'en possède pas et aimerait pouvoir en emprunter une pour le week-end plutot que devoir faire un investissement.
+
+A l'aide de "Prete moi ça" elle peut voir qui de ses ami.es a une perceuse à preter et effectuer une demande de pret. 
