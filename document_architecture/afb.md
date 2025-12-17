@@ -40,6 +40,12 @@
 - **Réglementaires :** Respect du RGPD, conditions générales d’utilisation claires.
 ---
 
+## 5. Objectifs 
+- 95 % des actions principales (publication, demande, validation) réalisées en moins de 3 secondes.
+- Interface validée par un panel de 5 utilisateurs tests.
+---
+
+
 ## 6. Glossaire / définitions
 - **Prêteur :** Utilisateur mettant un objet à disposition.
 - **Emprunteur :** Utilisateur demandant un objet.
