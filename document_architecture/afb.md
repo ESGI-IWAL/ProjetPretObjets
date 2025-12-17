@@ -6,6 +6,8 @@
 - **Objectifs globaux :**
   - Offrir la possibilité d’enregistrer facilement les prêts effectués, en précisant l’objet concerné et l’identité de l’emprunteur.
   - Mettre en place un système de rappel automatique afin d’informer l’emprunteur de la date prévue de restitution et d’aider le prêteur à suivre ses biens.
+  - Réduire la consommation d'objet peu utilisé.
+  - Favoriser le partage.
 ---
 
 ## 2. Expression du besoin
@@ -16,22 +18,22 @@
 
 ## 3. Analyse du besoin
 
-### 3.1 Fonctions principales
-- **FP1 :** Permettre à un utilisateur de créer un compte et gérer son profil (modification, suppression)
-- **FP2 :** Enregistrer un pret (objet, emprunteur, date de début et de fin prévue), le modifier et l'annuler.
-- **FP3 :** Informer lorsqu'un emprunt arrive à échéance (notif, mail, SMS ou autre)
-- **FP4 :** Avoir accès à une liste de personnes de confiance validé par l'utilisateur.
-- **FP5 :** Visualiser l'ensemble de ses prêts (en cours, prévus, arrivant à échéance, retour en retard)
+### 3.1 Must have
+- **M1 :** Permettre à un utilisateur de créer un compte et gérer son profil (modification, suppression)
+- **M2 :** Enregistrer un pret (objet, emprunteur, date de début et de fin prévue), le modifier et l'annuler.
+- **M3 :** Informer lorsqu'un emprunt arrive à échéance (notif, mail, SMS ou autre).
+- **M4 :** Visualiser l'ensemble de ses prêts (en cours, prévus, arrivant à échéance, retour en retard)
+- 
+### 3.2 Should have
+- **S1 :** Avoir accès à une liste de personnes de confiance validé par l'utilisateur.
+- **S2 :** Avoir accès à la liste des objets pouvant être emprunté de sa liste de personnes de confiance (avec recherche et filtre).
+  
+### 3.3 Can have
+- **C1 :** Avoir un moyen de conversation.
+- **C2 :** Pouvoir préter à des personnes qui ne sont pas sur l'application.
 
-### 3.2 Fonctions d'Adaptation
-- **FA1 :** Authentification sécurisée des utilisateurs par identifiant et mot de passe.
-- **FA2 :** Avoir un moyen de conversation.
-
-### 3.3 Produit Minimum Viable
-- Avoir un compte utilisateur.
-- Enregistrer un pret, le modifier et l'annuler.
-- Informer lorsqu'un emprunt arrive à échéance.
-- Visualiser l'ensemble de ses prêts.
+### 3.4 Won't have
+- **W1 :** Pouvoir noter les autres utilisateurs.
 ---
 
 ## 4. Contraintes et limites
