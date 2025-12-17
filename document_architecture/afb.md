@@ -23,7 +23,7 @@
 - **M2 :** Enregistrer un pret (objet, emprunteur, date de début et de fin prévue), le modifier et l'annuler.
 - **M3 :** Informer lorsqu'un emprunt arrive à échéance (notif, mail, SMS ou autre).
 - **M4 :** Visualiser l'ensemble de ses prêts (en cours, prévus, arrivant à échéance, retour en retard)
-- 
+
 ### 3.2 Should have
 - **S1 :** Avoir accès à une liste de personnes de confiance validé par l'utilisateur.
 - **S2 :** Avoir accès à la liste des objets pouvant être emprunté de sa liste de personnes de confiance (avec recherche et filtre).
