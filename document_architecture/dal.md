@@ -10,7 +10,7 @@ Inserer le diagramme d'architecture
 - Nous avons donc 3 composants : une interface web, un backend et une base de donnees. 
 - L'interface web est realisee en vue.js, et est connectee au backend (via quelle API)
 - Le backend est realise en Java SpringBoot et est en lien avec la base de donnes et le frontend. C'est cette partie qui contiendra toutes nos fonctions applicatives.
-- La base de donnee est une base PostgreSql contenant 4 tables : une table User, une table Lending, une table Object et une table LendingHistory.
+- La base de donnee est une base PostgreSQL contenant 4 tables : une table User, une table Lending, une table Object et une table LendingHistory.
 
 ## 3. Architecture physique
 
