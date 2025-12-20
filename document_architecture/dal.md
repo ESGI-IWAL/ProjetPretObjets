@@ -1,5 +1,4 @@
 # Document d'Architecture Logicielle
-
 ## 1. Contexte
 Ce document présente les décisions architecturales du projet. Il décrit les choix de conception, les composants principaux, et leur interaction.
 Il sert donc à :
@@ -8,30 +7,83 @@ Il sert donc à :
 - Supporter l’alignement des parties prenantes.
 
 ### 1.1 Terminologie
-**Preteur :** Utilisateur qui prete des objets.
-**Emprunteur :** Utilisateur qui emprunte un objet à un autre utilisateur.
-**Date prévue de retour :** Le preteur indique la date à laquelle il souhaite recupérer son bien.
-**Date effective de retour :** Le preteur indique la date à laquelle l'emprunteur à réellement rendu son bien.
+- **Preteur :** Utilisateur qui prete des objets.
+- **Emprunteur :** Utilisateur qui emprunte un objet à un autre utilisateur.
+- **Date prévue de retour :** Le preteur indique la date à laquelle il souhaite recupérer son bien.
+- **Date effective de retour :** Le preteur indique la date à laquelle l'emprunteur à réellement rendu son bien.
 
 #### 1.1.1 Terminologie technique
-**JWT :** JSON Web Tokens
+- **JWT :** JSON Web Tokens
+- **SHA :** Secure Hash Algorithm
 
-## 2. Architecture applicative 
+## 2. Besoin fonctionnel
+### 2.1. Schéma d'architecture
+![image](architecture.png)
 
-- Nous avons donc 3 composants : une interface web, un backend et une base de donnees. 
-- L'interface web est realisee en vue.js, et est connectee au backend (via quelle API)
-- Le backend est realise en Java SpringBoot et est en lien avec la base de donnes et le frontend. C'est cette partie qui contiendra toutes nos fonctions applicatives.
-- La base de donnee est une base PostgreSQL contenant 4 tables : une table User, une table Lending, une table Object et une table LendingHistory.
+### 2.2. Diagramme des cas d'usages
 
-## 3. Architecture physique
+## 3. Architecture applicative 
+### 3.1. Composants
+- **Interface Web :** Interface web sur laquelle un utilisateur peut gérer ses prets
+- **API Backend :** Gestion des requetes et des droits d'accès.
+- **Gestion des prets :** Logique métier.
+- **Serveur de base de données :** Persistante des données.
 
-## 4. Deploiement et integration
+### 3.2. Technologies utilisées
+|Technologie | Version | Utilisation |
+|-|-|-|
+|Java JDK	| 21	| Requis pour Spring Boot 3+|
+|Spring Boot	| 3.2 |	Support Jakarta EE et Java 21|
+|Vue.js |	3.3 |	Performances et stabilité améliorées|
+|Node.js	| 18 |	Compatible avec Vite pour compilation Vue|
+|Vite.js	| ? |	Optimisation graphique et bundling|
+|PostgreSQL| ? | Stockage des données|
 
-## 5. Gestion des données
+(à redéfinir avec l'initialisation du projet)
 
-### 5.1. Schéma relationnel de la base de donnée
+### 3.3. Types des interfaces
+#### 3.3.1. API REST
+Communication entre le frontend et le backend.
+Routes principales :
+- GET /lendings : Consulter les prets.
+- POST /lendings :  Ajouter des prets.
+  
+- GET /objects : Consulter les objets.
+- POST /objects : Ajouter des objets.
+  
+- GET /users/{id} : Consulter un utilisateur.
+- PUT /users/{id} : modifier un utilisateur.
+- POST /users/{id} : Ajouter un utilisateur.
 
-![image](../document_architecture/schema_bdd.png)
+#### 3.3.2. Formalisation des données échangées au format JSON
+Exemple d'un pret au format json :
+```json
+{
+  "lending": {
+    "id": 1,
+    "id_lender": 1,
+    "id_borrower": 2,
+    "id_object": 1,
+    "date_begin": "2025-12-01",
+    "date_end": "2025-12-20"
+  }
+}
+```
+
+
+
+## 4. Architecture physique
+
+
+
+## 5. Deploiement et integration
+
+
+
+## 6. Gestion des données
+### 6.1. Schéma relationnel de la base de donnée
+
+![image](schema_bdd.png)
 
 La table **User** enregistre les informations d'un utilisateur, qu'il soit preteur ou emprunteur :
 - id : son identifiant unique.
@@ -61,24 +113,33 @@ La table **LendingHistory** enregistre les prets ayant déjà eu lieu :
 - date_begin : date de début du pret.
 - date_end : date effective de retour.
 
-### 5.2 Gestion des logs
+### 6.2. Gestion des données sensibles
+Le **password** d'un **User** sera hashé par l'algorithme SHA.
 
-- Les logs quant a eux ne seront pas acccessibles a l'utilisateur / seront limites dans la quantite d'information fournie.
+### 6.3. Gestion des logs
+Les logs ne sont pas disponibles aux utilisateurs, hormis ceux qui les concernent directement et qui s'affichent sur la page HTMl en cours d'utilisation.
 
-## 6. Sécurité et gestion des accès
+Les logs seront classifié de la manière suivante :
+- ERROR : Enregistre une anomalie grave ou blocante.
+- WARNING : Indique des comportements inattendus ou des potentiels problèmes futurs.
+- INFO : Messages informatifs sur des actions normales.
+- DEBUG : Fournit des informations détaillées pour le dépistage et le diagnostic.
 
-### 6.1 Modèle d'authentification utilisé
+
+
+## 7. Sécurité et gestion des accès
+### 7.1. Modèle d'authentification utilisé
 L'authentification se fera par mot de passe puis par JWT :
 L'utilisateur fournit un email et un mot de passe comme preuve pour accéder au service.
 Il recoit au moment de l'authentification un token signé par le serveur permettant ensuite de prouver son identité sans réauthentification.
 
-### 6.2 Droits des utilisateurs
-#### 6.2.1 Utilisateur non connecté
+### 7.2. Droits des utilisateurs
+#### 7.2.1. Utilisateur non connecté
 Il peut :
 - Créer un compte
 - Se connecter
 
-#### 6.2.1 Utilisateur connecté
+#### 7.2.1. Utilisateur connecté
 Il peut :
 - Modifier son profil
 - Ajouter un objet à sa liste d'objets
@@ -88,5 +149,7 @@ Il peut :
 - Visualiser la liste des prets en cours
 - Visualiser l'historique de ses prets.
 
-## 7. Exploitation
+
+
+## 8. Exploitation
 
