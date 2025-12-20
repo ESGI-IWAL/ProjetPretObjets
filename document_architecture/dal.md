@@ -13,6 +13,9 @@ Il sert donc à :
 **Date prévue de retour :** Le preteur indique la date à laquelle il souhaite recupérer son bien.
 **Date effective de retour :** Le preteur indique la date à laquelle l'emprunteur à réellement rendu son bien.
 
+#### 1.1.1 Terminologie technique
+**JWT :** JSON Web Tokens
+
 ## 2. Architecture applicative 
 
 - Nous avons donc 3 composants : une interface web, un backend et une base de donnees. 
@@ -24,7 +27,9 @@ Il sert donc à :
 
 ## 4. Deploiement et integration
 
-## 5. Schéma relationnel de la base de données
+## 5. Gestion des données
+
+### 5.1. Schéma relationnel de la base de donnée
 
 ![image](../document_architecture/schema_bdd.png)
 
@@ -55,13 +60,33 @@ La table **LendingHistory** enregistre les prets ayant déjà eu lieu :
 - id_object : identifiant de l'objet prété. (Object.id)
 - date_begin : date de début du pret.
 - date_end : date effective de retour.
-  
+
+### 5.2 Gestion des logs
+
 - Les logs quant a eux ne seront pas acccessibles a l'utilisateur / seront limites dans la quantite d'information fournie.
 
-## 6. Securite et gestion des acces
+## 6. Sécurité et gestion des accès
 
-- Tous nos utilisateurs peuvent creer un compte puis se connecter. Ces derniers ont la possibilite de creer des objets qu'ils pourront preter par la suite et voir l'historique des prets de leurs objets. 
-- L'authentification se fait grace a ...
+### 6.1 Modèle d'authentification utilisé
+L'authentification se fera par mot de passe puis par JWT :
+L'utilisateur fournit un email et un mot de passe comme preuve pour accéder au service.
+Il recoit au moment de l'authentification un token signé par le serveur permettant ensuite de prouver son identité sans réauthentification.
+
+### 6.2 Droits des utilisateurs
+#### 6.2.1 Utilisateur non connecté
+Il peut :
+- Créer un compte
+- Se connecter
+
+#### 6.2.1 Utilisateur connecté
+Il peut :
+- Modifier son profil
+- Ajouter un objet à sa liste d'objets
+- Consulter sa liste d'objets
+- Ajouter un pret
+- Cloturer ou supprimer un pret
+- Visualiser la liste des prets en cours
+- Visualiser l'historique de ses prets.
 
 ## 7. Exploitation
 
