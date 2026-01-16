@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username: admin
+    password: admin
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
