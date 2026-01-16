@@ -66,6 +66,30 @@ Nous sommes une équipe de **4 personnes** ayant collaboré sur la conception, l
 
 ---
 
+## Installation du projet
+
+**Prérequis :**
+- Git
+- Docker et Docker Compose
+- Java 17
+- Maven
+
+~~~sh
+git clone git@github.com:ESGI-IWAL/ProjetPretObjets.git
+cd ProjetPretObjets
+
+docker-compose up -d
+
+mvn clean install
+
+mvn spring-boot:run
+~~~
+
+L'application sera disponible sur 'http://localhost:8080'.
+
+En l'occurence vu que y'a rien encore pour vérifier que l'appli est bien installée
+Se rendre sur 'http://localhost:8080/swagger-ui/index.html' pour voir la doc de l'API
+
 ## 📄 Licence
 
 Projet réalisé dans un cadre pédagogique / personnel.
