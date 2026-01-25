@@ -2,7 +2,7 @@ spring:
   application:
     name: pretemoica
   datasource:
-    url: jdbc:postgresql://localhost:5432/projetPret
+    url: jdbc:postgresql://127.0.0.1:5432/projetPret
     username: admin
     password: admin
     driver-class-name: org.postgresql.Driver
