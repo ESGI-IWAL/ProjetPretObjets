@@ -32,14 +32,12 @@ Il sert donc à :
 ### 3.2. Technologies utilisées
 |Technologie | Version | Utilisation |
 |-|-|-|
-|Java JDK	| 21	| Requis pour Spring Boot 3+|
-|Spring Boot	| 3.2 |	Support Jakarta EE et Java 21|
-|Vue.js |	3.3 |	Performances et stabilité améliorées|
-|Node.js	| 18 |	Compatible avec Vite pour compilation Vue|
-|Vite.js	| ? |	Optimisation graphique et bundling|
-|PostgreSQL| ? | Stockage des données|
-
-(à redéfinir avec l'initialisation du projet)
+|Java JDK	| 17	| Requis pour Spring Boot 3+|
+|Spring Boot	| 4.0.1 |	Support Jakarta EE et Java 21|
+|Vue.js |	pas init |	Performances et stabilité améliorées|
+|Node.js	| pas init |	Compatible avec Vite pour compilation Vue|
+|Vite.js	| pas init |	Optimisation graphique et bundling|
+|PostgreSQL| 18 | Stockage des données|
 
 ### 3.3. Types des interfaces
 #### 3.3.1. API REST
