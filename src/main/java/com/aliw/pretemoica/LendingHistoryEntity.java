@@ -1,33 +1,62 @@
 package com.aliw.pretemoica;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-
-import java.util.Date;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class LendingHistoryEntity {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Cohérence avec Postgres
     private Long id;
 
-    private String borrowedBy;
-    private String offeredBy;
-    private Date startedAt;
-    private Date endedAt;
+    @ManyToOne
+    @JoinColumn(name = "borrowed_by_id", nullable = false)
+    private UserEntity borrowedBy;
 
+    @ManyToOne
+    @JoinColumn(name = "offered_by_id", nullable = false)
+    private UserEntity offeredBy;
 
-    public Date getStartedAt() {
-        return startedAt;
+    @ManyToOne
+    @JoinColumn(name = "object_id", nullable = false)
+    private ObjectEntity object;
+
+    private LocalDateTime startedAt;
+    private LocalDateTime endedAt;
+
+    // Constructeur par défaut requis par JPA
+    public LendingHistoryEntity() {
+        this.startedAt = LocalDateTime.now(); // Initialisation par défaut
     }
-    public void setStartedAt(Date startedAt) {
-        this.startedAt = startedAt;
+
+    // --- Logique métier ---
+
+    /**
+     * Vérifie si la période de prêt est valide.
+     * @return true s'il y a une erreur (début après fin)
+     */
+    public boolean hasDateError() {
+        if (startedAt == null || endedAt == null) return false;
+        return startedAt.isAfter(endedAt);
     }
-    public Date getEndedAt() {
-        return endedAt;
-    }
-    public void setEndedAt(Date endedAt) {
-        this.endedAt = endedAt;
-    }
+
+    // --- Getters et Setters ---
+
+    public Long getId() { return id; }
+
+    public ObjectEntity getObject() { return object; }
+    public void setObject(ObjectEntity object) { this.object = object; }
+
+    public UserEntity getOfferedBy() { return offeredBy; }
+    public void setOfferedBy(UserEntity offeredBy) { this.offeredBy = offeredBy; }
+
+    public UserEntity getBorrowedBy() { return borrowedBy; }
+    public void setBorrowedBy(UserEntity borrowedBy) { this.borrowedBy = borrowedBy; }
+
+    public LocalDateTime getStartedAt() { return startedAt; }
+    public void setStartedAt(LocalDateTime startedAt) { this.startedAt = startedAt; }
+
+    public LocalDateTime getEndedAt() { return endedAt; }
+    public void setEndedAt(LocalDateTime endedAt) { this.endedAt = endedAt; }
 }

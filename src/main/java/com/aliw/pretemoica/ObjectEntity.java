@@ -1,48 +1,60 @@
-
 package com.aliw.pretemoica;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+
 
 @Entity
 public class ObjectEntity {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Basic
+    @Column(nullable = false)
     private String name;
 
-    // ownedBy devrait aussi etre lie a un userId
-    @Basic
-    private String ownedBy;
-    @Basic
-    private String status;
-    @Basic
-    private String state;
+    @ManyToOne
+    @JoinColumn(name = "owned_by_id", nullable = false)
+    private UserEntity ownedBy;
 
+    @Enumerated(EnumType.STRING)
+    private ObjectStatus status = ObjectStatus.AVAILABLE; // Valeur par défaut
 
-    public String getState() {
-        return state;
-    }
-    public void setState(String state) {
-        this.state = state;
+    @Enumerated(EnumType.STRING)
+    private ObjectState state;
+
+    public ObjectEntity() {
+        //En attente
     }
 
-    public String getStatus() {
-        return status;
-    }
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
+    public enum ObjectStatus {
+        AVAILABLE,   // Disponible au prêt
+        LENT,        // Actuellement prêté
+        RESERVED,    // Réservé par quelqu'un
+        UNAVAILABLE  // Retiré temporairement par le propriétaire
     }
 
+    public enum ObjectState {
+        NEW,         // Neuf
+        GOOD,        // Bon état
+        WORN,        // Usagé
+        DAMAGED      // Abîmé
+    }
+
+    // --- Getters et Setters ---
+
+    public Long getId() { return id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public UserEntity getOwnedBy() { return ownedBy; }
+    public void setOwnedBy(UserEntity ownedBy) { this.ownedBy = ownedBy; }
+
+    public ObjectStatus getStatus() { return status; }
+    public void setStatus(ObjectStatus status) { this.status = status; }
+
+    public ObjectState getState() { return state; }
+    public void setState(ObjectState state) { this.state = state; }
 }

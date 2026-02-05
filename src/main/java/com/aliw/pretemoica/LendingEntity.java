@@ -1,43 +1,51 @@
 package com.aliw.pretemoica;
 
 import jakarta.persistence.*;
-
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 public class LendingEntity {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Standard pour PostgreSQL
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "borrowed_by_id", nullable = false)
+    private UserEntity borrowedBy;
 
-    // borrowedBy et offeredBy devraient plutot etre des liens vers la table Users
-    private String borrowedBy;
-    private String offeredBy;
-    private Date startedAt;
-    private Date endedAt;
-    @OneToOne
-    @JoinColumn
+    @ManyToOne
+    @JoinColumn(name = "offered_by_id", nullable = false)
+    private UserEntity offeredBy;
+
+    // Changement : ManyToOne car un objet peut figurer dans plusieurs transactions de prêt
+    @ManyToOne
+    @JoinColumn(name = "object_id", nullable = false) // On lie par l'ID, pas par le nom
     private ObjectEntity object;
 
-    public ObjectEntity getObject() {
-        return object;
+    private LocalDateTime startedAt;
+    private LocalDateTime endedAt;
+
+    public LendingEntity() {
+        this.startedAt = LocalDateTime.now();
     }
 
-    public void setObject(ObjectEntity object) {
-        this.object = object;
-    }
+    // --- Getters et Setters ---
 
-    public Date getStartedAt() {
-        return startedAt;
-    }
-    public void setStartedAt(Date startedAt) {
-        this.startedAt = startedAt;
-    }
-    public Date getEndedAt() {
-        return endedAt;
-    }
-    public void setEndedAt(Date endedAt) {
-        this.endedAt = endedAt;
-    }
+    public Long getId() { return id; }
+
+    public UserEntity getBorrowedBy() { return borrowedBy; }
+    public void setBorrowedBy(UserEntity borrowedBy) { this.borrowedBy = borrowedBy; }
+
+    public UserEntity getOfferedBy() { return offeredBy; }
+    public void setOfferedBy(UserEntity offeredBy) { this.offeredBy = offeredBy; }
+
+    public ObjectEntity getObject() { return object; }
+    public void setObject(ObjectEntity object) { this.object = object; }
+
+    public LocalDateTime getStartedAt() { return startedAt; }
+    public void setStartedAt(LocalDateTime startedAt) { this.startedAt = startedAt; }
+
+    public LocalDateTime getEndedAt() { return endedAt; }
+    public void setEndedAt(LocalDateTime endedAt) { this.endedAt = endedAt; }
 }
