@@ -1,7 +1,9 @@
 package com.aliw.pretemoica.service;
 
+import com.aliw.pretemoica.UserEntity;
 import com.aliw.pretemoica.dto.UserDto;
 import com.aliw.pretemoica.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,10 +28,10 @@ public class UserService {
             throw new IllegalArgumentException("Email already in use");
         }
 
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setEmail(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setEnabled(true); // pour l'instant, sans validation mail
+        //user.setEnabled(true);
 
         userRepository.save(user);
     }

@@ -1,6 +1,6 @@
 package com.aliw.pretemoica.controller;
 
-import com.aliw.pretemoica.entity.User;
+import com.aliw.pretemoica.UserEntity;
 import com.aliw.pretemoica.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,14 +17,13 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public UserEntity createUser(@RequestBody UserEntity user) {
         return userRepository.save(user);
     }
 
-    // Ajoute d’autres endpoints selon besoin
 }
