@@ -6,44 +6,44 @@ import jakarta.persistence.*;
 @Table(name = "app_user")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-incrément
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-incrément
+  private Long id;
 
-    private String username;
+  private String username;
 
-    private String email;
+  private String email;
 
-    // Constructeurs
-    public User() {}
+  // Constructeurs
+  public User() {}
 
-    public User(String username, String email) {
-        this.username = username;
-        this.email = email;
-    }
+  public User(String username, String email) {
+    this.username = username;
+    this.email = email;
+  }
 
-    // Getters & Setters
-    public Long getId() {
-        return id;
-    }
+  // Getters & Setters
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public String getUsername() {
-        return username;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public void setEmail(String email) {
+    this.email = email;
+  }
 }
