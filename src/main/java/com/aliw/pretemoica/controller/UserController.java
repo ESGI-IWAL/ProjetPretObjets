@@ -26,5 +26,10 @@ public class UserController {
         return userRepository.save(user);
     }
 
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
     // Ajoute d’autres endpoints selon besoin
 }
