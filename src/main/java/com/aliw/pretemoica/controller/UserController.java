@@ -27,5 +27,6 @@ public class UserController {
     }
 
 
+
     // Ajoute d’autres endpoints selon besoin
 }
