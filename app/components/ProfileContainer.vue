@@ -16,7 +16,7 @@ import type { IUser } from '~/types/user';
 <template>
     <div>
         <h1>Profile</h1>
-                <img src="\utils\pencil.png" alt="ModifierPen" @click="activateEditMode"/>
+                <img src="\utils\pencil.png" alt="ModifierPen" @click="activateEditMode" class="icon"/>
         <div v-if="props.user"> 
             <NuxtPicture :src="props.user.avatar" alt="User Avatar" />
             <div> {{props.user.pseudo}}</div>
@@ -30,6 +30,10 @@ import type { IUser } from '~/types/user';
 </template>
 
 
-<style>
-
+<style scoped>
+    .icon {
+        cursor: pointer;
+        width: 20px;
+        height: 20px;
+    }
 </style>

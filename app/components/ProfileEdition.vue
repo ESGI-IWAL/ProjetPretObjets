@@ -23,7 +23,7 @@
 
 </script>
 <template>
-    <img src="\utils\close.png" alt="ModifierPen" @click="desactivateEditMode" class="size-sm"/>
+    <img src="\utils\close.png" alt="ModifierPen" @click="desactivateEditMode"/>
     <form>
         <input v-model="form.description" type="text" placeholder="Description" />
         <input v-model="form.avatar" type="text" placeholder="Avatar URL" />
@@ -32,6 +32,6 @@
 </template>
 
 
-<style>
+<style scoped>
 
 </style>

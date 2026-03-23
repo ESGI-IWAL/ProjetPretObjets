@@ -25,9 +25,9 @@
 
 
 <style>
-    img {
-        cursor: pointer;
-        width: 20px;
-        height: 20px;
-    }
+img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
 </style>    
