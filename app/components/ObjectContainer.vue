@@ -4,14 +4,6 @@ import type { Object } from '@/types/object'
 import { useActiveObject } from '@/composables/useActiveObject'
 
 const activeObject = useActiveObject()
-defineProps<{
-  modelValue: Object | null
-}>();
-defineEmits<{
-  (e: 'update:modelValue', value: Object | null): void
-}>();
-
-
 
 function selectObject(object: Object) {
   activeObject.value = object
@@ -44,11 +36,9 @@ const {data: objects, pending, error} = useFetch<Object[]>('/api/objects/object'
 
     <div
         class="user-grid"
-        tabindex="0"
-        @keyup.enter="selectObject(objects[0])"
-        @keyup.esc="unselectObject"
-    >
-      <ObjectCard
+        >
+        <ObjectCard
+          tabindex="0"
           v-for="object in objects"
           :key="object.id"
           :object="object"
