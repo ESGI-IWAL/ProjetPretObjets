@@ -1,4 +1,4 @@
-package com.aliw.pretemoica;
+package com.aliw.pretemoica.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -25,12 +25,12 @@ public class LendingHistoryEntity {
     private LocalDateTime startedAt;
     private LocalDateTime endedAt;
 
-    // Constructeur par défaut requis par JPA
+
     public LendingHistoryEntity() {
-        this.startedAt = LocalDateTime.now(); // Initialisation par défaut
+        this.startedAt = LocalDateTime.now();
     }
 
-    // --- Logique métier ---
+
 
     /**
      * Vérifie si la période de prêt est valide.
@@ -41,7 +41,6 @@ public class LendingHistoryEntity {
         return startedAt.isAfter(endedAt);
     }
 
-    // --- Getters et Setters ---
 
     public Long getId() { return id; }
 
