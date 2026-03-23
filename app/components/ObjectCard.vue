@@ -25,9 +25,8 @@ function handleClick() {
       <template #header>
         <img
             :src="object.image"
-            alt="Avatar utilisateur"
             class="avatar"
-        >
+            alt="Image de l'objet">
         <h2 class="pseudo">{{ object.name }}</h2>
       </template>
     </BaseCard>
