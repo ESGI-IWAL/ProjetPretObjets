@@ -1,14 +1,14 @@
-import type { IUser, IUserAuth as IUserAuth } from "~/types/user"
+import type { IUser, IUserAuth } from "~/types/user"
 
 export const useAuth = () => {
-  const token = useCookie<string | null>('token')
-  const user = useState<IUser | null>('user', () => null)
-
-  const isAuthenticated = computed(() => !!user.value)
+  const activeUser = useActiveUser()
+    const token = useCookie('token', {httpOnly: true, secure: true});
+const isAuthenticated = useState<boolean>('isAuthenticated', () => false);
 
   async function fetchUser() {
     if (!token.value) {
-      user.value = null
+      activeUser.value = null
+      isAuthenticated.value = false
       return
     }
 
@@ -19,7 +19,7 @@ export const useAuth = () => {
         }
       })
 
-      user.value = {
+      activeUser.value = {
         id: data.id,
         pseudo: data.pseudo,
         avatar: data.avatar,
@@ -27,27 +27,27 @@ export const useAuth = () => {
         description: data.description,
         password: data.password,
       }
+      isAuthenticated.value = true
     } catch (e) {
-      user.value = null
+      activeUser.value = null
       token.value = null
+      isAuthenticated.value = false
     }
   }
 
-  async function login(email: string, password: string) {
+  async function login(username: string, password: string) {
     const data:IUserAuth = await $fetch('/api/auth/user', {
       method: 'POST',
-      body: { email, password }
+      body: { username, password }
     })
     console.log("EHEHHEHE");
 
     token.value = "veveververver"
-    //isAuthenticated.value = !!response;
-    console.log(token.value)
     //activeUser.value = response;
-
-    console.log(isAuthenticated.value)
+    activeUser.value = data;
+    isAuthenticated.value = !!data;    
     if (isAuthenticated.value) {
-      navigateTo('/dashboard'); // Redirection après connexion
+      navigateTo('/profile'); // Redirection après connexion
     }
     else{
       navigateTo('/login');
@@ -58,14 +58,11 @@ export const useAuth = () => {
 
   function logout() {
     token.value = null
-    user.value = null
+    activeUser.value = null
   }
 
   return {
-    token,
-    user,
     isAuthenticated,
-    fetchUser,
     login,
     logout
   }
