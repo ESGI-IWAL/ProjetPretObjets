@@ -1,11 +1,54 @@
-# Default ignored files
-/shelf/
-/.idea/workspace.xml
-# Editor-based HTTP Client requests
-/httpRequests/
-# Datasource local storage ignored files
-/dataSources/
-/dataSources.local.xml
-/.idea/*
-/target/
-/data/
+# =====================
+# IDE
+# =====================
+.idea/
+*.iml
+shelf/
+httpRequests/
+dataSources/
+dataSources.local.xml
+
+# =====================
+# Java / Maven
+# =====================
+target/
+*.class
+
+# =====================
+# Nuxt / Node
+# =====================
+node_modules/
+.output/
+.nuxt/
+.nitro/
+.cache/
+dist/
+.data/
+
+# =====================
+# Logs
+# =====================
+logs/
+*.log
+
+# =====================
+# Env files
+# =====================
+.env
+.env.*
+!.env.example
+
+# =====================
+# System
+# =====================
+.DS_Store
+
+# =====================
+# Coverage
+# =====================
+coverage/
+
+# =====================
+# Project data (if local only)
+# =====================
+data/

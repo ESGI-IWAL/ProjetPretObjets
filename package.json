@@ -1,0 +1,30 @@
+{
+  "name": "nuxt-m1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "test:unit": "vitest --project unit",
+    "test:nuxt": "vitest --project nuxt",
+    "test:e2e": "vitest --project e2e"
+  },
+  "dependencies": {
+    "@nuxt/eslint": "^1.15.2",
+    "@nuxt/test-utils": "^4.0.0",
+    "nuxt": "^4.3.1",
+    "vue": "^3.5.30",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vue/test-utils": "^2.4.6",
+    "vitest": "^4.0.18"
+  }
+}
