@@ -4,6 +4,7 @@ export interface IUser {
     avatar: string,
     email:string,
     description:string
+    password:string
 }
 
 export interface IUserAuth extends IUser {

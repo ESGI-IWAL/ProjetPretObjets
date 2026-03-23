@@ -24,7 +24,8 @@ export const useAuth = () => {
         pseudo: data.pseudo,
         avatar: data.avatar,
         email: data.email,
-        description: data.description
+        description: data.description,
+        password: data.password,
       }
     } catch (e) {
       user.value = null
@@ -33,13 +34,26 @@ export const useAuth = () => {
   }
 
   async function login(email: string, password: string) {
-    const data:IUserAuth = await $fetch('/api/login', {
+    const data:IUserAuth = await $fetch('/api/auth/user', {
       method: 'POST',
       body: { email, password }
     })
+    console.log("EHEHHEHE");
 
-    token.value = data.token
-    await fetchUser()
+    token.value = "veveververver"
+    //isAuthenticated.value = !!response;
+    console.log(token.value)
+    //activeUser.value = response;
+
+    console.log(isAuthenticated.value)
+    if (isAuthenticated.value) {
+      navigateTo('/dashboard'); // Redirection après connexion
+    }
+    else{
+      navigateTo('/login');
+    }
+
+    //@TODO REDIRIGER VERS LA PROFILE PAGE
   }
 
   function logout() {

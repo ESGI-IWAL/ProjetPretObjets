@@ -5,17 +5,42 @@ const { login } = useAuth()
     password:''
   })
 
-  const handleSubmit = () => {
-    login(form.pseudo, form.password)
+  const handleSubmit = async () => {
+    await login(form.pseudo, form.password)
   }
 </script>
 
 <template>
-  <form>
-    <input v-model='form.pseudo' placeholder="Pseudo">
-    <input v-model='form.password' placeholder="Mot de Passe" />
-    <button type="submit" @onSubmit="handleSubmit"> Login </button>
-   </form>
+  <div class="login-page">
+    <form @submit.prevent="handleSubmit">
+      <h1>Connexion</h1>
+
+
+      <div class="field">
+        <label for="username">username</label>
+        <input
+            id="username"
+            v-model="form.pseudo"
+            type="text"
+            required
+        />
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <input
+            id="password"
+            v-model="form.password"
+            type="password"
+            required
+        />
+      </div>
+
+      <button type="submit">
+        {{ 'Se connecter' }}
+      </button>
+    </form>
+  </div>
 </template>
 
 
