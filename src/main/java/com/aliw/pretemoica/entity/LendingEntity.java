@@ -1,4 +1,4 @@
-package com.aliw.pretemoica;
+package com.aliw.pretemoica.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 public class LendingEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Standard pour PostgreSQL
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -18,9 +18,8 @@ public class LendingEntity {
     @JoinColumn(name = "offered_by_id", nullable = false)
     private UserEntity offeredBy;
 
-    // Changement : ManyToOne car un objet peut figurer dans plusieurs transactions de prêt
     @ManyToOne
-    @JoinColumn(name = "object_id", nullable = false) // On lie par l'ID, pas par le nom
+    @JoinColumn(name = "object_id", nullable = false)
     private ObjectEntity object;
 
     private LocalDateTime startedAt;
@@ -29,8 +28,6 @@ public class LendingEntity {
     public LendingEntity() {
         this.startedAt = LocalDateTime.now();
     }
-
-    // --- Getters et Setters ---
 
     public Long getId() { return id; }
 

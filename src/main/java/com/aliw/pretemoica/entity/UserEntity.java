@@ -1,4 +1,5 @@
-package com.aliw.pretemoica;
+package com.aliw.pretemoica.entity;
+
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -11,28 +12,27 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Contrainte unique sur l'email
+
     @Column(unique = true, nullable = false)
     private String email;
 
     private String password;
 
-    // Relation OneToMany : Un utilisateur possède plusieurs objets
-    // "mappedBy" doit correspondre au nom du champ UserEntity dans ObjectEntity
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ObjectEntity> objects = new ArrayList<>(); // Initialisation
+    private List<ObjectEntity> objects = new ArrayList<>();
 
-    // Relation ManyToMany pour les utilisateurs liés (amis/réseau)
+
     @ManyToMany
-    private List<UserEntity> linkedUsers = new ArrayList<>(); // Initialisation
+    private List<UserEntity> linkedUsers = new ArrayList<>();
 
-    private Integer rating = 0; // Valeur par défaut pour éviter le null
+    private Integer rating = 0;
 
     public UserEntity() {
-        //En attente
+        //TODO : Ajouter un constructeur avec email et password pour faciliter la création d'utilisateurs
     }
 
-    // --- LOGIQUE MÉTIER ---
+
 
     public void addObject(ObjectEntity objectToAdd) {
         if (this.objects == null) {
@@ -63,7 +63,7 @@ public class UserEntity {
         return this.email.equals(email) && this.password.equals(password);
     }
 
-    // --- GETTERS & SETTERS ---
+
 
     public Long getId() { return id; }
 

@@ -1,4 +1,4 @@
-package com.aliw.pretemoica;
+package com.aliw.pretemoica.entity;
 
 import jakarta.persistence.*;
 
@@ -19,7 +19,7 @@ public class ObjectEntity {
     private UserEntity ownedBy;
 
     @Enumerated(EnumType.STRING)
-    private ObjectStatus status = ObjectStatus.AVAILABLE; // Valeur par défaut
+    private ObjectStatus status = ObjectStatus.AVAILABLE;
 
     @Enumerated(EnumType.STRING)
     private ObjectState state;
@@ -29,20 +29,20 @@ public class ObjectEntity {
     }
 
     public enum ObjectStatus {
-        AVAILABLE,   // Disponible au prêt
-        LENT,        // Actuellement prêté
-        RESERVED,    // Réservé par quelqu'un
-        UNAVAILABLE  // Retiré temporairement par le propriétaire
+        AVAILABLE,
+        LENT,
+        RESERVED,
+        UNAVAILABLE
     }
 
     public enum ObjectState {
-        NEW,         // Neuf
-        GOOD,        // Bon état
-        WORN,        // Usagé
-        DAMAGED      // Abîmé
+        NEW,
+        GOOD,
+        WORN,
+        DAMAGED
     }
 
-    // --- Getters et Setters ---
+
 
     public Long getId() { return id; }
 
