@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BaseCard from '~/components/BaseCard.vue'
+import BaseCard from "~/components/BaseCard.vue";
 import type { Object } from '@/types/object'
 
 const props = defineProps<{
@@ -29,6 +29,7 @@ function handleClick() {
             class="avatar"
         >
         <h2 class="pseudo">{{ object.name }}</h2>
+        <h2 class="description">{{ object.description }}</h2>
       </template>
     </BaseCard>
   </div>
@@ -54,4 +55,15 @@ function handleClick() {
   font-size: 1.25rem;
 }
 
+.status {
+  margin: 0.75rem 0;
+}
+
+.active {
+  color: #22c55e;
+}
+
+.inactive {
+  color: #ef4444;
+}
 </style>
