@@ -2,12 +2,20 @@
     definePageMeta({
       middleware: 'auth'
     })
-
+    export interface ModificateUser {
+        description: string | null,
+        avatar: string | null,
+        loanActive: boolean,
+        numberOfLoans: number,
+        email: string
+    }
     const editMode = ref(false)
     const activeUser = useActiveUser()
 
-    const handleSubmit = ({description, avatar}: { description: string|null, avatar: string|null }) => {
+    const handleSubmit = ({description, avatar, loanActive, numberOfLoans, email}: ModificateUser) => {
         console.log("Profile update submitted with description:", description, "and avatar:", avatar);
+        console.log("Loan active:", loanActive, "Number of loans:", numberOfLoans);
+        console.log("Email:", email);
     }
 
     const handleEditMode = () => {
