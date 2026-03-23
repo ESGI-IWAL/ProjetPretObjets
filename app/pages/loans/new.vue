@@ -8,10 +8,9 @@ const form = reactive({
 </script>
 <template>
     <form>
-        <div v-model="form.name" type="text" placeholder="Nom"/>
-        <div v-model="form.description" type="text" placeholder="Description"/>
-        <div v-model="form.category" type="text" placeholder="Catégorie"/>
-        <input v-model="form.image" type="file" placeholder="Image"/>
+        <input v-model="form.name" type="text" placeholder="Nom"/>
+        <input v-model="form.description" type="text" placeholder="Description"/>
+        <input v-model="form.category" type="text" placeholder="Catégorie"/>
     </form>
 </template>
 
