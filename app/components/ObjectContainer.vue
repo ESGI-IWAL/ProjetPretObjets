@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import UserCard from '@/components/UserCard.vue'
 import type { Object } from '@/types/object'
-import { useActiveObject } from '@/composables/useActiveObject'
 
-const activeObject = useActiveObject()
+const activeObject = ref<Object | null>(null)
 
 function selectObject(object: Object) {
   activeObject.value = object
