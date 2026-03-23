@@ -10,7 +10,6 @@ export const useAuth = () => {
       method: 'POST',
       body: { username, password }
     })
-    console.log("EHEHHEHE");
 
     token.value = "veveververver"
     activeUser.value = data;
