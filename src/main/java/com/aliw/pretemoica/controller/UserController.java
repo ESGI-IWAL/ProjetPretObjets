@@ -1,6 +1,6 @@
 package com.aliw.pretemoica.controller;
 
-import com.aliw.pretemoica.UserEntity;
+import com.aliw.pretemoica.entity.UserEntity;
 import com.aliw.pretemoica.repository.UserRepository;
 import java.util.List;
 import org.springframework.web.bind.annotation.*;

@@ -1,9 +1,11 @@
-package com.aliw.pretemoica.tests;
+package com.aliw.pretemoica;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.LocalDateTime;
+import com.aliw.pretemoica.entity.LendingEntity;
+import com.aliw.pretemoica.entity.UserEntity;
+import com.aliw.pretemoica.entity.ObjectEntity;
 
 // Classe de test pour LendingEntity
 class LendingEntityTest {

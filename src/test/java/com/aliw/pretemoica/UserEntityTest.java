@@ -1,9 +1,10 @@
-package com.aliw.pretemoica.tests;
+package com.aliw.pretemoica;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.List;
+import com.aliw.pretemoica.entity.UserEntity;
+import com.aliw.pretemoica.entity.ObjectEntity;
 
 // Classe de test pour UserEntity
 class UserEntityTest {
@@ -65,9 +66,7 @@ class UserEntityTest {
         UserEntity user = new UserEntity();
         user.setRating(null);
 
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
-            user.getRating();
-        );
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> user.getRating());
         assertTrue(exception.getMessage().contains("Le rating n'a pas été initialisé"));
     }
 

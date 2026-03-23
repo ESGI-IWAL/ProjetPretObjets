@@ -1,6 +1,6 @@
 package com.aliw.pretemoica.service;
 
-import com.aliw.pretemoica.UserEntity;
+import com.aliw.pretemoica.entity.UserEntity;
 import com.aliw.pretemoica.dto.UserDto;
 import com.aliw.pretemoica.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;

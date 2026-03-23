@@ -1,7 +1,9 @@
-package com.aliw.pretemoica.tests;
+package com.aliw.pretemoica;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import com.aliw.pretemoica.entity.ObjectEntity;
+import com.aliw.pretemoica.entity.UserEntity;
 
 public class ObjectEntityTest {
 
