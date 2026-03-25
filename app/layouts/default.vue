@@ -21,7 +21,7 @@
                 <NuxtLink to="/profile" class="link">Profile</NuxtLink>
                 <NuxtLink to="/objects" class="link">Objects</NuxtLink>
             </header>
-            <main>
+            <main class="p-4 md:p-6 lg:p-8">
                 <slot/>
             </main>
             <footer class="bg-gray-800 text-white p-4 mt-auto">

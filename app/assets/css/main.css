@@ -6,11 +6,11 @@
 
 @layer components {
     .base-card {
-        @apply box-border w-80 rounded-[14px] bg-gray-800 p-6 text-gray-200 shadow-xl font-sans transition;
+        @apply box-border w-80 rounded-[14px] bg-gray-600 p-6 text-gray-200 shadow-xl font-sans transition;
     }
 
     .base-card.selected {
-        @apply shadow-2xl ring-2 ring-blue-600 ring-offset-2 ring-offset-gray-800
+        @apply shadow-2xl ring-2 ring-blue-600 ring-offset-2 ring-offset-gray-600
     }
 
     .card-click-area {
