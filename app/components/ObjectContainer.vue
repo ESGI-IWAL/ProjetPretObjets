@@ -30,11 +30,9 @@ const {data: objects, pending, error} = useFetch<Object[]>('/api/objects/object'
         v-model="search"
         type="text"
         placeholder="Rechercher un objet..."
-        class=" text-red-500" >
+        class=" text-grey-500" >
 
-    <div
-        class="user-grid"
-        >
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <ObjectCard
           tabindex="0"
           v-for="object in objects"
@@ -58,9 +56,5 @@ const {data: objects, pending, error} = useFetch<Object[]>('/api/objects/object'
 </template>
 
 <style scoped>
-.user-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-}
+
 </style>
