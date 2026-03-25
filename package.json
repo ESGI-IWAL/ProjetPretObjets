@@ -24,8 +24,10 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
     "@vitest/coverage-v8": "^4.0.18",
     "@vue/test-utils": "^2.4.6",
+    "tailwindscss": "^0.3.0",
     "vitest": "^4.0.18"
   }
 }
