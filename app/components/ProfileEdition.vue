@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { ModificateUser } from '~/pages/profile/index.vue';
+import type { IModificateUser } from '~/pages/profile/index.vue';
 
     definePageMeta({
       middleware: 'auth'
     })
     const activeUser = useActiveUser()
-    const form = reactive<ModificateUser>({
+    const form = reactive<IModificateUser>({
         description: activeUser.value?.description || "",
         avatar: activeUser.value?.avatar || "",
         loanActive: false,
@@ -14,7 +14,7 @@ import type { ModificateUser } from '~/pages/profile/index.vue';
     })
 
     const emit = defineEmits<{
-    handleSubmit: [value: ModificateUser],
+    handleSubmit: [value: IModificateUser],
     desactivateEditMode: []
     }>()
 

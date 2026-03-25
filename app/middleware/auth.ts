@@ -9,6 +9,6 @@ export default defineNuxtRouteMiddleware((to) => {
 
   // si route login et déjà connecté (= logique bonus)
   if (to.path === '/login' && isAuthenticated.value) {
-    return navigateTo('/profile')
+    return navigateTo('/')
   }
 })

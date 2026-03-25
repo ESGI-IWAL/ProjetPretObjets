@@ -9,6 +9,8 @@
         </nav>
         <header>
             <NuxtLink to="/">Home</NuxtLink>
+            <NuxtLink to="/profile">Profile</NuxtLink>
+            <NuxtLink to="/objects">Objects</NuxtLink>
         </header>
         <main>
             <slot/>
