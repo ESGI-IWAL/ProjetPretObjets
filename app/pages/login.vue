@@ -24,7 +24,7 @@ const { login, erreurConnexion } = useAuth()
             v-model="form.pseudo"
             type="text"
             required
-            :class="Boolean(erreurConnexion) ? 'error-input' : ''"
+            :class="Boolean(erreurConnexion) ? 'error-input' : 'input'"
         />
       </div>
 
@@ -35,6 +35,8 @@ const { login, erreurConnexion } = useAuth()
             v-model="form.password"
             type="password"
             required
+            :class="Boolean(erreurConnexion) ? 'error-input' : 'input'"
+
         />
       </div>
 
@@ -46,6 +48,6 @@ const { login, erreurConnexion } = useAuth()
 </template>
 
 
-<style>
+<style scoped>
 
 </style>

@@ -37,8 +37,12 @@
         @apply text-red-500 text-sm mt-2;
     }
 
+    .input {
+        @apply border border-gray-300 rounded-md p-2;
+    }
+
     .error-input {
-        @apply border-red-500;
+        @apply border border-red-500 rounded-md p-2;
     }
 
 
