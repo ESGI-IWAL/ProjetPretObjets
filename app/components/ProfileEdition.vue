@@ -89,8 +89,8 @@ import type { IModificateUser } from '~/pages/profile/index.vue';
         </div>
 
         <div class="flex gap-4 mt-4 justify-end">
-            <button @click.prevent="desactivateEditMode">Cancel</button>
-            <button @click.prevent="handleSubmit">Submit</button>
+            <button @click.prevent="desactivateEditMode" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">Cancel</button>
+            <button @click.prevent="handleSubmit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">Submit</button>
         </div>
     </form>
 </div>
