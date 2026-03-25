@@ -13,6 +13,10 @@
         @apply shadow-2xl ring-2 ring-blue-600 ring-offset-2 ring-offset-gray-600
     }
 
+    .base-card.selected .card-title {
+        @apply text-4xl;
+    }
+
     .card-click-area {
         @apply flex cursor-pointer justify-center;
     }

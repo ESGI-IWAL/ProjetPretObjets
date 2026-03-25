@@ -14,6 +14,7 @@ function selectObject(object: Object) {
   activeObject.value = object
   console.log('Objet sélectionné :', object)
   isDetailOpen.value = true
+  document.getElementById("object-detail").focus()
 }
 
 function unselectObject() {
@@ -55,8 +56,11 @@ function closeDetail() {
 
     <!-- SIDEBAR -->
     <aside
+        id="object-detail"
+        tabindex="0"
         class="fixed right-0 top-0 z-50 h-screen w-full max-w-sm overflow-y-auto bg-gray-900 p-4 text-gray-100 shadow-2xl transition-transform duration-300"
         :class="isDetailOpen ? 'translate-x-0' : 'translate-x-full'"
+        @keydown.esc="closeDetail"
     >
       <div class="mb-3 flex justify-end">
         <button class="rounded px-2 py-1 hover:bg-gray-700" @click="closeDetail">
