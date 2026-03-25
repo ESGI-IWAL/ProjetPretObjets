@@ -41,7 +41,7 @@ import type { IUser } from '~/types/user';
                     <div>
                         Description : 
                     </div>
-                    <div class="col-span-1 max-h-40 overflow-y-auto bg-gray-500 p-2 rounded border">{{props.user.description}}</div>
+                    <div class="col-span-1 sm:h-20 md:h-30 lg:h-40 overflow-y-auto bg-gray-500 p-2 rounded border">{{props.user.description}}</div>
                 </div>
             </div>
         </div>
