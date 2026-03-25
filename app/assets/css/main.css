@@ -20,4 +20,8 @@
     .card-description {
         @apply mt-2 text-sm text-gray-300;
     }
+
+    .link {
+        @apply text-white hover:text-black;
+    }
 }
