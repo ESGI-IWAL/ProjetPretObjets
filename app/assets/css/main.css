@@ -45,5 +45,14 @@
         @apply border border-red-500 rounded-md p-2;
     }
 
+    .profile-card {
+        @apply box-border rounded-[14px] bg-gray-600 p-6 text-gray-200 shadow-xl 
+        font-sans transition mx-auto my-10 sm:w-100 md:w-140 lg:w-200 sm:h-100 md:h-140 lg:h-160
+        flex flex-col;
+    }
+
+    .profile-card.avatar{
+        @apply mx-auto mb-3 h-24 w-24 rounded-full object-cover;
+    }
 
 }

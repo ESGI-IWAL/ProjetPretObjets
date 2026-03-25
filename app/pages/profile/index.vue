@@ -23,19 +23,15 @@
     }
 </script>
 <template>
-    <div v-if="editMode">
+    <div v-if="editMode" class="profile-card">
         <ProfileEdition :user="activeUser" @handleSubmit="handleSubmit" @desactivateEditMode="handleEditMode" />
     </div>
-    <div v-else>
+    <div v-else class="profile-card">
         <ProfileContainer :user="activeUser"  @activateEditMode="handleEditMode" />
     </div>
 </template>
 
 
 <style>
-img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-}
+
 </style>    

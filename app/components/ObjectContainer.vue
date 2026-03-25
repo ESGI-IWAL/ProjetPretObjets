@@ -21,30 +21,33 @@ const {data: objects, pending, error} = useFetch<Object[]>('/api/objects/object'
 </script>
 
 <template>
-  <ClientOnly>
-    <div v-if="pending">Chargement des objets...</div>
+  <ClientOnly >
+    <div>
 
-    <div v-else-if="error">Erreur de chargement</div>
-
-    <input
-        v-model="search"
-        type="text"
-        placeholder="Rechercher un objet..."
-        class=" text-grey-500" >
-
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div v-if="pending">Chargement des objets...</div>
+      
+      <div v-else-if="error">Erreur de chargement</div>
+      
+      <input
+      v-model="search"
+      type="text"
+      placeholder="Rechercher un objet..."
+      class=" text-grey-500" >
+      
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <ObjectCard
-          tabindex="0"
-          v-for="object in objects"
-          :key="object.id"
-          :object="object"
-          :selected="activeObject?.id === object.id"
-          @select="selectObject"
-          @keyup.enter="selectObject"
-          @keyup.esc="unselectObject"
-      />
+        tabindex="0"
+        v-for="object in objects"
+        :key="object.id"
+        :object="object"
+        :selected="activeObject?.id === object.id"
+        @select="selectObject"
+        @keyup.enter="selectObject"
+        @keyup.esc="unselectObject"
+        />
+      </div>
     </div>
-    <section v-if="activeObject?.id" >
+    <section v-if="activeObject?.id"  >
       <ObjectDetailledCard
           :object="activeObject"
           :selected="true"
