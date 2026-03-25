@@ -24,4 +24,14 @@
     .link {
         @apply text-white hover:text-black;
     }
+
+    .error-message {
+        @apply text-red-500 text-sm mt-2;
+    }
+
+    .error-input {
+        @apply border-red-500;
+    }
+
+
 }
