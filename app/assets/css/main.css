@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+.test {
+    @apply text-3xl font-bold text-blue-600;
+}
+
+@layer components {
+    .card-click-area {
+        @apply flex cursor-pointer justify-center;
+    }
+
+    .card-avatar {
+        @apply mx-auto mb-3 h-24 w-24 rounded-full object-cover;
+    }
+
+    .card-title {
+        @apply m-0 text-xl;
+    }
+
+    .card-description {
+        @apply mt-2 text-sm text-gray-300;
+    }
+}

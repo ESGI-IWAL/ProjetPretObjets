@@ -10,7 +10,7 @@ const handleClick=() => {
 }
 </script>
 <template>
-  <h1 class="text-3xl font-bold text-blue-600">Tailwind OK</h1>
+  <h1 class="test">Tailwind OK</h1>
     <div>
         <h1>{{props.title}}</h1>
     </div> 

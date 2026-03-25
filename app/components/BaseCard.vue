@@ -2,42 +2,19 @@
 </script>
 
 <template>
-  <div class="base-card">
-    <header class="base-card__header">
+  <div
+      class="box-border w-80 rounded-[14px] bg-gray-900 p-6 text-gray-200 shadow-[0_20px_40px_rgba(0,0,0,0.5)] font-sans [&.selected]:shadow-[0_0_0_2px_#86efac,0_20px_40px_rgba(0,0,0,0.5)]"
+  >
+    <header class="mb-4 text-center">
       <slot name="header" />
     </header>
 
-    <section class="base-card__content">
+    <section class="text-center">
       <slot />
     </section>
   </div>
 </template>
 
 <style scoped>
-.base-card {
-  box-sizing: border-box;
-  background-color: #111827;
-  border-radius: 14px;
-  padding: 1.5rem;
-  width: 320px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  color: #e5e7eb;
-  font-family: system-ui, sans-serif;
-}
 
-/* Sélection : anneau parfaitement aligné sur la card (inclut padding) */
-.base-card.selected {
-  box-shadow:
-      0 0 0 2px #86efac,
-      0 20px 40px rgba(0, 0, 0, 0.5);
-}
-
-.base-card__header {
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.base-card__content {
-  text-align: center;
-}
 </style>
