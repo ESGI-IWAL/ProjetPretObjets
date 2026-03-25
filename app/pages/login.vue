@@ -40,6 +40,8 @@ const { login, erreurConnexion } = useAuth()
         />
       </div>
 
+      <div v-if="Boolean(erreurConnexion)" class="flex flex-col gap-2 error-message">Mauvais identifiants, veuillez réessayer</div>
+
       <button type="submit">
         {{ 'Se connecter' }}
       </button>
