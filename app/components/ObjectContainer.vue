@@ -30,7 +30,7 @@ const {data: objects, pending, error} = useFetch<Object[]>('/api/objects/object'
         v-model="search"
         type="text"
         placeholder="Rechercher un objet..."
-        class="mb-4 p-2 border border-gray-300 rounded w-full" >
+        class=" text-red-500" >
 
     <div
         class="user-grid"
