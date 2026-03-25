@@ -29,22 +29,71 @@ import type { IModificateUser } from '~/pages/profile/index.vue';
 
 </script>
 <template>
-    <div class="flex flex-col items-center gap-4 mt-4">
-        <form>
-            <div>
+   <div class="grid grid-cols-[95%_05%] mb-10 sm:mb-6">
+    <h1 class="font-bold text-center sm:text-3xl md:text-5xl lg:text-6xl">Edit Profile</h1>
+    <svg @click="desactivateEditMode" class="svg-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
+</div>
 
-                <input v-model="form.loanActive" type="checkbox" />
-                <input :disabled="!form.loanActive" v-model.number="form.numberOfLoans" type="number" placeholder="Nombre de prêts" />
-                <input v-model.trim="form.email" type="email" placeholder="Email" />
-                <input v-model="form.description" type="text" placeholder="Description" />
-                <input v-model="form.avatar" type="text" placeholder="Avatar URL" />
+<div class="flex flex-col items-center gap-4 mt-4">
+    <form class="flex flex-1 flex-col gap-4 w-full">
+        <div class="grid grid-rows-[auto_auto_auto_auto_auto] gap-4 w-full">
+
+            <div class="grid grid-cols-2">
+                <div>Prêts actifs :</div>
+                <input v-model="form.loanActive" type="checkbox" class="w-fit" />
             </div>
-                <div class="flex gap-4 mt-4 justify-end">
-                <button @click.prevent="handleSubmit">Submit</button>
-                <button @click.prevent="desactivateEditMode">Cancel</button>
+
+            <div class="grid grid-cols-2">
+                <div>Nombre de prêts :</div>
+                <input
+                    :disabled="!form.loanActive"
+                    v-model.number="form.numberOfLoans"
+                    type="number"
+                    placeholder="Nombre de prêts"
+                    class="col-span-1 bg-gray-500 p-2 rounded border disabled:opacity-50"
+                />
             </div>
-        </form>
-    </div>
+
+            <div class="grid grid-cols-2">
+                <div>Email :</div>
+                <input
+                    v-model.trim="form.email"
+                    type="email"
+                    placeholder="Email"
+                    class="col-span-1 bg-gray-500 p-2 rounded border"
+                />
+            </div>
+
+            <div class="grid grid-cols-2">
+                <div>Description :</div>
+                <input
+                    v-model="form.description"
+                    type="text"
+                    placeholder="Description"
+                    class="col-span-1 max-h-40 overflow-y-auto bg-gray-500 p-2 rounded border"
+                />
+            </div>
+
+            <div class="grid grid-cols-2">
+                <div>Avatar URL :</div>
+                <input
+                    v-model="form.avatar"
+                    type="text"
+                    placeholder="Avatar URL"
+                    class="col-span-1 bg-gray-500 p-2 rounded border"
+                />
+            </div>
+
+        </div>
+
+        <div class="flex gap-4 mt-4 justify-end">
+            <button @click.prevent="desactivateEditMode">Cancel</button>
+            <button @click.prevent="handleSubmit">Submit</button>
+        </div>
+    </form>
+</div>
 </template>
 
 
