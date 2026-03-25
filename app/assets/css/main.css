@@ -34,7 +34,7 @@
     }
 
     .link {
-        @apply text-white hover:text-black;
+        @apply text-white-500 hover:text-black;
     }
 
     .error-message {
