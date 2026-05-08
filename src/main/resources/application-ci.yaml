@@ -8,3 +8,7 @@ spring:
     hibernate:
       ddl-auto: validate
     open-in-view: false
+
+jwt:
+  secret: pretemoica-ci-secret-key-pretemoica-ci-secret-key-123456
+  expiration-ms: 3600000

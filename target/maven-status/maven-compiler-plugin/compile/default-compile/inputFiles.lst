@@ -1,9 +1,19 @@
-C:\Users\gwelt\OneDrive\Bureau\BOULOT ESGI\M1annee\Projet Final\PROJET\ProjetPretObjets\src\main\java\com\aliw\pretemoica\config\SecurityConfig.java
-C:\Users\gwelt\OneDrive\Bureau\BOULOT ESGI\M1annee\Projet Final\PROJET\ProjetPretObjets\src\main\java\com\aliw\pretemoica\controller\UserController.java
-C:\Users\gwelt\OneDrive\Bureau\BOULOT ESGI\M1annee\Projet Final\PROJET\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\LendingEntity.java
-C:\Users\gwelt\OneDrive\Bureau\BOULOT ESGI\M1annee\Projet Final\PROJET\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\LendingHistoryEntity.java
-C:\Users\gwelt\OneDrive\Bureau\BOULOT ESGI\M1annee\Projet Final\PROJET\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\ObjectEntity.java
-C:\Users\gwelt\OneDrive\Bureau\BOULOT ESGI\M1annee\Projet Final\PROJET\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\PretemoicaApplication.java
-C:\Users\gwelt\OneDrive\Bureau\BOULOT ESGI\M1annee\Projet Final\PROJET\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\User.java
-C:\Users\gwelt\OneDrive\Bureau\BOULOT ESGI\M1annee\Projet Final\PROJET\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\UserEntity.java
-C:\Users\gwelt\OneDrive\Bureau\BOULOT ESGI\M1annee\Projet Final\PROJET\ProjetPretObjets\src\main\java\com\aliw\pretemoica\repository\UserRepository.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\config\MailConfig.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\config\SecurityConfig.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\controller\AuthController.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\controller\EmailTestController.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\controller\UserController.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\dto\LoginRequest.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\dto\LoginResponse.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\dto\UserDto.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\LendingEntity.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\LendingHistoryEntity.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\ObjectEntity.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\PretemoicaApplication.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\UserEntity.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\repository\UserRepository.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\security\jwt\JwtAuthenticationFilter.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\service\CustomUserDetailsService.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\service\EmailService.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\service\JwtService.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\service\UserService.java

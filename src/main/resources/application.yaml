@@ -12,4 +12,7 @@ spring:
   mail:
     host: localhost
     port: 1025
+jwt:
+  secret: pretemoica-dev-secret-key-pretemoica-dev-secret-key-123456
+  expiration-ms: 3600000
 

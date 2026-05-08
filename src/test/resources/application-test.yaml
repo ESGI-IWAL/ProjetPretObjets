@@ -10,3 +10,7 @@ spring:
     hibernate:
       ddl-auto: create-drop
 
+jwt:
+  secret: pretemoica-test-secret-key-pretemoica-test-secret-key-123456
+  expiration-ms: 3600000
+
