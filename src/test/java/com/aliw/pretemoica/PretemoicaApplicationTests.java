@@ -1,6 +1,6 @@
 package com.aliw.pretemoica;
 
-import com.aliw.pretemoica.entity.PretemoicaApplication;
+import com.aliw.pretemoica.PretemoicaApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

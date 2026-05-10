@@ -1,6 +1,6 @@
-com\aliw\pretemoica\LendingEntityTest.class
-com\aliw\pretemoica\LendingHistoryEntityTest.class
-com\aliw\pretemoica\ObjectEntityTest.class
-com\aliw\pretemoica\UserEntityTest.class
-com\aliw\pretemoica\MailpitTest.class
-com\aliw\pretemoica\PretemoicaApplicationTests.class
+com/aliw/pretemoica/PretemoicaApplicationTests.class
+com/aliw/pretemoica/LendingHistoryEntityTest.class
+com/aliw/pretemoica/LendingEntityTest.class
+com/aliw/pretemoica/UserEntityTest.class
+com/aliw/pretemoica/ObjectEntityTest.class
+com/aliw/pretemoica/MailpitTest.class
