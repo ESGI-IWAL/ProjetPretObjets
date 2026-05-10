@@ -8,12 +8,25 @@ public class UserDto {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getMatchingPassword() {
         return matchingPassword;
     }
 
+    @SuppressWarnings("unused")
+    public void setMatchingPassword(String matchingPassword) {
+        this.matchingPassword = matchingPassword;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @NotNull
@@ -24,6 +37,4 @@ public class UserDto {
     @NotNull
     @NotEmpty
     private String email;
-
-    // standard getters and setters
 }

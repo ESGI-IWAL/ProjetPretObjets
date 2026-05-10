@@ -11,6 +11,5 @@ spring:
       ddl-auto: create-drop
 
 jwt:
-  secret: pretemoica-test-secret-key-pretemoica-test-secret-key-123456
+  secret: ${JWT_SECRET}
   expiration-ms: 3600000
-

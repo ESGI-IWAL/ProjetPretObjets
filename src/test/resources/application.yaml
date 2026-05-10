@@ -10,3 +10,6 @@ spring:
     hibernate:
       ddl-auto: create-drop
 
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-ms: 3600000

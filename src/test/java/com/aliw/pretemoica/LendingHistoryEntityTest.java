@@ -7,10 +7,10 @@ import com.aliw.pretemoica.entity.LendingHistoryEntity;
 import com.aliw.pretemoica.entity.UserEntity;
 import com.aliw.pretemoica.entity.ObjectEntity;
 
-public class LendingHistoryEntityTest {
+class LendingHistoryEntityTest {
 
     @Test
-    public void testDefaultConstructor() {
+    void testDefaultConstructor() {
         LendingHistoryEntity history = new LendingHistoryEntity();
         assertNotNull(history);
         assertNull(history.getId());
@@ -22,7 +22,7 @@ public class LendingHistoryEntityTest {
     }
 
     @Test
-    public void testSettersAndGetters() {
+    void testSettersAndGetters() {
         LendingHistoryEntity history = new LendingHistoryEntity();
         UserEntity borrower = new UserEntity();
         borrower.setEmail("borrower@example.com");
@@ -50,7 +50,7 @@ public class LendingHistoryEntityTest {
     }
 
     @Test
-    public void testHasDateErrorWhenStartAfterEnd() {
+    void testHasDateErrorWhenStartAfterEnd() {
         LendingHistoryEntity history = new LendingHistoryEntity();
         LocalDateTime start = LocalDateTime.now().plusDays(1);
         LocalDateTime end = LocalDateTime.now();
@@ -62,7 +62,7 @@ public class LendingHistoryEntityTest {
     }
 
     @Test
-    public void testHasDateErrorWhenStartBeforeEnd() {
+    void testHasDateErrorWhenStartBeforeEnd() {
         LendingHistoryEntity history = new LendingHistoryEntity();
         LocalDateTime start = LocalDateTime.now();
         LocalDateTime end = LocalDateTime.now().plusDays(1);
@@ -74,7 +74,7 @@ public class LendingHistoryEntityTest {
     }
 
     @Test
-    public void testHasDateErrorWhenStartEqualsEnd() {
+    void testHasDateErrorWhenStartEqualsEnd() {
         LendingHistoryEntity history = new LendingHistoryEntity();
         LocalDateTime time = LocalDateTime.now();
 
@@ -85,7 +85,7 @@ public class LendingHistoryEntityTest {
     }
 
     @Test
-    public void testHasDateErrorWhenStartNull() {
+    void testHasDateErrorWhenStartNull() {
         LendingHistoryEntity history = new LendingHistoryEntity();
         history.setStartedAt(null);
         history.setEndedAt(LocalDateTime.now());
@@ -94,7 +94,7 @@ public class LendingHistoryEntityTest {
     }
 
     @Test
-    public void testHasDateErrorWhenEndNull() {
+    void testHasDateErrorWhenEndNull() {
         LendingHistoryEntity history = new LendingHistoryEntity();
         history.setStartedAt(LocalDateTime.now());
         history.setEndedAt(null);

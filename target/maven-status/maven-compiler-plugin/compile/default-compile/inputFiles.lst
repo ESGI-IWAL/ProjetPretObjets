@@ -2,10 +2,12 @@ C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoic
 C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\config\SecurityConfig.java
 C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\controller\AuthController.java
 C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\controller\EmailTestController.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\controller\package-info.java
 C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\controller\UserController.java
 C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\dto\LoginRequest.java
 C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\dto\LoginResponse.java
 C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\dto\UserDto.java
+C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\dto\UserSummaryDto.java
 C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\LendingEntity.java
 C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\LendingHistoryEntity.java
 C:\Users\gwelt\OneDrive\Bureau\ProjetPretObjets\src\main\java\com\aliw\pretemoica\entity\ObjectEntity.java

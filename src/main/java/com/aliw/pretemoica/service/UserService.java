@@ -3,6 +3,7 @@ package com.aliw.pretemoica.service;
 import com.aliw.pretemoica.entity.UserEntity;
 import com.aliw.pretemoica.dto.UserDto;
 import com.aliw.pretemoica.repository.UserRepository;
+import java.util.Objects;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class UserService {
 
     public void registerNewUser(UserDto dto) {
 
-        if (!dto.getPassword().equals(dto.getMatchingPassword())) {
+        if (!Objects.equals(dto.getPassword(), dto.getMatchingPassword())) {
             throw new IllegalArgumentException("Passwords do not match");
         }
 
@@ -31,7 +32,6 @@ public class UserService {
         UserEntity user = new UserEntity();
         user.setEmail(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        //user.setEnabled(true);
 
         userRepository.save(user);
     }

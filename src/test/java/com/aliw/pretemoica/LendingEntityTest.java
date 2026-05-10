@@ -11,7 +11,7 @@ import com.aliw.pretemoica.entity.ObjectEntity;
 class LendingEntityTest {
 
     @Test
-    public void testDefaultConstructor() {
+    void testDefaultConstructor() {
         LendingEntity lending = new LendingEntity();
         assertNotNull(lending);
         assertNull(lending.getId());
@@ -23,7 +23,7 @@ class LendingEntityTest {
     }
 
     @Test
-    public void testSettersAndGetters() {
+    void testSettersAndGetters() {
         LendingEntity lending = new LendingEntity();
         UserEntity borrower = new UserEntity();
         borrower.setEmail("borrower@example.com");

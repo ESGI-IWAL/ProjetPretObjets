@@ -24,16 +24,17 @@ public class JwtService {
 	private final long expirationMs;
 
 	public JwtService(
-			@Value("${jwt.secret:pretemoica-dev-secret-key-pretemoica-dev-secret-key-123456}") String secret,
+			@Value("${jwt.secret}") String secret,
 			@Value("${jwt.expiration-ms:3600000}") long expirationMs) {
 		this.secretKey = buildKey(secret);
 		this.expirationMs = expirationMs;
 	}
 
-	public String generateToken(UserDetails userDetails) {
+
+	public String generateToken(String username) {
 		Instant now = Instant.now();
 		JWTClaimsSet claims = new JWTClaimsSet.Builder()
-				.subject(userDetails.getUsername())
+				.subject(username)
 				.issueTime(Date.from(now))
 				.expirationTime(Date.from(now.plusMillis(expirationMs)))
 				.build();

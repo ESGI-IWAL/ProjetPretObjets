@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/test
     username: admin
-    password: admin
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -10,5 +10,5 @@ spring:
     open-in-view: false
 
 jwt:
-  secret: pretemoica-ci-secret-key-pretemoica-ci-secret-key-123456
+  secret: ${JWT_SECRET}
   expiration-ms: 3600000

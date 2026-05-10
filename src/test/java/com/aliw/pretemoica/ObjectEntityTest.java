@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
 
-public class ObjectEntityTest {
+class ObjectEntityTest {
 
     @Test
-    public void testDefaultConstructor() {
+    void testDefaultConstructor() {
         ObjectEntity obj = new ObjectEntity();
         assertNotNull(obj);
         assertNull(obj.getId());
@@ -19,7 +19,7 @@ public class ObjectEntityTest {
     }
 
     @Test
-    public void testSettersAndGetters() {
+    void testSettersAndGetters() {
         ObjectEntity obj = new ObjectEntity();
         UserEntity owner = new UserEntity();
         owner.setEmail("owner@example.com");
@@ -36,7 +36,7 @@ public class ObjectEntityTest {
     }
 
     @Test
-    public void testObjectStatusEnum() {
+    void testObjectStatusEnum() {
         // Just to ensure enums are accessible
         assertNotNull(ObjectEntity.ObjectStatus.AVAILABLE);
         assertNotNull(ObjectEntity.ObjectStatus.LENT);
@@ -45,7 +45,7 @@ public class ObjectEntityTest {
     }
 
     @Test
-    public void testObjectStateEnum() {
+    void testObjectStateEnum() {
         assertNotNull(ObjectEntity.ObjectState.NEW);
         assertNotNull(ObjectEntity.ObjectState.GOOD);
         assertNotNull(ObjectEntity.ObjectState.WORN);

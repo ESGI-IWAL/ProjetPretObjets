@@ -22,7 +22,7 @@ Nous sommes une équipe de **4 personnes** ayant collaboré sur la conception, l
 |---------|--------------------------------|---------------------------------------|
 | Gweltaz | Développement / Backend        | ![Photo membre 1](images/gweltaz.jpeg) |
 | Katel   | Gestion de projet / Full stack | ![Photo membre 2](images/katel.jpeg)  |
-| Noémie  | Développement / Frontend       | ![Photo membre 3](images/noemie.jpeg) |
+| Noémie  | Développement / Frontend       | Photo à ajouter |
 | Rémi    | Développement / Backend        | ![Photo membre 4](images/remi.jpeg)   |
 
 
@@ -89,6 +89,24 @@ L'application sera disponible sur 'http://localhost:8080'.
 
 En l'occurence vu que y'a rien encore pour vérifier que l'appli est bien installée
 Se rendre sur 'http://localhost:8080/swagger-ui/index.html' pour voir la doc de l'API
+
+### Variables d'environnement à définir
+
+Le projet lit maintenant le mot de passe PostgreSQL et le secret JWT depuis l'environnement.
+
+Sous PowerShell :
+
+~~~powershell
+$env:DB_PASSWORD = "admin"
+$env:JWT_SECRET = "change-this-secret-before-running"
+~~~
+
+Puis lance :
+
+~~~powershell
+mvn test
+mvn spring-boot:run
+~~~
 
 ## 📄 Licence
 

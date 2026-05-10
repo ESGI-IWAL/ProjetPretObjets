@@ -1,6 +1,5 @@
 package com.aliw.pretemoica.controller;
 
-import com.aliw.pretemoica.config.MailConfig;
 import com.aliw.pretemoica.dto.LoginRequest;
 import com.aliw.pretemoica.dto.LoginResponse;
 import com.aliw.pretemoica.dto.UserDto;
@@ -8,15 +7,17 @@ import com.aliw.pretemoica.service.JwtService;
 import com.aliw.pretemoica.service.UserService;
 import jakarta.validation.Valid;
 import java.util.List;
-
-import jakarta.validation.constraints.Email;
+import org.jspecify.annotations.NonNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -37,14 +38,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(
-            @Valid @RequestBody UserDto dto
-    ) {
+    public ResponseEntity<@NonNull String> register(@Valid @RequestBody UserDto dto) {
         userService.registerNewUser(dto);
         return ResponseEntity.ok("User registered");
     }
+
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<@NonNull LoginResponse> login(@RequestBody LoginRequest request) {
         try {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -52,15 +52,15 @@ public class AuthController {
                             request.getPassword()
                     )
             );
-            UserDetails userDetails = (UserDetails) auth.getPrincipal();
-            String token = jwtService.generateToken(userDetails);
+            String username = auth.getName();
+            String token = jwtService.generateToken(username);
             List<String> roles = auth.getAuthorities().stream()
-                    .map(authority -> authority.getAuthority())
+                    .map(GrantedAuthority::getAuthority)
                     .toList();
             return ResponseEntity.ok(
-                    new LoginResponse(token, "Bearer", userDetails.getUsername(), roles));
+                    new LoginResponse(token, "Bearer", username, roles));
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(401).body("Invalid credentials");
+            return ResponseEntity.status(401).build();
         }
     }
 }
