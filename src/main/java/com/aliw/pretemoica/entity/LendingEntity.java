@@ -2,47 +2,35 @@ package com.aliw.pretemoica.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@Table(name = "lending")
 public class LendingEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "borrowed_by_id", nullable = false)
-    private UserEntity borrowedBy;
+  @ManyToOne
+  @JoinColumn(name = "borrowed_by_id", nullable = false)
+  private UserEntity borrowedBy;
 
-    @ManyToOne
-    @JoinColumn(name = "offered_by_id", nullable = false)
-    private UserEntity offeredBy;
+  @ManyToOne
+  @JoinColumn(name = "offered_by_id", nullable = false)
+  private UserEntity offeredBy;
 
-    @ManyToOne
-    @JoinColumn(name = "object_id", nullable = false)
-    private ObjectEntity object;
+  @ManyToOne
+  @JoinColumn(name = "object_id", nullable = false)
+  private ObjectEntity object;
 
-    private LocalDateTime startedAt;
-    private LocalDateTime endedAt;
+  private LocalDateTime startedAt;
+  private LocalDateTime endedAt;
 
-    public LendingEntity() {
-        this.startedAt = LocalDateTime.now();
-    }
-
-    public Long getId() { return id; }
-
-    public UserEntity getBorrowedBy() { return borrowedBy; }
-    public void setBorrowedBy(UserEntity borrowedBy) { this.borrowedBy = borrowedBy; }
-
-    public UserEntity getOfferedBy() { return offeredBy; }
-    public void setOfferedBy(UserEntity offeredBy) { this.offeredBy = offeredBy; }
-
-    public ObjectEntity getObject() { return object; }
-    public void setObject(ObjectEntity object) { this.object = object; }
-
-    public LocalDateTime getStartedAt() { return startedAt; }
-    public void setStartedAt(LocalDateTime startedAt) { this.startedAt = startedAt; }
-
-    public LocalDateTime getEndedAt() { return endedAt; }
-    public void setEndedAt(LocalDateTime endedAt) { this.endedAt = endedAt; }
+  public LendingEntity() {
+    this.startedAt = LocalDateTime.now();
+  }
 }

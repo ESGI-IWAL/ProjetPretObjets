@@ -1,4 +1,4 @@
-package com.aliw.pretemoica.entity;
+package com.aliw.pretemoica;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

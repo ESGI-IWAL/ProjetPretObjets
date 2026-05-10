@@ -17,11 +17,10 @@ public class UserController {
     this.userRepository = userRepository;
   }
 
-    @GetMapping
-    public List<UserSummaryDto> getAllUsers() {
-        return userRepository.findAll().stream()
-                .map(user -> new UserSummaryDto(user.getId(), user.getEmail()))
-                .toList();
-    }
-
+  @GetMapping
+  public List<UserSummaryDto> getAllUsers() {
+    return userRepository.findAll().stream()
+        .map(user -> new UserSummaryDto(user.getId(), user.getEmail()))
+        .toList();
+  }
 }
