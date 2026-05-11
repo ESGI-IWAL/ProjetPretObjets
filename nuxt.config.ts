@@ -12,6 +12,11 @@ export default defineNuxtConfig({
   },
   components: true,
   experimental: {
-    islands: true
+    Islands: true
+  },
+   runtimeConfig: {
+    public: {
+      apiBase: "http://localhost:8080"
+    }
   }
 })

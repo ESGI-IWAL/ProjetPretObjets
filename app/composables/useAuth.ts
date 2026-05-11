@@ -7,7 +7,7 @@ export const useAuth = () => {
   const erreurConnexion = useState<string>('erreur', () => "");
 
   async function login(username: string, password: string) {
-    const data:IUserAuth = await $fetch('/api/auth/user', {
+    const data:IUserAuth = await $fetch("http://localhost:8080/login", {
       method: 'POST',
       body: { username, password }
     })
