@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 # =====================
 # IDE
 # =====================
@@ -56,11 +54,3 @@ coverage/
 data/
 /backend/target/
 /frontend/node_modules/
-=======
-/backend/target/
-/frontend/node_modules/
->>>>>>> 38fe657 (chore: restructure project, add frontend)
-=======
-/backend/target/
-/frontend/node_modules/
->>>>>>> 38fe657 (chore: restructure project, add frontend)
