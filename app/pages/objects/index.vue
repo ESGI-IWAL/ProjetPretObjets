@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import ObjectContainer from "@/components/ObjectContainer.vue";
+import ObjectListContainer from "@/components/Object/List/Container.vue";
     definePageMeta({
       middleware: 'auth'
     })
 </script>
 <template>
-  <ObjectContainer />
+  <ObjectListContainer />
 </template>
 
 <style scoped>

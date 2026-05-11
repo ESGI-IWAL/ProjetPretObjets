@@ -14,7 +14,8 @@ function selectObject(object: Object) {
   activeObject.value = object
   console.log('Objet sélectionné :', object)
   isDetailOpen.value = true
-  document.getElementById("object-detail").focus()
+
+  document.getElementById("object-detail")?.focus()
 }
 
 function unselectObject() {
@@ -77,3 +78,6 @@ function closeDetail() {
 
   </div>
 </template>
+
+<style scoped>
+</style>
