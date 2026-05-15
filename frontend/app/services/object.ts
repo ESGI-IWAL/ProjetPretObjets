@@ -1,22 +1,24 @@
 import type { ICreateObjectDto } from "~/dto/object/create.dto";
 
+  const api = useApi()
+
 export const createObject = async (dto: ICreateObjectDto) => {
-  return await $fetch("/objects", {
+  return await api("/objects", {
     method: "POST",
     body: dto
   })
 }
 
 export const getObjects = async () => {
-  return await $fetch("/objects")
+  return await api("/objects")
 }
 
 export const getObjectById = async (id: number) => {
-  return await $fetch(`/objects/${id}`)
+  return await api(`/objects/${id}`)
 }
 
 export const searchObjects = async (searchParams: any) => {
-  return await $fetch("/objects/search", {
+  return await api("/objects/search", {
     method: "POST",
     body: searchParams
   })
