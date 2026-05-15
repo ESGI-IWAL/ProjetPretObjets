@@ -4,7 +4,8 @@ import { EObjectStateOfWear } from '../enums/object/state-of-wear.enum';
 import { EObjectStatus } from '../enums/object/status.enum';
 
 export interface IObject {
-    id:number,
+    id:string,
+    ownerId: string
     name: string,
     image: string,
     description:string,
@@ -12,5 +13,4 @@ export interface IObject {
     status: EObjectStatus,
     stateOfWear: EObjectStateOfWear,
     material: EObjectMaterial,
-    ownerId: number
 }

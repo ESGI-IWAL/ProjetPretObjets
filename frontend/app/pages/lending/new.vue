@@ -1,10 +1,12 @@
 <script setup lang="ts">
-const form = reactive({
-    name: '',
-    description: '',
-    category: '',
-    image: null
-})
+import type { ICreateLendingDto } from '~/dto/lending/create.dto';
+import { createLending } from '~/services/lending';
+
+
+const handleCreationSubmit = (dto : ICreateLendingDto) => {
+    createLending(dto)
+}
+
 </script>
 <template>
 </template>
