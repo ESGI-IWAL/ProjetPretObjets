@@ -21,9 +21,9 @@ const handleClick = () => {
         <div>
           <h3 class="flex text-lg font-semibold mb-2"> Prêts </h3>
           <div class="flex flex-col gap-3 ml-4">
-            <NuxtLink to="/loans" class="link"> En cours </NuxtLink>
-            <NuxtLink to="/loans/history" class="link"> Historique </NuxtLink>
-            <NuxtLink to="/loans/new" class="link"> Nouveau </NuxtLink>
+            <NuxtLink to="/lendings" class="link"> En cours </NuxtLink>
+            <NuxtLink to="/lendings/history" class="link"> Historique </NuxtLink>
+            <NuxtLink to="/lendings/new" class="link"> Nouveau </NuxtLink>
           </div>
         </div>       
         <div>
