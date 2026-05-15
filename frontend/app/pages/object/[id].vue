@@ -1,15 +1,13 @@
 <script setup lang="ts">
+import { getObjectById } from '~/services/object';
 
-import type { IUpdateObjectDto } from '~/dto/object/update.dto';
-import { getObjectById, updateObject } from '~/services/object';
 
 const route = useRoute()
 
 const object = await getObjectById(route.params.id as string)
 
-const handleSubmitUpdate = (dto : IUpdateObjectDto) => {
-    updateObject(route.params.id as string, dto)
-}
+
+const 
 </script>
 <template>
   

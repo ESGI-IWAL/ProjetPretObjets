@@ -1,6 +1,7 @@
 import type { ILending } from "~/types/lending"
 import type { ICreateLendingDto } from "../dto/lending/create.dto"
 import type { ISearchLendingDto } from "../dto/lending/search.dto"
+import type { ELendingStatus } from "~/enums/lending/status.enum"
 
 const api = useApi()
 
