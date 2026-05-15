@@ -18,7 +18,7 @@ export const getLendings = async () => {
   return await api<ILending[]>("/lendings")
 }
 
-export const getLendingById = async (id: number) => {
+export const getLendingById = async (id: string) => {
   return await api<ILending>(`/lendings/${id}`)
 }
 
@@ -29,14 +29,14 @@ export const searchLending = async (searchParams: ISearchLendingDto) => {
   })
 }
 
-export const updateLending = async (id: number, endDate: Date) => {
+export const updateLending = async (id: string, endDate: Date) => {
   return await api(`/lendings/${id}`, {
     method: "PUT",
     body: { endDate }
   })
 }
 
-export const deleteLending = async (id: number) => {
+export const deleteLending = async (id: string) => {
   return await api(`/lendings/${id}`, {
     method: "DELETE"
   })
