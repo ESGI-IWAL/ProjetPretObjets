@@ -24,7 +24,7 @@ export const getLendingById = async (id: string) => {
 }
 
 export const searchLending = async (searchParams: ISearchLendingDto) => {
-  return await api<ILending>("/lendings/search", {
+  return await api<ILending[]>("/lendings/search", {
     method: "POST",
     body: searchParams
   })
