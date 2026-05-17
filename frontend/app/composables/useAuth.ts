@@ -1,6 +1,8 @@
+import type { ICreateUserDto } from "~/dto/user/create.dto";
 import type { IUser } from "~/types/user";
 
 export const useAuth = () => {
+  
   const activeUser = useActiveUser()
   const api = useApi()
   const isAuthenticated = useState<boolean>('isAuthenticated', () => false);
@@ -36,22 +38,17 @@ export const useAuth = () => {
     }
   }
 
-  const register = async ( pseudo: string, firstName: string, lastName: string, email: string, password: string) => {
+  const register = async ( dto : ICreateUserDto) => {
     try {
       const user = await api<IUser>("/register", {
         method: "POST",
-        body: {
-          pseudo,
-          firstName,
-          lastName,
-          email,
-          password
-        }
+        body: dto
       });
 
       activeUser.value = user;
       isAuthenticated.value = Boolean(user);
       navigateTo('/');
+      
     } catch (error) {
       console.error("Erreur lors de l'inscription", error);
     }
