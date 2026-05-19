@@ -3,7 +3,7 @@ import type { IUserAuth } from "~/types/user"
 export const useAuth = () => {
   const activeUser = useActiveUser()
   const token = useCookie('token', {httpOnly: true, secure: true});
-  const isAuthenticated = useState<boolean>('isAuthenticated', () => false);
+  const isAuthenticated = useState<boolean>('isAuthenticated', () => true);
   const erreurConnexion = useState<string>('erreur', () => "");
 
   async function login(username: string, password: string) {
