@@ -7,14 +7,11 @@ const emit = defineEmits(['search'])
 const form = reactive<ISearchLendingDto>({
     objectName: "",
     borrowerName: "",
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: undefined,
+    endDate: undefined,
     status: ELendingStatus.ACTIVE
 })
 
-watch(form, () => {
-    emit('search', form)
-}, { deep: true })
 </script>
 
 <template>
@@ -29,7 +26,7 @@ watch(form, () => {
             <option value="COMPLETED">Terminés</option>
             <option value="CANCELED">Annulés</option>
         </select>
-        <button type="submit">Rechercher</button>
+        <ButtonSearch @click="emit('search', form)"/>
     </form>
 </template>
 

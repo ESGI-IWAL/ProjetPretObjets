@@ -29,7 +29,7 @@ const handleClick = () => {
         </div>
     </div>
     <div v-if="showDetails">
-        <LendingDetailledCard :lending="lending" />
+        <LendingListDetailledCard :lending="lending" />
     </div>
 </template>
 
