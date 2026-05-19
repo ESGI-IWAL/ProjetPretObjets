@@ -7,8 +7,6 @@ defineProps<{
 }>()
 
 const emit = defineEmits(['search'])
-
-
 function search(dto : ISearchLendingDto) {
     emit('search', dto)
 }
@@ -19,9 +17,10 @@ const handleClick = (lending : ILending) => {
 </script>
 
 <template>
-    <LendingSearchForm @search="search" />
+    <LendingFormSearch @search="search" />
+    <ButtonCreation :navigation-creation="() => navigateTo('/lending/new')" label="Créer un prêt"/>
     <div v-for="lending in lendings" :key="lending.id">
-        <LendingCard :lending="lending" @click="handleClick(lending)" />
+        <LendingListCard :lending="lending" @click="handleClick(lending)" />
     </div>
 </template>
 
