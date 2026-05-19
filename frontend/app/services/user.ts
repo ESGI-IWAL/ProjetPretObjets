@@ -2,7 +2,7 @@ import type { ICreateUserDto } from "~/dto/user/create.dto";
 import type { ISearchUserDto } from "~/dto/user/search.dto";
 import type { IUser } from "~/types/user";
 
-const api = () => useApi()
+const api = () => useNuxtApp().$api
 
 export const createUser = async (dto: ICreateUserDto) => {
     return await api()("/users", {
