@@ -2,7 +2,6 @@
 import { getObjects } from '~/services/object';
 import { getUsers } from '~/services/user';
 
-
     const users = await getUsers()
     const objects = await getObjects()
 
