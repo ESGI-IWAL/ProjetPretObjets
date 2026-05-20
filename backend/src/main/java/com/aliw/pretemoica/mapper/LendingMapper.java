@@ -24,9 +24,9 @@ public final class LendingMapper {
 
     LendingDto dto = new LendingDto();
     dto.setId(entity.getId());
-    dto.setBorrowedById(entity.getBorrowedBy() != null ? entity.getBorrowedBy().getId() : null);
-    dto.setOfferedById(entity.getOfferedBy() != null ? entity.getOfferedBy().getId() : null);
-    dto.setObjectId(entity.getObject() != null ? entity.getObject().getId() : null);
+    dto.setBorrowedBy(UserMapper.toDto(entity.getBorrowedBy()));
+    dto.setOfferedBy(UserMapper.toDto(entity.getOfferedBy()));
+    dto.setObject(ObjectMapper.toDto(entity.getObject()));
     dto.setStartAt(entity.getStartedAt());
     dto.setEndAt(entity.getEndedAt());
     return dto;
@@ -42,15 +42,9 @@ public final class LendingMapper {
     entity.setStartedAt(dto.getStartAt() != null ? dto.getStartAt() : entity.getStartedAt());
     entity.setEndedAt(dto.getEndAt());
 
-    if (dto.getBorrowedById() != null) {
-      entity.setBorrowedBy(toUserReference(dto.getBorrowedById()));
-    }
-    if (dto.getOfferedById() != null) {
-      entity.setOfferedBy(toUserReference(dto.getOfferedById()));
-    }
-    if (dto.getObjectId() != null) {
-      entity.setObject(toObjectReference(dto.getObjectId()));
-    }
+    entity.setBorrowedBy(UserMapper.toEntity(dto.getBorrowedBy()));
+    entity.setOfferedBy(UserMapper.toEntity(dto.getOfferedBy()));
+    entity.setObject(ObjectMapper.toEntity(dto.getObject()));
     return entity;
   }
 
