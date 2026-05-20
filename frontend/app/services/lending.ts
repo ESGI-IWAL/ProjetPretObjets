@@ -1,6 +1,7 @@
 import type { ILending } from "~/types/lending"
 import type { ICreateLendingDto } from "../dto/lending/create.dto"
 import type { ISearchLendingDto } from "../dto/lending/search.dto"
+import type { IUpdateLendingDto } from "~/dto/lending/update.dto"
 
 const api = () => useNuxtApp().$api
 
@@ -28,11 +29,11 @@ export const searchLending = async (searchParams: ISearchLendingDto) => {
   })
 }
 
-export const updateLending = async (id: string, endDate: Date) => {
+export const updateLending = async (id: string, dto: IUpdateLendingDto) => {
   
   return await api()(`/lending/${id}`, {
     method: "PUT",
-    body: { endDate }
+    body: dto
   })
 }
 

@@ -1,6 +1,7 @@
 
 import type { ICreateUserDto } from "~/dto/user/create.dto";
 import type { ISearchUserDto } from "~/dto/user/search.dto";
+import type { IUpdateUserDto } from "~/dto/user/update.dto";
 import type { IUser } from "~/types/user";
 
 const api = () => useNuxtApp().$api
@@ -29,6 +30,13 @@ export const getUserById = async (id: string) => {
 
 export const getCurrentUser = async () => {
     return await api()<IUser>('/me')
+}
+
+export const updateUser = async (id: string, dto: IUpdateUserDto) => {
+    return await api()(`/users/${id}`, {
+        method: "PUT",
+        body: dto
+    });
 }
 // GET by ID
 // POST RECHERCHE
