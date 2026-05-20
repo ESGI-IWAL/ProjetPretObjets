@@ -29,6 +29,7 @@ public final class LendingMapper {
     dto.setObject(ObjectMapper.toDto(entity.getObject()));
     dto.setStartAt(entity.getStartedAt());
     dto.setEndAt(entity.getEndedAt());
+    dto.setStatus(entity.getStatus() != null ? entity.getStatus().getValue() : null);
     return dto;
   }
 
