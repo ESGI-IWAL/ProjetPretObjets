@@ -16,6 +16,6 @@ public class LendingDto {
   private Long borrowedById;
   private Long offeredById;
   private Long objectId;
-  private LocalDateTime startedAt;
-  private LocalDateTime endedAt;
+  private LocalDateTime startAt;
+  private LocalDateTime endAt;
 }

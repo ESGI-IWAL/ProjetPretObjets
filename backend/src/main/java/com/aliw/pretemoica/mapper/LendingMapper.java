@@ -1,9 +1,13 @@
 package com.aliw.pretemoica.mapper;
 
+import com.aliw.pretemoica.dto.CreateLendingDto;
 import com.aliw.pretemoica.dto.LendingDto;
 import com.aliw.pretemoica.entity.LendingEntity;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,8 +26,8 @@ public final class LendingMapper {
     dto.setBorrowedById(entity.getBorrowedBy() != null ? entity.getBorrowedBy().getId() : null);
     dto.setOfferedById(entity.getOfferedBy() != null ? entity.getOfferedBy().getId() : null);
     dto.setObjectId(entity.getObject() != null ? entity.getObject().getId() : null);
-    dto.setStartedAt(entity.getStartedAt());
-    dto.setEndedAt(entity.getEndedAt());
+    dto.setStartAt(entity.getStartedAt());
+    dto.setEndAt(entity.getEndedAt());
     return dto;
   }
 
@@ -34,8 +38,8 @@ public final class LendingMapper {
 
     LendingEntity entity = new LendingEntity();
     entity.setId(dto.getId());
-    entity.setStartedAt(dto.getStartedAt() != null ? dto.getStartedAt() : entity.getStartedAt());
-    entity.setEndedAt(dto.getEndedAt());
+    entity.setStartedAt(dto.getStartAt() != null ? dto.getStartAt() : entity.getStartedAt());
+    entity.setEndedAt(dto.getEndAt());
 
     if (dto.getBorrowedById() != null) {
       entity.setBorrowedBy(toUserReference(dto.getBorrowedById()));
@@ -46,6 +50,21 @@ public final class LendingMapper {
     if (dto.getObjectId() != null) {
       entity.setObject(toObjectReference(dto.getObjectId()));
     }
+    return entity;
+  }
+
+  public static LendingEntity toEntity(CreateLendingDto dto) {
+    if (dto == null) {
+      return null;
+    }
+
+    LendingEntity entity = new LendingEntity();
+    entity.setBorrowedBy(
+        dto.getBorrowerId() != null ? toUserReference(parseLong(dto.getBorrowerId())) : null);
+    entity.setObject(
+        dto.getObjectId() != null ? toObjectReference(parseLong(dto.getObjectId())) : null);
+    entity.setStartedAt(parseDateTime(dto.getStartDate()));
+    entity.setEndedAt(parseDateTime(dto.getEndDate()));
     return entity;
   }
 
@@ -77,5 +96,27 @@ public final class LendingMapper {
     ObjectEntity object = new ObjectEntity();
     object.setId(objectId);
     return object;
+  }
+
+  private static Long parseLong(String value) {
+    return Long.parseLong(value);
+  }
+
+  private static LocalDateTime parseDateTime(String value) {
+    if (value == null || value.isBlank()) {
+      return null;
+    }
+
+    try {
+      return LocalDateTime.parse(value);
+    } catch (Exception ignored) {
+    }
+
+    try {
+      return OffsetDateTime.parse(value).toLocalDateTime();
+    } catch (Exception ignored) {
+    }
+
+    return LocalDate.parse(value).atStartOfDay();
   }
 }
