@@ -1,0 +1,10 @@
+com\aliw\pretemoica\LendingEntity.class
+com\aliw\pretemoica\ObjectEntity.class
+com\aliw\pretemoica\PretemoicaApplication.class
+com\aliw\pretemoica\entity\User.class
+com\aliw\pretemoica\controller\UserController.class
+com\aliw\pretemoica\ObjectEntity$ObjectState.class
+com\aliw\pretemoica\ObjectEntity$ObjectStatus.class
+com\aliw\pretemoica\UserEntity.class
+com\aliw\pretemoica\repository\UserRepository.class
+com\aliw\pretemoica\LendingHistoryEntity.class

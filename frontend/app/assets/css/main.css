@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+.test {
+    @apply text-3xl font-bold text-blue-600;
+}
+
+@layer components {
+    .base-card {
+        @apply box-border w-80 rounded-[14px] bg-gray-600 p-6 text-gray-200 shadow-xl font-sans transition;
+    }
+
+    .base-card.selected {
+        @apply shadow-2xl ring-2 ring-blue-600 ring-offset-2 ring-offset-gray-600
+    }
+
+    .base-card.selected .card-title {
+        @apply text-4xl;
+    }
+
+    .card-click-area {
+        @apply flex cursor-pointer justify-center;
+    }
+
+    .card-avatar {
+        @apply mx-auto mb-3 h-24 w-24 rounded-full object-cover;
+    }
+
+    .card-title {
+        @apply m-0 text-xl;
+    }
+
+    .card-description {
+        @apply mt-2 text-sm text-gray-300;
+    }
+
+    .link {
+        @apply text-white hover:text-black;
+    }
+
+    .error-message {
+        @apply text-red-500 text-sm mt-2;
+    }
+
+    .input {
+        @apply border border-gray-300 rounded-md p-2;
+    }
+
+    .error-input {
+        @apply border border-red-500 rounded-md p-2;
+    }
+
+    .profile-card {
+        @apply box-border rounded-[14px] bg-gray-600 p-6 text-gray-200 shadow-xl 
+        font-sans transition mx-auto my-10 sm:w-100 md:w-140 lg:w-200 sm:h-100 md:h-140 lg:h-160
+        flex flex-col ;
+    }
+
+    .profile-card.avatar{
+        @apply w-100 h-100 rounded-full object-cover;
+    }
+
+    .svg-icon {
+        @apply cursor-pointer w-5 lg:w-6 text-white hover:text-gray-800
+    }
+}
