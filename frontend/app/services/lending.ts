@@ -8,22 +8,22 @@ const api = () => useNuxtApp().$api
 export const createLending = async (
   dto: ICreateLendingDto
 ) => {
-  return await api()("/lending", {
+  return await api()("/lendings", {
     method: "POST",
     body: dto
   })
 }
 
 export const getLendings = async () => {
-  return await api()<ILending[]>("/lending")
+  return await api()<ILending[]>("/lendings")
 }
 
 export const getLendingById = async (id: string) => {
-  return await api()<ILending>(`/lending/${id}`)
+  return await api()<ILending>(`/lendings/${id}`)
 }
 
 export const searchLending = async (searchParams: ISearchLendingDto) => {
-  return await api()<ILending[]>("/lending/search", {
+  return await api()<ILending[]>("/lendings/search", {
     method: "POST",
     body: searchParams
   })
@@ -31,14 +31,14 @@ export const searchLending = async (searchParams: ISearchLendingDto) => {
 
 export const updateLending = async (id: string, dto: IUpdateLendingDto) => {
   
-  return await api()(`/lending/${id}`, {
+  return await api()(`/lendings/${id}`, {
     method: "PUT",
     body: dto
   })
 }
 
 export const deleteLending = async (id: string) => {
-  return await api()(`/lending/${id}`, {
+  return await api()(`/lendings/${id}`, {
     method: "DELETE"
   })
 }
