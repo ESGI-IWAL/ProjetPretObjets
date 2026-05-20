@@ -1,39 +1,44 @@
-import type { ICreateLendingDto } from "~/dto/lending/create.dto"
-import type { ISearchLendingDto } from "~/dto/lending/search.dto"
+import type { ILending } from "~/types/lending"
+import type { ICreateLendingDto } from "../dto/lending/create.dto"
+import type { ISearchLendingDto } from "../dto/lending/search.dto"
+import type { IUpdateLendingDto } from "~/dto/lending/update.dto"
+
+const api = () => useNuxtApp().$api
 
 export const createLending = async (
   dto: ICreateLendingDto
 ) => {
-  return await $fetch("/loans", {
+  return await api()("/lendings", {
     method: "POST",
     body: dto
   })
 }
 
 export const getLendings = async () => {
-  return await $fetch("/loans")
+  return await api()<ILending[]>("/lendings")
 }
 
 export const getLendingById = async (id: number) => {
-  return await $fetch(`/loans/${id}`)
+  return await api()<ILending>(`/lendings/${id}`)
 }
 
-export const searchLendings = async (searchParams: ISearchLendingDto) => {
-  return await $fetch("/loans/search", {
+export const searchLending = async (searchParams: ISearchLendingDto) => {
+  return await api()<ILending[]>("/lendings/search", {
     method: "POST",
     body: searchParams
   })
 }
 
-export const updateLending = async (id: number, endDate: Date) => {
-  return await $fetch(`/loans/${id}`, {
+export const updateLending = async ( dto: IUpdateLendingDto) => {
+  
+  return await api()(`/lendings/${dto.id}`, {
     method: "PUT",
-    body: { endDate }
+    body: dto
   })
 }
 
 export const deleteLending = async (id: number) => {
-  return await $fetch(`/loans/${id}`, {
+  return await api()(`/lendings/${id}`, {
     method: "DELETE"
   })
 }

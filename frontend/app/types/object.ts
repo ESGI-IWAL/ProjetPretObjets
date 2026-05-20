@@ -1,15 +1,16 @@
 import { EObjectCategories} from '../enums/object/categories.enum';
 import { EObjectMaterial } from '../enums/object/material.enum';
-import { EObjectStateOfWear } from '../enums/object/state-of-wear.enum';
-import { EObjectStatus } from '../enums/object/status.enum';
+import { EObjectState } from '../enums/object/state.enum';
+
 export interface IObject {
-    id:number,
-    name: string,
-    image: string,
-    description:string,
-    category: EObjectCategories,
-    status: EObjectStatus,
-    stateOfWear: EObjectStateOfWear,
-    material: EObjectMaterial,
+    id: number,
     ownerId: number
+    name: string,
+    images: string[],
+    description:string,
+    weight: number;
+    dimensions: string;
+    category: EObjectCategories,
+    state: EObjectState,
+    material: EObjectMaterial,
 }
