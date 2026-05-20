@@ -3,7 +3,7 @@
 import { createLending } from '~/services/lending';
     import type { IObject } from '~/types/object';
     import type { IUser } from '~/types/user';
-    
+
     interface IStep {
         id: number;
         title: string;
@@ -34,8 +34,8 @@ import { createLending } from '~/services/lending';
             title: "Sélection de l'utilisateur",
             description: "Choisissez l'utilisateur qui emprunte"
         },
-        {id: 2, 
-            title: "Sélection de l'objet", 
+        {id: 2,
+            title: "Sélection de l'objet",
             description: "Choisissez l'objet à emprunter"
         },
         {
@@ -51,7 +51,7 @@ import { createLending } from '~/services/lending';
     ])
 
     const currentStep = ref<number>(1)
-    
+
     const isEntryValid = computed(() => {
         switch(currentStep.value) {
             case 1:
@@ -82,40 +82,57 @@ import { createLending } from '~/services/lending';
     }
 </script>
 <template>
-    <form>
-        <div>
-            <h2>{{ steps[currentStep - 1]?.title }}</h2>
-            <p>{{ steps[currentStep - 1]?.description }}</p>
+  <form class="form-card form-content">
+    <div class="form-header">
+      <h2 class="form-title">{{ steps[currentStep - 1]?.title }}</h2>
+      <p class="form-description">{{ steps[currentStep - 1]?.description }}</p>
+    </div>
+
+    <div>
+      <div v-if="currentStep === 1" class="form-field">
+        <label for="user" class="form-label">Utilisateur</label>
+        <select id="user" v-model="form.borrowerId" class="form-select">
+          <option value="" disabled>Choisissez un utilisateur</option>
+          <option v-for="user in users" :key="user.id" :value="user.id">
+            {{ user.pseudo }}
+          </option>
+        </select>
+      </div>
+
+      <div v-if="currentStep === 2" class="form-field">
+        <label for="object" class="form-label">Objet</label>
+        <select id="object" v-model="form.objectId" class="form-select">
+          <option value="" disabled>Choisissez un objet</option>
+          <option v-for="object in objects" :key="object.id" :value="object.id">
+            {{ object.name }}
+          </option>
+        </select>
+      </div>
+
+      <div v-if="currentStep === 3" class="form-grid">
+        <div class="form-field">
+          <label for="startDate" class="form-label">Date de début</label>
+          <input id="startDate" type="date" v-model="form.startDate" class="form-input" />
         </div>
-        <div v-if="currentStep === 1">
-            <select id="user" name="user" v-model="form.borrowerId">
-                <option value="" disabled>Choisissez un utilisateur</option>
-                <option v-for="user in users" :key="user.id" :value="user.id">
-                    {{ user.pseudo }}
-                </option>
-            </select>
+
+        <div class="form-field">
+          <label for="endDate" class="form-label">Date de fin</label>
+          <input id="endDate" type="date" v-model="form.endDate" class="form-input" />
         </div>
-        <div v-if="currentStep === 2">
-            <select id="object" name="object" v-model="form.objectId">
-                <option value="" disabled>Choisissez un objet</option>
-                <option v-for="object in objects" :key="object.id" :value="object.id">
-                    {{ object.name }}
-                </option>
-            </select>
-        </div>
-        <div v-if="currentStep === 3">
-            <input type="date" v-model="form.startDate"/>
-            <input type="date" v-model="form.endDate"/>
-        </div>
-        <ButtonStepsForm 
-            :nextStep="nextStep" 
-            :previousStep="previousStep" 
-            :validateForm="handleValidateForm"
-            :finalStep="currentStep === steps.length" 
-            :firstStep="currentStep === 1" 
-            :isEntryValid="isEntryValid"
-        />
-    </form>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <ButtonStepsForm
+          :nextStep="nextStep"
+          :previousStep="previousStep"
+          :validateForm="handleValidateForm"
+          :finalStep="currentStep === steps.length"
+          :firstStep="currentStep === 1"
+          :isEntryValid="isEntryValid"
+      />
+    </div>
+  </form>
 </template>
 
 <style scoped>

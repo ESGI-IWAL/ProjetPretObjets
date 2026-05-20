@@ -15,18 +15,42 @@ const form = reactive<ISearchLendingDto>({
 </script>
 
 <template>
-    <form @submit.prevent>
-        <input v-model="form.objectName" placeholder="Nom de l'objet"/>
-        <input v-model="form.borrowerName" placeholder="Nom de l'emprunteur"/>
-        <input type="date" v-model="form.startDate"/>
-        <input type="date" v-model="form.endDate"/>
-        <select v-model="form.status">
-            <option value="">Tous</option>
-            <option value="ACTIVE">Actifs</option>
-            <option value="COMPLETED">Terminés</option>
-            <option value="CANCELED">Annulés</option>
-        </select>
-        <ButtonSearch @click="emit('search', form)"/>
+    <form class="form-content" @submit.prevent="emit('search', form)">
+        <div class="form-grid">
+            <div class="form-field">
+                <label class="form-label" for="objectName">Objet</label>
+                <input id="objectName" v-model="form.objectName" class="form-input" placeholder="Nom de l'objet"/>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label" for="borrowerName">Emprunteur</label>
+                <input id="borrowerName" v-model="form.borrowerName" class="form-input" placeholder="Nom de l'emprunteur"/>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label" for="startDate">Début</label>
+                <input id="startDate" type="date" v-model="form.startDate" class="form-input"/>
+            </div>
+
+            <div class="form-field">
+                <label class="form-label" for="endDate">Fin</label>
+                <input id="endDate" type="date" v-model="form.endDate" class="form-input"/>
+            </div>
+
+            <div class="form-field sm:col-span-2">
+                <label class="form-label" for="status">Statut</label>
+                <select id="status" v-model="form.status" class="form-select">
+                    <option value="">Tous</option>
+                    <option value="ACTIVE">Actifs</option>
+                    <option value="COMPLETED">Terminés</option>
+                    <option value="CANCELED">Annulés</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex justify-end">
+            <ButtonSearch />
+        </div>
     </form>
 </template>
 

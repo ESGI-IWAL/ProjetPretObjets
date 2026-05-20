@@ -2,7 +2,7 @@
     
 </script>
 <template>
-    <button type="submit">
+    <button type="submit" class="form-button-primary">
         Rechercher
     </button>
 </template>

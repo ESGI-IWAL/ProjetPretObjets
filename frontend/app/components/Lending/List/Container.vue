@@ -17,10 +17,24 @@ const handleClick = (lending : ILending) => {
 </script>
 
 <template>
-    <LendingFormSearch @search="search" />
-    <ButtonCreation :navigation-creation="() => navigateTo('/lending/new')" label="Créer un prêt"/>
-    <div v-for="lending in lendings" :key="lending.id">
-        <LendingListCard :lending="lending" @click="handleClick(lending)" />
+    <div class="space-y-6">
+        <section class="surface-card space-y-4">
+            <LendingFormSearch @search="search" />
+        </section>
+
+        <div class="flex justify-end">
+            <ButtonCreation :navigation-creation="() => navigateTo('/lending/new')" label="Créer un prêt"/>
+        </div>
+
+        <div v-if="lendings.length === 0" class="surface-card text-center text-gray-500">
+            Aucun prêt trouvé.
+        </div>
+
+        <div v-else class="list-grid">
+            <div v-for="lending in lendings" :key="lending.id">
+                <LendingListCard :lending="lending" @click="handleClick(lending)" />
+            </div>
+        </div>
     </div>
 </template>
 

@@ -7,11 +7,9 @@ import com.aliw.pretemoica.entity.LendingEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.repository.LendingRepository;
 import com.aliw.pretemoica.service.LendingService;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

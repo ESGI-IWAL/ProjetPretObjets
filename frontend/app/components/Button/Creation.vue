@@ -11,7 +11,7 @@
     })
 </script>
 <template>
-    <button @click="() => navigationCreation()">
+    <button @click="() => navigationCreation()" class="form-button-primary">
         {{ label }}
     </button>
 </template>

@@ -60,4 +60,3 @@ public class ObjectMapperTest {
     assertEquals(0, ObjectMapper.toEntityList(null).size());
   }
 }
-
