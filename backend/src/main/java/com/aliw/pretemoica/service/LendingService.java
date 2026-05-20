@@ -157,6 +157,12 @@ public class LendingService {
     return null;
   }
 
+  /** Permet de changer explicitement le statut en respectant les transitions autorisées. */
+  public void changeStatus(Long id, LendingEntity.LendingStatus newStatus) {
+    LendingEntity entity = getById(id);
+    changeStatus(entity, newStatus);
+  }
+
   private void changeStatus(LendingEntity entity, LendingEntity.LendingStatus newStatus) {
     LendingEntity.LendingStatus current = entity.getStatus();
 
