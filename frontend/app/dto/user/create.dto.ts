@@ -1,7 +1,9 @@
-import type { IUser } from "~/types/user";
-
 export interface ICreateUserDto {
-    userInfo: Omit<IUser, "id">;
+    userInfo: {
+        userName: string,
+        firstName: string,
+        lastName: string,
+    };
     email: string;
     password: string;
 }

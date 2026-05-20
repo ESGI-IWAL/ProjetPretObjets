@@ -1,10 +1,14 @@
+import type { EObjectCategories } from "~/enums/object/categories.enum";
+import type { EObjectMaterial } from "~/enums/object/material.enum";
+import type { EObjectState } from "~/enums/object/state.enum";
+
 export interface IUpdateObjectDto {
-    image?: string;
+    images?: string[];
     name?: string;
     description?: string;
-    category?: string;
+    category?: EObjectCategories;
     weight?: number;
     dimensions?: string;
-    stateOfWear?: string;
-    material?: string;
+    state?: EObjectState;
+    material?: EObjectMaterial;
 }
