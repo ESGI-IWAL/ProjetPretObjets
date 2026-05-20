@@ -1,8 +1,8 @@
 export enum ELendingStatus {
-  IN_PROGRESS = "en_cours",
-  PENDING = "en_attente",
-  VALIDATED = "validé",
-  REFUSED = "refusé",
-  COMPLETED = "terminé",
-  CANCELED = "annulé"
+  IN_PROGRESS = "En cours",
+  PENDING = "En attente",
+  VALIDATED = "Validé",
+  REFUSED = "Refusé",
+  COMPLETED = "Terminé",
+  CANCELED = "Annulé"
 }
