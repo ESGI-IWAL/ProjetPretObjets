@@ -3,8 +3,8 @@ import { EObjectMaterial } from '../enums/object/material.enum';
 import { EObjectState } from '../enums/object/state.enum';
 
 export interface IObject {
-    id: string,
-    ownerId: string
+    id: number,
+    ownerId: number
     name: string,
     images: string[],
     description:string,

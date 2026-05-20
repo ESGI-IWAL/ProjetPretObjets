@@ -1,6 +1,6 @@
 
 export interface IHistoryObject {
-    borrowerId : string;
+    borrowerId : number;
     borrowerName: string;
     startAt : Date;
     endAt: Date;

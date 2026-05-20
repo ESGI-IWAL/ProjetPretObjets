@@ -3,6 +3,7 @@ import type { EObjectMaterial } from "~/enums/object/material.enum";
 import type { EObjectState } from "~/enums/object/state.enum";
 
 export interface IUpdateObjectDto {
+    id: number;
     images?: string[];
     name?: string;
     description?: string;

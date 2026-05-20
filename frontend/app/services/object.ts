@@ -18,7 +18,7 @@ export const getObjects = async () => {
   return await api()<IObject[]>("/objects")
 }
 
-export const getObjectById = async (id: string) => {
+export const getObjectById = async (id: number) => {
   return await api()<IObject>(`/objects/${id}`)
 }
 
@@ -29,20 +29,20 @@ export const searchObjects = async (searchParams: ISearchObjectDto) => {
   })
 }
 
-export const updateObject = async (id: string, dto: IUpdateObjectDto) => {
-  return await api()<IObject>(`/objects/${id}`, {
+export const updateObject = async (dto: IUpdateObjectDto) => {
+  return await api()<IObject>(`/objects/${dto.id}`, {
     method: "PUT",
     body: dto
   })
 }
 
-export const deleteObject = async (id: string) => {
+export const deleteObject = async (id: number) => {
   return await api()(`/objects/${id}`, {
     method: "DELETE"
   })
 }
 
-export const historyObjectById = async (id: string) => {
+export const historyObjectById = async (id: number) => {
   return await api()<IObject[]>(`/objects/${id}/history`)
 }
 

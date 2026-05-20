@@ -3,7 +3,7 @@ import type { IUser } from "./user";
 import type { IObject } from "./object";
 
 export interface ILending {
-  id: string;
+  id: number;
   object: IObject;
   borrower: IUser;
   startAt: Date;

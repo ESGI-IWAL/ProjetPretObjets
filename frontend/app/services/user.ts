@@ -24,7 +24,7 @@ export const searchUser = async (dto : ISearchUserDto) => {
     });
 }
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (id: number) => {
     return await api()<IUser>(`/users/${id}`)
 }
 
@@ -32,8 +32,8 @@ export const getCurrentUser = async () => {
     return await api()<IUser>('/me')
 }
 
-export const updateUser = async (id: string, dto: IUpdateUserDto) => {
-    return await api()(`/users/${id}`, {
+export const updateUser = async (dto: IUpdateUserDto) => {
+    return await api()(`/users/${dto.id}`, {
         method: "PUT",
         body: dto
     });
