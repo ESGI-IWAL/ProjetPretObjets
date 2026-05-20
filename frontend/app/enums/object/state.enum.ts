@@ -1,6 +1,6 @@
 export enum EObjectState {
-  NEW = "NEW",
-  GOOD = "GOOD",
-  WORN = "WORN",
-  DAMAGED = "DAMAGED"
+  NEW = "Nouveau",
+  GOOD = "Bon",
+  WORN = "Usé",
+  DAMAGED = "Endommagé"
 }

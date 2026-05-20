@@ -1,11 +1,11 @@
 export enum EObjectMaterial {
-PLASTIC = 'PLASTIC',
-METAL = 'METAL',
-WOOD = 'WOOD',
-FABRIC = 'FABRIC',
-GLASS = 'GLASS',
-CERAMIC = 'CERAMIC',
-PAPER = 'PAPER',
-RUBBER = 'RUBBER',
-OTHERS = 'OTHERS'
+PLASTIC = 'Plastique',
+METAL = 'Métal',
+WOOD = 'Bois',
+FABRIC = 'Tissu',
+GLASS = 'Verre',
+CERAMIC = 'Céramique',
+PAPER = 'Papier',
+RUBBER = 'Caoutchouc',
+OTHERS = 'Autres'
 }

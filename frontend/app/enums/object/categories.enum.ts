@@ -1,10 +1,10 @@
 export enum EObjectCategories {
-ELECTRONICS = 'ELECTRONICS',
-FURNITURE = 'FURNITURE',
-TOOLS = 'TOOLS',
-CLOTHING = 'CLOTHING',
-BOOKS = 'BOOKS',
-TOYS = 'TOYS',
-SPORTS = 'SPORTS',
-OTHERS = 'OTHERS'
+ELECTRONICS = 'Electronique',
+FURNITURE = 'Meubles',
+TOOLS = 'Outils',
+CLOTHING = 'Vêtements',
+BOOKS = 'Livres',
+TOYS = 'Jouets',
+SPORTS = 'Sports',
+OTHERS = 'Autres'
 }
