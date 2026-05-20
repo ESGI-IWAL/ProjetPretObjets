@@ -3,9 +3,6 @@
   import type { ISearchObjectDto } from "~/dto/object/search.dto";
   import { getObjects, searchObjects } from "~/services/object";
 
-  definePageMeta({
-    middleware: 'auth'
-  })
 
   const objects = await getObjects();
 
