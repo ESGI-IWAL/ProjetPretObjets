@@ -37,10 +37,10 @@ public class LendingController {
   }
 
   @PostMapping
-  public ResponseEntity<LendingDto> createLending(@RequestBody CreateLendingDto lendingDto) {
+  public ResponseEntity<Long> createLending(@RequestBody CreateLendingDto lendingDto) {
     try {
       LendingDto created = LendingMapper.toDto(lendingService.create(lendingDto));
-      return ResponseEntity.status(HttpStatus.CREATED).body(created);
+      return ResponseEntity.status(HttpStatus.CREATED).body(created.getId());
     } catch (ResourceNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     } catch (IllegalArgumentException e) {
