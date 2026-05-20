@@ -12,10 +12,25 @@ const handleSearch = async (dto : ISearchLendingDto) => {
 </script>
 
 <template>
-    <div v-if="!lendings">
-        <p>Aucun prêt trouvé</p>
+    <div class="app-page">
+        <div class="app-container space-y-6">
+            <header class="space-y-2">
+                <p class="form-eyebrow">Gestion des prêts</p>
+                <h1 class="form-title">Liste des prêts</h1>
+                <p class="form-description">Recherche, consultation et suivi des prêts en cours ou terminés.</p>
+            </header>
+
+            <div v-if="!lendings" class="surface-card">
+                <p class="text-gray-500">Chargement des prêts...</p>
+            </div>
+
+            <LendingListContainer
+                v-else
+                :lendings="lendings"
+                @search="handleSearch"
+            />
+        </div>
     </div>
-    <LendingListContainer v-else :lendings="lendings" />
 </template>
 
 <style scoped>

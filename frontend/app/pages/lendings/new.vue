@@ -7,7 +7,11 @@ import { getUsers } from '~/services/user';
 
 </script>
 <template>
-    <LendingFormCreation :users="users" :objects="objects" />
+    <div class="app-page">
+        <div class="app-container">
+            <LendingFormCreation :users="users" :objects="objects" />
+        </div>
+    </div>
 </template>
 
 <style scoped>

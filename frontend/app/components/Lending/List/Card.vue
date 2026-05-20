@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ILending } from '~/types/lending';
+import { ELendingStatus } from '~/enums/lending/status.enum';
 
 defineProps<{
   lending: ILending,
@@ -11,27 +12,51 @@ const handleClick = () => {
     showDetails.value = !showDetails.value
 }
 
+const getStatusClass = (status: ELendingStatus) => {
+    switch (status) {
+        case ELendingStatus.ACTIVE:
+            return 'chip-active'
+        case ELendingStatus.COMPLETED:
+            return 'chip-completed'
+        case ELendingStatus.CANCELED:
+            return 'chip-canceled'
+        default:
+            return 'chip-neutral'
+    }
+}
+
 </script>
 
 <template>
-    <div>
-        <div>
-            <img :src="lending.borrower.avatar" alt="Avatar de l'emprunteur" />
+    <article class="surface-card surface-card-hover space-y-4">
+        <div class="flex items-start gap-4">
+            <img :src="lending.borrower.avatar" alt="Avatar de l'emprunteur" class="avatar-sm" />
+
+            <div class="min-w-0 flex-1 space-y-2">
+                <div class="flex flex-wrap items-center gap-2">
+                    <h3 class="truncate text-lg font-semibold text-gray-900">{{ lending.object.name }}</h3>
+                    <span :class="getStatusClass(lending.status)">{{ lending.status }}</span>
+                </div>
+
+                <p class="text-sm text-gray-500">
+                    Emprunté par <span class="font-medium text-gray-700">{{ lending.borrower.pseudo }}</span>
+                </p>
+                <p class="text-sm text-gray-500">Jusqu’au {{ lending.endDate }}</p>
+            </div>
+
+            <img :src="lending.object.image" alt="Objet prêté" class="thumb-md" />
         </div>
-        <div>
-            <h3>{{ lending.object.name }}</h3>
-            <p>jusqu'au {{ lending.endDate }}</p>
+
+        <div class="flex justify-end">
+            <button @click="handleClick" type="button" class="text-sm font-medium text-blue-600 hover:text-blue-700">
+                {{ showDetails ? 'Masquer les détails' : 'Voir les détails' }}
+            </button>
         </div>
-        <div>
-            <img :src="lending.object.image" alt="Objet prêté" />
+
+        <div v-if="showDetails" class="pt-2">
+            <LendingListDetailledCard :lending="lending" />
         </div>
-        <div @click="handleClick">
-             <!-- Icône de flèche vers le bas -->
-        </div>
-    </div>
-    <div v-if="showDetails">
-        <LendingListDetailledCard :lending="lending" />
-    </div>
+    </article>
 </template>
 
 

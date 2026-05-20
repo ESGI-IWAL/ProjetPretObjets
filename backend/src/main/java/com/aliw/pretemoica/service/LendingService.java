@@ -1,12 +1,10 @@
 package com.aliw.pretemoica.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.aliw.pretemoica.entity.LendingEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.repository.LendingRepository;
+import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class LendingService {
