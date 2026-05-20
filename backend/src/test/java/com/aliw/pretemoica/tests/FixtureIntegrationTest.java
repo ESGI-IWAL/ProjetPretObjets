@@ -1,0 +1,41 @@
+package com.aliw.pretemoica.tests;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import com.aliw.pretemoica.entity.ObjectEntity;
+import com.aliw.pretemoica.entity.UserEntity;
+import com.aliw.pretemoica.repository.ObjectRepository;
+import com.aliw.pretemoica.repository.UserRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+
+@SpringBootTest
+@ActiveProfiles("test")
+@Sql(scripts = "classpath:data.sql")
+class FixtureIntegrationTest {
+
+  @Autowired private UserRepository userRepository;
+
+  @Autowired private ObjectRepository objectRepository;
+
+  @Test
+  void shouldLoadFunctionalFixtures() {
+    assertEquals(1L, userRepository.count());
+    assertEquals(1L, objectRepository.count());
+
+    UserEntity user = userRepository.findAll().get(0);
+    ObjectEntity object = objectRepository.findAll().get(0);
+
+    assertEquals("alice", user.getUsername());
+    assertEquals("alice@example.com", user.getEmail());
+    assertEquals("Chaise", object.getName());
+    assertNotNull(object.getOwnedBy());
+    assertEquals(user.getId(), object.getOwnedBy().getId());
+    assertEquals(ObjectEntity.ObjectStatus.AVAILABLE, object.getStatus());
+    assertEquals(ObjectEntity.ObjectState.GOOD, object.getState());
+  }
+}

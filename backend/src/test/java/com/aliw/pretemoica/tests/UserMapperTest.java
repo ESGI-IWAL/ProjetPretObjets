@@ -58,4 +58,3 @@ public class UserMapperTest {
     assertEquals(0, UserMapper.toEntityList(null).size());
   }
 }
-
