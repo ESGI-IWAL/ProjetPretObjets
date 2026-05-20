@@ -1,6 +1,7 @@
 package com.aliw.pretemoica.service;
 
 import com.aliw.pretemoica.dto.CreateLendingDto;
+import com.aliw.pretemoica.dto.UpdateLendingDto;
 import com.aliw.pretemoica.entity.LendingEntity;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
@@ -38,6 +39,27 @@ public class LendingService {
     lendingEntity.setOfferedBy(resolveOwner(lendingObject));
 
     return create(lendingEntity);
+  }
+
+  public LendingEntity update(Long id, UpdateLendingDto lendingDto) {
+    if (lendingDto == null) {
+      throw new IllegalArgumentException("Le corps de la requête est obligatoire");
+    }
+
+    LendingEntity lendingEntity = getById(id);
+
+    // Modification des identifiants d'objet et d'emprunteur interdite via l'endpoint update
+    // Les champs borrowerId et objectId dans UpdateLendingDto sont ignorés intentionnellement.
+
+    if (lendingDto.getStartDate() != null) {
+      lendingEntity.setStartedAt(LendingMapper.parseDateTime(lendingDto.getStartDate()));
+    }
+
+    if (lendingDto.getEndDate() != null) {
+      lendingEntity.setEndedAt(LendingMapper.parseDateTime(lendingDto.getEndDate()));
+    }
+
+    return lendingRepository.save(lendingEntity);
   }
 
   public List<LendingEntity> getAll() {

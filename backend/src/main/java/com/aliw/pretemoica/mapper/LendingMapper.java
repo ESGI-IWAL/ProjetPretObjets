@@ -2,6 +2,7 @@ package com.aliw.pretemoica.mapper;
 
 import com.aliw.pretemoica.dto.CreateLendingDto;
 import com.aliw.pretemoica.dto.LendingDto;
+import com.aliw.pretemoica.dto.UpdateLendingDto;
 import com.aliw.pretemoica.entity.LendingEntity;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
@@ -102,7 +103,7 @@ public final class LendingMapper {
     return Long.parseLong(value);
   }
 
-  private static LocalDateTime parseDateTime(String value) {
+  public static LocalDateTime parseDateTime(String value) {
     if (value == null || value.isBlank()) {
       return null;
     }
@@ -118,5 +119,25 @@ public final class LendingMapper {
     }
 
     return LocalDate.parse(value).atStartOfDay();
+  }
+
+  public static LendingEntity toEntity(UpdateLendingDto dto) {
+    if (dto == null) {
+      return null;
+    }
+
+    LendingEntity entity = new LendingEntity();
+
+    // On n'autorise pas la modification de l'objet emprunté ni de l'emprunteur via l'endpoint
+    // d'update. Seules les dates sont prises en compte ici.
+    if (dto.getStartDate() != null) {
+      entity.setStartedAt(parseDateTime(dto.getStartDate()));
+    }
+
+    if (dto.getEndDate() != null) {
+      entity.setEndedAt(parseDateTime(dto.getEndDate()));
+    }
+
+    return entity;
   }
 }
