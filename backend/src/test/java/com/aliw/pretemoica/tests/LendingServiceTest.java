@@ -3,15 +3,19 @@ package com.aliw.pretemoica.tests;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.aliw.pretemoica.dto.CreateLendingDto;
 import com.aliw.pretemoica.entity.LendingEntity;
+import com.aliw.pretemoica.entity.ObjectEntity;
+import com.aliw.pretemoica.entity.UserEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.repository.LendingRepository;
 import com.aliw.pretemoica.service.LendingService;
-
+import com.aliw.pretemoica.service.ObjectService;
+import com.aliw.pretemoica.service.UserService;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,6 +26,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class LendingServiceTest {
 
   @Mock private LendingRepository lendingRepository;
+  @Mock private ObjectService objectService;
+  @Mock private UserService userService;
 
   @InjectMocks private LendingService lendingService;
 
@@ -34,6 +40,37 @@ public class LendingServiceTest {
 
     assertSame(e, res);
     verify(lendingRepository, times(1)).save(e);
+  }
+
+  @Test
+  public void createFromDtoShouldResolveRelationsAndDates() {
+    CreateLendingDto dto = new CreateLendingDto("6", "2", "2024-01-01", "2024-01-02T10:00:00Z");
+
+    UserEntity borrower = new UserEntity();
+    borrower.setId(2L);
+    UserEntity owner = new UserEntity();
+    owner.setId(3L);
+
+    ObjectEntity object = new ObjectEntity();
+    object.setId(6L);
+    object.setOwnedBy(owner);
+
+    when(userService.getById(2L)).thenReturn(borrower);
+    when(objectService.getById(6L)).thenReturn(object);
+    when(lendingRepository.save(any(LendingEntity.class)))
+        .thenAnswer(invocation -> invocation.getArgument(0));
+
+    LendingEntity created = lendingService.create(dto);
+
+    assertNotNull(created);
+    assertSame(borrower, created.getBorrowedBy());
+    assertSame(owner, created.getOfferedBy());
+    assertSame(object, created.getObject());
+    assertEquals(LocalDateTime.of(2024, 1, 1, 0, 0), created.getStartedAt());
+    assertEquals(LocalDateTime.of(2024, 1, 2, 10, 0), created.getEndedAt());
+    verify(userService, times(1)).getById(2L);
+    verify(objectService, times(1)).getById(6L);
+    verify(lendingRepository, times(1)).save(any(LendingEntity.class));
   }
 
   @Test

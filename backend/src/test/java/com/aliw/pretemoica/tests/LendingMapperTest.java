@@ -2,6 +2,7 @@ package com.aliw.pretemoica.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.aliw.pretemoica.dto.CreateLendingDto;
 import com.aliw.pretemoica.dto.LendingDto;
 import com.aliw.pretemoica.entity.LendingEntity;
 import com.aliw.pretemoica.entity.ObjectEntity;
@@ -37,8 +38,8 @@ public class LendingMapperTest {
     assertEquals(2L, dto.getBorrowedById());
     assertEquals(3L, dto.getOfferedById());
     assertEquals(6L, dto.getObjectId());
-    assertEquals(start, dto.getStartedAt());
-    assertEquals(end, dto.getEndedAt());
+    assertEquals(start, dto.getStartAt());
+    assertEquals(end, dto.getEndAt());
 
     // Now toEntity
     LendingDto dto2 = new LendingDto();
@@ -47,8 +48,8 @@ public class LendingMapperTest {
     dto2.setOfferedById(12L);
     dto2.setObjectId(13L);
     LocalDateTime s2 = LocalDateTime.of(2021, 2, 2, 9, 0);
-    dto2.setStartedAt(s2);
-    dto2.setEndedAt(s2.plusDays(1));
+    dto2.setStartAt(s2);
+    dto2.setEndAt(s2.plusDays(1));
 
     LendingEntity e2 = LendingMapper.toEntity(dto2);
     assertNotNull(e2);
@@ -63,9 +64,24 @@ public class LendingMapperTest {
   @Test
   public void toEntityShouldKeepDefaultStartedAtWhenDtoHasNull() {
     LendingDto dto = new LendingDto();
-    dto.setStartedAt(null);
+    dto.setStartAt(null);
     LendingEntity e = LendingMapper.toEntity(dto);
     assertNotNull(e.getStartedAt());
+  }
+
+  @Test
+  public void createDtoShouldMapBorrowerObjectAndDates() {
+    CreateLendingDto dto = new CreateLendingDto("13", "11", "2024-01-01", "2024-01-02T10:00:00Z");
+
+    LendingEntity entity = LendingMapper.toEntity(dto);
+
+    assertNotNull(entity);
+    assertNotNull(entity.getBorrowedBy());
+    assertEquals(11L, entity.getBorrowedBy().getId());
+    assertNotNull(entity.getObject());
+    assertEquals(13L, entity.getObject().getId());
+    assertEquals(LocalDateTime.of(2024, 1, 1, 0, 0), entity.getStartedAt());
+    assertEquals(LocalDateTime.of(2024, 1, 2, 10, 0), entity.getEndedAt());
   }
 
   @Test
@@ -76,4 +92,3 @@ public class LendingMapperTest {
     assertEquals(0, LendingMapper.toEntityList(null).size());
   }
 }
-
