@@ -1,3 +1,4 @@
 export interface IUpdateLendingDto {
-    endDate?: Date | null;
+    startAt?: Date;
+    endAt?: Date | null;
 }
