@@ -6,8 +6,6 @@ const route = useRoute()
 
 const object = await getObjectById(route.params.id as string)
 
-
-const 
 </script>
 <template>
   
