@@ -1,5 +1,6 @@
 package com.aliw.pretemoica.entity;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -30,7 +31,32 @@ public class LendingEntity {
   private LocalDateTime startedAt;
   private LocalDateTime endedAt;
 
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private LendingStatus status;
+
   public LendingEntity() {
     this.startedAt = LocalDateTime.now();
+    this.status = LendingStatus.PENDING;
+  }
+
+  public enum LendingStatus {
+    IN_PROGRESS("in_progress"),
+    PENDING("pending"),
+    VALIDATED("validated"),
+    REFUSED("refused"),
+    COMPLETED("completed"),
+    CANCELED("canceled");
+
+    private final String value;
+
+    LendingStatus(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
   }
 }

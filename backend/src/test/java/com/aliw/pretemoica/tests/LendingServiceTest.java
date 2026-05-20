@@ -99,7 +99,7 @@ public class LendingServiceTest {
         .thenAnswer(invocation -> invocation.getArgument(0));
 
     UpdateLendingDto updateDto =
-        new UpdateLendingDto("2024-03-01T09:00:00", "2024-03-02T10:00:00Z");
+        new UpdateLendingDto("2024-03-01T09:00:00", "2024-03-02T10:00:00Z", null);
 
     LendingEntity updated = lendingService.update(9L, updateDto);
 
@@ -121,7 +121,7 @@ public class LendingServiceTest {
 
     assertThrows(
         ResourceNotFoundException.class,
-        () -> lendingService.update(12L, new UpdateLendingDto(null, null)));
+        () -> lendingService.update(12L, new UpdateLendingDto(null, null, null)));
   }
 
   @Test
