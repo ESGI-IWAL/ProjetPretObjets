@@ -107,7 +107,7 @@ import { createLending } from '~/services/lending';
             <input type="date" v-model="form.startDate"/>
             <input type="date" v-model="form.endDate"/>
         </div>
-        <ButtonForm 
+        <ButtonStepsForm 
             :nextStep="nextStep" 
             :previousStep="previousStep" 
             :validateForm="handleValidateForm"

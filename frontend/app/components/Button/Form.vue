@@ -1,26 +1,14 @@
 <script setup lang="ts">
     defineProps<{
-        nextStep: () => void,
-        previousStep: () => void,
+        cancelForm: () => void,
         validateForm: () => void,
-        finalStep: boolean,
-        firstStep: boolean,
-        isEntryValid: boolean
     }>()
 </script>
+
 <template>
-    <div v-if="!firstStep">
-        <button @click="previousStep" type="button" :disabled="firstStep"> Précedent </button>
-    </div>
-    <div v-if="finalStep">
-        <button @click="validateForm" type="submit"> Valider </button>
-    </div>
-    <div v-else>
-        <button @click="nextStep" type="button" :disabled="!isEntryValid"> Suivant </button>
-    </div>
+    <button @click="() => cancelForm()" type="button">Annuler</button>
+    <button @click="() => validateForm()" type="submit">Valider</button>
 </template>
 
-
-<style>
-
+<style scoped>
 </style>
