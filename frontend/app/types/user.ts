@@ -1,12 +1,8 @@
 export interface IUser {
     id:string,                                         
-    pseudo: string,
+    userName: string,
     firstName: string,
     lastName: string,
-    image: string,
+    avatar: string,
     description:string
-}
-
-export interface IUserAuth extends IUser {
-    token: string
 }

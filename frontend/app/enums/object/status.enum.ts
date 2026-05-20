@@ -1,6 +1,0 @@
-export enum EObjectStatus {
-  DISPONIBLE = 'DISPONIBLE',
-  PRETE = 'PRETE',
-  EN_ATTENTE = 'EN_ATTENTE',
-  INDISPONIBLE = 'INDISPONIBLE'
-}
