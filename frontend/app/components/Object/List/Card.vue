@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import BaseCard from '~/components/BaseCard.vue'
-import type { Object } from '@/types/object'
+import type { IObject  } from '@/types/object'
 
 const props = defineProps<{
-  object: Object
+  object: IObject
   selected?: boolean
 }>()
 
 const emit = defineEmits<{
-  (e: 'select', object: Object): void
+  (e: 'select', object: IObject): void
 }>()
 
 function handleClick() {
