@@ -18,4 +18,5 @@ public class LendingDto {
   private ObjectDto object;
   private LocalDateTime startAt;
   private LocalDateTime endAt;
+  private String status;
 }
