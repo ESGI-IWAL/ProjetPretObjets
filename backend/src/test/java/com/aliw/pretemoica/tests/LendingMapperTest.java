@@ -76,4 +76,3 @@ public class LendingMapperTest {
     assertEquals(0, LendingMapper.toEntityList(null).size());
   }
 }
-
