@@ -10,6 +10,7 @@ const showDetails = ref<boolean>(false)
 const handleClick = () => {
     showDetails.value = !showDetails.value
 }
+
 </script>
 
 <template>
