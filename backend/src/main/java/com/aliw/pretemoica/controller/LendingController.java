@@ -18,29 +18,29 @@ import com.aliw.pretemoica.service.LendingService;
 @RequestMapping("/lending")
 public class LendingController {
 
-  private final LendingService lendingervice;
+  private final LendingService lendingService;
 
-  public LendingController(LendingService lendingervice) {
-    this.lendingervice = lendingervice;
+  public LendingController(LendingService lendingService) {
+    this.lendingService = lendingService;
   }
 
   @GetMapping
-  public List<LendingDto> getAlllending() {
-    return LendingMapper.toDtoList(lendingervice.getAll());
+  public List<LendingDto> getAllLendings() {
+    return LendingMapper.toDtoList(lendingService.getAll());
   }
 
   @GetMapping("/{id}")
   public LendingDto getLendingById(@PathVariable Long id) {
-    return LendingMapper.toDto(lendingervice.getById(id));
+    return LendingMapper.toDto(lendingService.getById(id));
   }
 
   @PostMapping
   public LendingDto createLending(@RequestBody LendingDto lendingDto) {
-    return LendingMapper.toDto(lendingervice.create(LendingMapper.toEntity(lendingDto)));
+    return LendingMapper.toDto(lendingService.create(LendingMapper.toEntity(lendingDto)));
   }
 
   @DeleteMapping("/{id}")
   public void deleteLending(@PathVariable Long id) {
-    lendingervice.delete(id);
+    lendingService.delete(id);
   }
 }
