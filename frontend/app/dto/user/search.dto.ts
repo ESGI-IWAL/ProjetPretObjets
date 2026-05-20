@@ -1,5 +1,5 @@
 export interface ISearchUserDto {
-    pseudo?: string;
+    userName?: string;
     firstName?: string;
     lastName?: string;
 }
