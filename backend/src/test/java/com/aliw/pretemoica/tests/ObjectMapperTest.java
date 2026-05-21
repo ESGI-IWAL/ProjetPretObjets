@@ -22,7 +22,6 @@ public class ObjectMapperTest {
     UserEntity owner = new UserEntity();
     owner.setId(7L);
     entity.setOwnedBy(owner);
-    entity.setStatus(ObjectEntity.ObjectStatus.LENT);
     entity.setStateOfWear(ObjectEntity.ObjectStateOfWear.GOOD);
 
     ObjectDto dto = ObjectMapper.toDto(entity);
@@ -34,7 +33,6 @@ public class ObjectMapperTest {
     assertEquals(1.2d, dto.getWeight());
     assertEquals("15x15x15 cm", dto.getDimensions());
     assertEquals(7L, dto.getOwnedById());
-    assertEquals(ObjectEntity.ObjectStatus.LENT, dto.getStatus());
     assertEquals(ObjectEntity.ObjectStateOfWear.GOOD, dto.getStateOfWear());
   }
 
@@ -47,7 +45,6 @@ public class ObjectMapperTest {
     dto.setWeight(3.4d);
     dto.setDimensions("20x10x5 cm");
     dto.setOwnedById(9L);
-    dto.setStatus(null);
     dto.setStateOfWear(ObjectEntity.ObjectStateOfWear.NEW);
 
     ObjectEntity entity = ObjectMapper.toEntity(dto);
@@ -60,8 +57,6 @@ public class ObjectMapperTest {
     assertEquals("20x10x5 cm", entity.getDimensions());
     assertNotNull(entity.getOwnedBy());
     assertEquals(9L, entity.getOwnedBy().getId());
-    // when dto.status null, mapper sets AVAILABLE
-    assertEquals(ObjectEntity.ObjectStatus.AVAILABLE, entity.getStatus());
     assertEquals(ObjectEntity.ObjectStateOfWear.NEW, entity.getStateOfWear());
   }
 

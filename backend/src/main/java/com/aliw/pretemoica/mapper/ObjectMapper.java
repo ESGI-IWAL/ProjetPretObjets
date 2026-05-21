@@ -25,7 +25,6 @@ public final class ObjectMapper {
     dto.setWeight(entity.getWeight());
     dto.setDimensions(entity.getDimensions());
     dto.setOwnedById(entity.getOwnedBy() != null ? entity.getOwnedBy().getId() : null);
-    dto.setStatus(entity.getStatus());
     dto.setStateOfWear(entity.getStateOfWear());
     dto.setCategory(entity.getCategory());
     dto.setMaterial(entity.getMaterial());
@@ -43,8 +42,6 @@ public final class ObjectMapper {
     entity.setDescription(dto.getDescription());
     entity.setWeight(dto.getWeight());
     entity.setDimensions(dto.getDimensions());
-    entity.setStatus(
-        dto.getStatus() != null ? dto.getStatus() : ObjectEntity.ObjectStatus.AVAILABLE);
     entity.setStateOfWear(dto.getStateOfWear());
     entity.setCategory(dto.getCategory());
     entity.setMaterial(dto.getMaterial());
@@ -85,7 +82,6 @@ public final class ObjectMapper {
     entity.setStateOfWear(dto.getState());
     entity.setCategory(dto.getCategory());
     entity.setMaterial(dto.getMaterial());
-    entity.setStatus(ObjectEntity.ObjectStatus.AVAILABLE);
     return entity;
   }
 

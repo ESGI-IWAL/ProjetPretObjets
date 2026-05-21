@@ -28,9 +28,6 @@ public class ObjectEntity {
   private UserEntity ownedBy;
 
   @Enumerated(EnumType.STRING)
-  private ObjectStatus status = ObjectStatus.AVAILABLE;
-
-  @Enumerated(EnumType.STRING)
   private ObjectStateOfWear stateOfWear;
 
   @Enumerated(EnumType.STRING)
@@ -41,13 +38,6 @@ public class ObjectEntity {
 
   public ObjectEntity() {
     // En attente
-  }
-
-  public enum ObjectStatus {
-    AVAILABLE,
-    LENT,
-    RESERVED,
-    UNAVAILABLE
   }
 
   public enum ObjectStateOfWear {
