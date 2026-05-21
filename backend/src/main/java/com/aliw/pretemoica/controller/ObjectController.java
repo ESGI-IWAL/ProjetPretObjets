@@ -40,11 +40,11 @@ public class ObjectController {
   }
 
   @PostMapping
-  public ResponseEntity<ObjectDto> createObject(
+  public ResponseEntity<Long> createObject(
       @Valid @RequestBody CreateObjectDto createObjectDto, @RequestParam Long ownedById) {
     try {
       ObjectDto createdObject = objectService.create(createObjectDto, ownedById);
-      return ResponseEntity.status(HttpStatus.CREATED).body(createdObject);
+      return ResponseEntity.status(HttpStatus.CREATED).body(createdObject.getId());
     } catch (IllegalArgumentException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     } catch (Exception e) {
