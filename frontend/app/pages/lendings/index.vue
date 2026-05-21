@@ -4,8 +4,15 @@ import { getLendings, searchLending } from '~/services/lending';
 import type { ILending } from '~/types/lending';
 
 const lendings = ref<ILending[]|null>(null)
-lendings.value = await getLendings()
-
+onMounted(async ()=> {
+    try{
+        lendings.value = await getLendings()
+        console.log(lendings)
+    }
+    catch{
+        lendings.value = []
+    }
+})
 const handleSearch = async (dto : ISearchLendingDto) => {
      lendings.value = await searchLending(dto)
 }

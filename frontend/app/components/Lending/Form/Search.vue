@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, reactive, onMounted } from 'vue'
 import AutoComplete from '~/components/AutoComplete.vue';
 import type { ISearchLendingDto } from '~/dto/lending/search.dto';
 import { ELendingStatus } from '~/enums/lending/status.enum';
@@ -31,8 +32,7 @@ onMounted(async () => {
         <div class="form-grid">
             <div class="form-field">
                 <label class="form-label" for="objectName">Objet</label>
-                            <AutoComplete :model-value="form.objectName" :options="objectNames ?? []" :placeholder="'Nom de l\'objet'"/>
-                <input id="objectName" v-model="form.objectName" class="form-input" placeholder="Nom de l'objet"/>
+                <AutoComplete id="objectName" v-model="form.objectName" :options="objectNames ?? []" :placeholder="'Nom de l\'objet'"/>
             </div>
 
             <div class="form-field">
@@ -57,6 +57,9 @@ onMounted(async () => {
                     <option value="ACTIVE">Actifs</option>
                     <option value="COMPLETED">Terminés</option>
                     <option value="CANCELED">Annulés</option>
+                    <option value="PENDING">En attente</option>
+                    <option value="REFUSED">Refusés</option>
+                    <option value="VALIDATED">Validés</option>
                 </select>
             </div>
         </div>

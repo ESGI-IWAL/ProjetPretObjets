@@ -9,15 +9,15 @@ import type { ILending } from '~/types/lending';
     const editMode = ref(false)
     const deleteAsked = ref(false)
 
-    const emit = defineEmits(['handleSubmitUpdate', 'delete'])
+    const emit = defineEmits(['handleSubmitUpdate', 'handleDelete'])
 
     const handleSubmitUpdate = (updateLending : Omit<IUpdateLendingDto, "id">) => {
-        emit('handleSubmitUpdate', {...updateLending, id: props.lending})
+        emit('handleSubmitUpdate', {...updateLending, id: props.lending.id})
         editMode.value = false
     }
 
     const handleDelete = () => {
-        emit('delete')
+        emit('handleDelete')
         deleteAsked.value = false
     }
 </script>
@@ -25,16 +25,20 @@ import type { ILending } from '~/types/lending';
 <template>
     <div>
         <div v-if="editMode">
-            <LendingFormModification :startAt="lending.startAt" :endAt="lending.endAt" @handleSubmitUpdate="handleSubmitUpdate" :editMode="editMode" />
+            <LendingFormModification
+                :startAt="lending.startAt"
+                :endAt="lending.endAt"
+                @handleSubmitUpdate="handleSubmitUpdate"
+                @cancelEdit="editMode = false"
+                :editMode="editMode"
+            />
         </div>
         <div v-if="deleteAsked">
-            <p>Êtes-vous sûr de vouloir supprimer ce prêt ?</p>
-            <button @click="handleDelete">Oui</button>
-            <button @click="deleteAsked = false">Non</button>
+            <LendingFormDeletion @cancelEdit="() => deleteAsked = !deleteAsked" @handleDelete="handleDelete"/>
         </div>
-        <ButtonsOptions actions="[
-            { function: () => { editMode.value = true }, label: 'Modifier', svg: '/icons/edit.svg' },
-            { function: () => { deleteAsked.value = true }, label: 'Supprimer', svg: '/icons/delete.svg' }
+        <ButtonOptions :actions="[
+            { function: () => { editMode = true }, label: 'Modifier', svg: '/icons/edit.svg' },
+            { function: () => { deleteAsked = true }, label: 'Supprimer', svg: '/icons/delete.svg' }
         ]" />
         <LendingInformations :lending="lending" />
 

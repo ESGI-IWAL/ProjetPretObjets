@@ -10,20 +10,21 @@ const emit = defineEmits(['search'])
 function search(dto : ISearchLendingDto) {
     emit('search', dto)
 }
+const filterIsOpen = ref<boolean>(false)
 
-const handleClick = (lending : ILending) => {
-    navigateTo(`/lendings/${lending.id}`)
-    }
+
 </script>
 
 <template>
     <div class="space-y-6">
-        <section class="surface-card space-y-4">
-            <LendingFormSearch @search="search" />
-        </section>
-
+        <div v-if=filterIsOpen>
+            <section class="surface-card space-y-4">
+                <LendingFormSearch @search="search" />
+            </section>
+        </div>
         <div class="flex justify-end">
             <ButtonCreation :navigation-creation="() => navigateTo('/lendings/new')" label="Créer un prêt"/>
+            <ButtonFilter :open-filter="() => filterIsOpen = !filterIsOpen" />
         </div>
 
         <div v-if="lendings.length === 0" class="surface-card text-center text-gray-500">
@@ -32,7 +33,7 @@ const handleClick = (lending : ILending) => {
 
         <div v-else class="list-grid">
             <div v-for="lending in lendings" :key="lending.id">
-                <LendingListCard :lending="lending" @click="handleClick(lending)" />
+                <LendingListCard :lending="lending" />
             </div>
         </div>
     </div>

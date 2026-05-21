@@ -2,6 +2,7 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue"
 
 const props = defineProps<{
+  id?: string
   modelValue: string
   options: string[]
   placeholder?: string
@@ -21,7 +22,9 @@ const query = computed({
 const filteredOptions = computed(() => {
   if (!query.value) return props.options
   return props.options.filter(option =>
-    option.toLowerCase().includes(query.value.toLowerCase())
+    option
+      .toLowerCase()
+      .startsWith(query.value.toLowerCase())
   )
 })
 
@@ -31,18 +34,27 @@ const selectOption = (option: string) => {
   highlightedIndex.value = -1
 }
 
+watch(query, (value) => {
+  if (value) {
+    open.value = true
+  }
+  highlightedIndex.value = -1
+})
+
 const onKeyDown = (e: KeyboardEvent) => {
   if (!open.value) open.value = true
 
+  const optionCount = filteredOptions.value.length
+  if (optionCount === 0) return
+
   if (e.key === "ArrowDown") {
     highlightedIndex.value =
-      (highlightedIndex.value + 1) % filteredOptions.value.length
+      (highlightedIndex.value + 1 + optionCount) % optionCount
   }
 
   if (e.key === "ArrowUp") {
     highlightedIndex.value =
-      (highlightedIndex.value - 1 + filteredOptions.value.length) %
-      filteredOptions.value.length
+      (highlightedIndex.value - 1 + optionCount) % optionCount
   }
 
   if (e.key === "Enter") {
@@ -74,6 +86,7 @@ onBeforeUnmount(() => {
   <div class="autocomplete">
     <input
       ref="input"
+      :id="props.id"
       v-model="query"
       :placeholder="placeholder"
       class="form-input"

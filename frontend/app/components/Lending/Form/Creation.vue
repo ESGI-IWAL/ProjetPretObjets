@@ -107,7 +107,7 @@
         <select id="user" v-model="form.borrowerId" class="form-select">
           <option value="" disabled>Choisissez un utilisateur</option>
           <option v-for="user in users" :key="user.id" :value="user.id">
-            {{ user.userName }}
+            {{ user.username }}
           </option>
         </select>
       </div>
