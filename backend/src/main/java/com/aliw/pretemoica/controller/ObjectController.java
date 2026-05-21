@@ -24,13 +24,17 @@ public class ObjectController {
   }
 
   @GetMapping
-  public List<ObjectDto> getAllObjects() {
-    return ObjectMapper.toDtoList(objectService.getAll());
+  public ResponseEntity<List<ObjectDto>> getAllObjects() {
+    return ResponseEntity.ok(ObjectMapper.toDtoList(objectService.getAll()));
   }
 
   @GetMapping("/{id}")
-  public ObjectDto getObjectById(@PathVariable Long id) {
-    return ObjectMapper.toDto(objectService.getById(id));
+  public ResponseEntity<ObjectDto> getObjectById(@PathVariable Long id) {
+    try {
+      return ResponseEntity.ok(ObjectMapper.toDto(objectService.getById(id)));
+    } catch (Exception e) {
+      return ResponseEntity.notFound().build();
+    }
   }
 
   @PostMapping
@@ -47,7 +51,8 @@ public class ObjectController {
   }
 
   @DeleteMapping("/{id}")
-  public void deleteObject(@PathVariable Long id) {
+  public ResponseEntity<Void> deleteObject(@PathVariable Long id) {
     objectService.delete(id);
+    return ResponseEntity.noContent().build();
   }
 }
