@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { IUpdateLendingDto } from '~/dto/lending/update.dto';
 import type { ILending } from '~/types/lending';
 
     defineProps<{
@@ -24,7 +25,7 @@ import type { ILending } from '~/types/lending';
 <template>
     <div>
         <div v-if="editMode">
-            <LendingFormModification :startDate="lending.startDate" :endDate="lending.endDate" @handleSubmitUpdate="handleSubmitUpdate" :editMode="editMode" />
+            <LendingFormModification :startDate="lending.startAt" :endDate="lending.endAt" @handleSubmitUpdate="handleSubmitUpdate" :editMode="editMode" />
         </div>
         <div v-if="deleteAsked">
             <p>Êtes-vous sûr de vouloir supprimer ce prêt ?</p>
