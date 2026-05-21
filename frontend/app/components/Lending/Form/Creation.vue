@@ -74,11 +74,24 @@ import { createLending } from '~/services/lending';
     const previousStep = () => {
         if (currentStep.value > 1) {
             currentStep.value--
+        } else {
+            resetForm()
+            navigateTo('/lending')
         }
     }
 
     const handleValidateForm = async () => {
         await createLending(form)
+        resetForm()
+        navigateTo('/lending')
+    }
+
+    const resetForm = () => {
+        form.borrowerId = ''
+        form.objectId = ''
+        form.startDate = new Date()
+        form.endDate = new Date()
+        currentStep.value = 1
     }
 </script>
 <template>

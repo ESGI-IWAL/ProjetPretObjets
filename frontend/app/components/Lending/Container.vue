@@ -10,8 +10,8 @@ import type { ILending } from '~/types/lending';
 
     const emit = defineEmits(['handleSubmitUpdate', 'delete'])
 
-    const handleSubmitUpdate = (endDate : Date) => {
-        emit('handleSubmitUpdate', endDate)
+    const handleSubmitUpdate = (updateLending : IUpdateLendingDto) => {
+        emit('handleSubmitUpdate', updateLending)
         editMode.value = false
     }
 
@@ -24,7 +24,7 @@ import type { ILending } from '~/types/lending';
 <template>
     <div>
         <div v-if="editMode">
-            <LendingFormModification :endDate="lending.endDate" @updateLending="handleSubmitUpdate" :editMode="editMode" />
+            <LendingFormModification :startDate="lending.startDate" :endDate="lending.endDate" @handleSubmitUpdate="handleSubmitUpdate" :editMode="editMode" />
         </div>
         <div v-if="deleteAsked">
             <p>Êtes-vous sûr de vouloir supprimer ce prêt ?</p>
