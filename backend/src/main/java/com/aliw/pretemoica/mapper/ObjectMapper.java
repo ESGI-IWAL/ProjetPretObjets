@@ -1,5 +1,6 @@
 package com.aliw.pretemoica.mapper;
 
+import com.aliw.pretemoica.dto.CreateObjectDto;
 import com.aliw.pretemoica.dto.ObjectDto;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
@@ -68,6 +69,23 @@ public final class ObjectMapper {
     return dtos.stream()
         .map(ObjectMapper::toEntity)
         .collect(Collectors.toCollection(ArrayList::new));
+  }
+
+  public static ObjectEntity toEntityFromCreate(CreateObjectDto dto) {
+    if (dto == null) {
+      return null;
+    }
+
+    ObjectEntity entity = new ObjectEntity();
+    entity.setName(dto.getName());
+    entity.setDescription(dto.getDescription());
+    entity.setWeight(dto.getWeight());
+    entity.setDimensions(dto.getDimensions());
+    entity.setStateOfWear(dto.getState());
+    entity.setCategory(dto.getCategory());
+    entity.setMaterial(dto.getMaterial());
+    entity.setStatus(ObjectEntity.ObjectStatus.AVAILABLE);
+    return entity;
   }
 
   private static UserEntity toUserReference(Long userId) {

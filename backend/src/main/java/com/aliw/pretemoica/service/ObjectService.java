@@ -1,8 +1,12 @@
 package com.aliw.pretemoica.service;
 
+import com.aliw.pretemoica.dto.CreateObjectDto;
+import com.aliw.pretemoica.dto.ObjectDto;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
+import com.aliw.pretemoica.mapper.ObjectMapper;
 import com.aliw.pretemoica.repository.ObjectRepository;
+import com.aliw.pretemoica.repository.UserRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -10,13 +14,30 @@ import org.springframework.stereotype.Service;
 public class ObjectService {
 
   private final ObjectRepository objectRepository;
+  private final UserRepository userRepository;
 
-  public ObjectService(ObjectRepository objectRepository) {
+  public ObjectService(ObjectRepository objectRepository, UserRepository userRepository) {
     this.objectRepository = objectRepository;
+    this.userRepository = userRepository;
   }
 
   public ObjectEntity create(ObjectEntity objectEntity) {
     return objectRepository.save(objectEntity);
+  }
+
+  public ObjectDto create(CreateObjectDto createObjectDto, Long ownedById) {
+    ObjectEntity entity = ObjectMapper.toEntityFromCreate(createObjectDto);
+
+    entity.setOwnedBy(
+        userRepository
+            .findById(ownedById)
+            .orElseThrow(
+                () ->
+                    new ResourceNotFoundException(
+                        "Utilisateur introuvable avec l'id: " + ownedById)));
+
+    ObjectEntity savedEntity = objectRepository.save(entity);
+    return ObjectMapper.toDto(savedEntity);
   }
 
   public List<ObjectEntity> getAll() {

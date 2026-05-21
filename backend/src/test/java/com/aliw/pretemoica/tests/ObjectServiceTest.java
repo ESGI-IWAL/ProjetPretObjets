@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.repository.ObjectRepository;
+import com.aliw.pretemoica.repository.UserRepository;
 import com.aliw.pretemoica.service.ObjectService;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +21,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class ObjectServiceTest {
 
   @Mock private ObjectRepository objectRepository;
+
+  @Mock private UserRepository userRepository;
 
   @InjectMocks private ObjectService objectService;
 
