@@ -51,7 +51,7 @@ public class UserEntity {
   private Integer rating = 0;
 
   public UserEntity() {
-      // passe pas sans comm
+    // passe pas sans comm
   }
 
   public void addObject(ObjectEntity objectToAdd) {

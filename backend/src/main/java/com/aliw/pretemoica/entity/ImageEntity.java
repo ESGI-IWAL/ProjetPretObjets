@@ -38,4 +38,3 @@ public class ImageEntity {
     this.fileSize = fileSize;
   }
 }
-
