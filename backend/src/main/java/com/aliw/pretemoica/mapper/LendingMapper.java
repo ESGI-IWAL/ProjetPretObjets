@@ -59,8 +59,8 @@ public final class LendingMapper {
         dto.getBorrowerId() != null ? toUserReference(parseLong(dto.getBorrowerId())) : null);
     entity.setObject(
         dto.getObjectId() != null ? toObjectReference(parseLong(dto.getObjectId())) : null);
-    entity.setStartedAt(parseDateTime(dto.getStartDate()));
-    entity.setEndedAt(parseDateTime(dto.getEndDate()));
+    entity.setStartedAt(parseDateTime(dto.getStartAt()));
+    entity.setEndedAt(parseDateTime(dto.getEndAt()));
     return entity;
   }
 
@@ -125,12 +125,12 @@ public final class LendingMapper {
 
     // On n'autorise pas la modification de l'objet emprunté ni de l'emprunteur via l'endpoint
     // d'update. Seules les dates sont prises en compte ici.
-    if (dto.getStartDate() != null) {
-      entity.setStartedAt(parseDateTime(dto.getStartDate()));
+    if (dto.getStartAt() != null) {
+      entity.setStartedAt(parseDateTime(dto.getStartAt()));
     }
 
-    if (dto.getEndDate() != null) {
-      entity.setEndedAt(parseDateTime(dto.getEndDate()));
+    if (dto.getEndAt() != null) {
+      entity.setEndedAt(parseDateTime(dto.getEndAt()));
     }
 
     return entity;

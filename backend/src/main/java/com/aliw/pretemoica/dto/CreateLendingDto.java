@@ -13,6 +13,6 @@ public class CreateLendingDto {
 
   private String objectId;
   private String borrowerId;
-  private String startDate;
-  private String endDate;
+  private String startAt;
+  private String endAt;
 }

@@ -55,12 +55,12 @@ public class LendingService {
     // Modification des identifiants d'objet et d'emprunteur interdite via l'endpoint update
     // Les champs borrowerId et objectId dans UpdateLendingDto sont ignorés intentionnellement.
 
-    if (lendingDto.getStartDate() != null) {
-      lendingEntity.setStartedAt(LendingMapper.parseDateTime(lendingDto.getStartDate()));
+    if (lendingDto.getStartAt() != null) {
+      lendingEntity.setStartedAt(LendingMapper.parseDateTime(lendingDto.getStartAt()));
     }
 
-    if (lendingDto.getEndDate() != null) {
-      lendingEntity.setEndedAt(LendingMapper.parseDateTime(lendingDto.getEndDate()));
+    if (lendingDto.getEndAt() != null) {
+      lendingEntity.setEndedAt(LendingMapper.parseDateTime(lendingDto.getEndAt()));
     }
 
     // Gestion du changement de statut via l'endpoint update

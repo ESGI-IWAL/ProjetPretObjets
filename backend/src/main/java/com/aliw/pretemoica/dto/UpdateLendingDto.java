@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UpdateLendingDto {
 
-  private String startDate;
-  private String endDate;
+  private String startAt;
+  private String endAt;
   private String status;
 }
