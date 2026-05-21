@@ -6,7 +6,6 @@ import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.ObjectMapper;
 import com.aliw.pretemoica.service.ObjectService;
-import com.aliw.pretemoica.service.UserService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -18,11 +17,9 @@ import org.springframework.web.bind.annotation.*;
 public class ObjectController {
 
   private final ObjectService objectService;
-  private final UserService userService;
 
-  public ObjectController(ObjectService objectService, UserService userService) {
+  public ObjectController(ObjectService objectService) {
     this.objectService = objectService;
-    this.userService = userService;
   }
 
   @GetMapping
@@ -40,15 +37,15 @@ public class ObjectController {
   }
 
   @PostMapping
-  public ResponseEntity<Long> createObject(
-      @Valid @RequestBody CreateObjectDto createObjectDto, @RequestParam Long ownedById) {
+  public ResponseEntity<Object> createObject(@Valid @RequestBody CreateObjectDto createObjectDto) {
     try {
-      ObjectDto createdObject = objectService.create(createObjectDto, ownedById);
+      ObjectDto createdObject = objectService.create(createObjectDto, createObjectDto.getOwnerId());
       return ResponseEntity.status(HttpStatus.CREATED).body(createdObject.getId());
     } catch (IllegalArgumentException e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+      // retourne le message de l'exception pour faciliter le debug côté client
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
   }
 

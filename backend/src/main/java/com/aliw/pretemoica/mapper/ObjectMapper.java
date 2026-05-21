@@ -82,6 +82,11 @@ public final class ObjectMapper {
     entity.setStateOfWear(dto.getState());
     entity.setCategory(dto.getCategory());
     entity.setMaterial(dto.getMaterial());
+    if (dto.getOwnerId() != null) {
+      entity.setOwnedBy(toUserReference(dto.getOwnerId()));
+    } else {
+      throw new IllegalArgumentException("OwnerId is required for creating an object");
+    }
     return entity;
   }
 
@@ -102,7 +107,7 @@ public final class ObjectMapper {
     if (dto.getDimensions() != null) {
       entity.setDimensions(dto.getDimensions());
     }
-    if (dto.getStateOfWear() != null) {
+    if (dto.getState() != null) {
       entity.setStateOfWear(dto.getState());
     }
     if (dto.getCategory() != null) {
@@ -111,6 +116,7 @@ public final class ObjectMapper {
     if (dto.getMaterial() != null) {
       entity.setMaterial(dto.getMaterial());
     }
+    // ownerId is handled only on create. During update, owner must not be changed here.
     return entity;
   }
 

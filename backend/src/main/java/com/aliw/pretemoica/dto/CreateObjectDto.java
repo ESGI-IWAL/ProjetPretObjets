@@ -33,4 +33,7 @@ public class CreateObjectDto {
   private ObjectStateOfWear state;
 
   private ObjectMaterial material;
+
+  @NotNull(message = "L'id du propriétaire est obligatoire")
+  private Long ownerId;
 }

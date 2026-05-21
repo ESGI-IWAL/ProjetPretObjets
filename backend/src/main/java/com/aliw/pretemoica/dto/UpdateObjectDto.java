@@ -27,4 +27,7 @@ public class UpdateObjectDto {
   private ObjectStateOfWear state;
 
   private ObjectMaterial material;
+
+  // ownerId is intentionally omitted: on ne doit pas pouvoir changer le propriétaire via l'update
+  // DTO
 }
