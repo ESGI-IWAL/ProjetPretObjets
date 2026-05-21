@@ -2,6 +2,7 @@ package com.aliw.pretemoica.service;
 
 import com.aliw.pretemoica.dto.CreateObjectDto;
 import com.aliw.pretemoica.dto.ObjectDto;
+import com.aliw.pretemoica.dto.SearchObjectDto;
 import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
@@ -16,10 +17,15 @@ public class ObjectService {
 
   private final ObjectRepository objectRepository;
   private final UserRepository userRepository;
+  private final ObjectSearchService objectSearchService;
 
-  public ObjectService(ObjectRepository objectRepository, UserRepository userRepository) {
+  public ObjectService(
+      ObjectRepository objectRepository,
+      UserRepository userRepository,
+      ObjectSearchService objectSearchService) {
     this.objectRepository = objectRepository;
     this.userRepository = userRepository;
+    this.objectSearchService = objectSearchService;
   }
 
   public ObjectEntity create(ObjectEntity objectEntity) {
@@ -43,6 +49,10 @@ public class ObjectService {
 
   public List<ObjectEntity> getAll() {
     return objectRepository.findAll();
+  }
+
+  public List<ObjectEntity> search(SearchObjectDto searchObjectDto) {
+    return objectSearchService.search(searchObjectDto);
   }
 
   public ObjectEntity getById(Long id) {

@@ -3,6 +3,7 @@ package com.aliw.pretemoica.service;
 import com.aliw.pretemoica.entity.LendingEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.repository.LendingRepository;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,9 @@ public class LendingService {
   public void delete(Long id) {
     LendingEntity lendingEntity = getById(id);
     lendingRepository.delete(lendingEntity);
+  }
+
+  public boolean isObjectAvailable(Long objectId, LocalDateTime startDate, LocalDateTime endDate) {
+    return !lendingRepository.existsOverlappingLending(objectId, startDate, endDate);
   }
 }
