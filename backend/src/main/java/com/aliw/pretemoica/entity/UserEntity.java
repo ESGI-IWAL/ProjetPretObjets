@@ -24,14 +24,35 @@ public class UserEntity {
 
   private String password;
 
+  private String firstName;
+
+  private String lastName;
+
+  private String description;
+
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "profile_image_id")
+  private ImageEntity profileImage;
+
+  @ManyToOne(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "address_id")
+  private AddressEntity address;
+
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ObjectEntity> objects = new ArrayList<>();
 
-  @ManyToMany private List<UserEntity> linkedUsers = new ArrayList<>();
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @JoinTable(
+      name = "user_friends",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "friend_id"))
+  private List<UserEntity> linkedUsers = new ArrayList<>();
 
   private Integer rating = 0;
 
-  public UserEntity() {}
+  public UserEntity() {
+      // passe pas sans comm
+  }
 
   public void addObject(ObjectEntity objectToAdd) {
     if (this.objects == null) {
