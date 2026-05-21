@@ -14,7 +14,9 @@ CREATE TABLE IF NOT EXISTS object (
   name VARCHAR(255) NOT NULL,
   owned_by_id BIGINT NOT NULL REFERENCES app_user(id),
   status VARCHAR(32) NOT NULL DEFAULT 'AVAILABLE',
-  state VARCHAR(32) NOT NULL
+  state_of_wear VARCHAR(32) NOT NULL,
+  category VARCHAR(32),
+  material VARCHAR(32)
 );
 
 CREATE TABLE IF NOT EXISTS lending (
@@ -38,8 +40,8 @@ CREATE TABLE IF NOT EXISTS lending_history (
 INSERT INTO app_user (id, username, email, password, rating)
 VALUES (1, 'alice', 'alice@example.com', 'secret', 5);
 
-INSERT INTO object (id, name, owned_by_id, status, state)
-VALUES (1, 'Chaise', 1, 'AVAILABLE', 'GOOD');
+INSERT INTO object (id, name, owned_by_id, status, state_of_wear, category, material)
+VALUES (1, 'Chaise', 1, 'AVAILABLE', 'GOOD', 'FURNITURE', 'WOOD');
 
 
 
@@ -51,13 +53,13 @@ VALUES
   (4, 'dave', 'dave@example.com', 'pwddave', 2);
 
 -- Objets appartenant à différents utilisateurs
-INSERT INTO object (id, name, owned_by_id, status, state)
+INSERT INTO object (id, name, owned_by_id, status, state_of_wear, category, material)
 VALUES
-  (2, 'Perceuse', 2, 'AVAILABLE', 'NEW'),
-  (3, 'Lampe', 2, 'LENT', 'GOOD'),
-  (4, 'Tondeuse', 3, 'AVAILABLE', 'WORN'),
-  (5, 'Table', 4, 'UNAVAILABLE', 'DAMAGED'),
-  (6, 'Vélo', 3, 'RESERVED', 'GOOD');
+  (2, 'Perceuse', 2, 'AVAILABLE', 'NEW', 'TOOLS', 'METAL'),
+  (3, 'Lampe', 2, 'LENT', 'GOOD', 'ELECTRONICS', 'PLASTIC'),
+  (4, 'Tondeuse', 3, 'AVAILABLE', 'WORN', 'TOOLS', 'METAL'),
+  (5, 'Table', 4, 'UNAVAILABLE', 'DAMAGED', 'FURNITURE', 'WOOD'),
+  (6, 'Vélo', 3, 'RESERVED', 'GOOD', 'SPORTS', 'METAL');
 
 -- Prêts en cours / passés (lending)
 INSERT INTO lending (id, borrowed_by_id, offered_by_id, object_id, started_at, ended_at)
