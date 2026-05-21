@@ -33,11 +33,13 @@ class FixtureIntegrationTest {
     assertEquals("alice", user.getUsername());
     assertEquals("alice@example.com", user.getEmail());
     assertEquals("Chaise", object.getName());
+    assertNotNull(object.getWeight());
+    assertNotNull(object.getDimensions());
     assertNotNull(object.getOwnedBy());
     assertEquals(user.getId(), object.getOwnedBy().getId());
     assertEquals(ObjectEntity.ObjectStatus.AVAILABLE, object.getStatus());
-    assertEquals(ObjectEntity.EObjectStateOfWear.GOOD, object.getStateOfWear());
-    assertEquals(ObjectEntity.EObjectCategories.FURNITURE, object.getCategory());
-    assertEquals(ObjectEntity.EObjectMaterial.WOOD, object.getMaterial());
+    assertEquals(ObjectEntity.ObjectStateOfWear.GOOD, object.getStateOfWear());
+    assertEquals(ObjectEntity.ObjectCategories.FURNITURE, object.getCategory());
+    assertEquals(ObjectEntity.ObjectMaterial.WOOD, object.getMaterial());
   }
 }

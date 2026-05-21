@@ -17,6 +17,10 @@ public class ObjectEntity {
   @Column(nullable = false)
   private String name;
 
+  private Double weight;
+
+  private String dimensions;
+
   @ManyToOne
   @JoinColumn(name = "owned_by_id", nullable = false)
   private UserEntity ownedBy;
@@ -25,13 +29,13 @@ public class ObjectEntity {
   private ObjectStatus status = ObjectStatus.AVAILABLE;
 
   @Enumerated(EnumType.STRING)
-  private EObjectStateOfWear stateOfWear;
+  private ObjectStateOfWear stateOfWear;
 
   @Enumerated(EnumType.STRING)
-  private EObjectCategories category;
+  private ObjectCategories category;
 
   @Enumerated(EnumType.STRING)
-  private EObjectMaterial material;
+  private ObjectMaterial material;
 
   public ObjectEntity() {
     // En attente
@@ -44,14 +48,14 @@ public class ObjectEntity {
     UNAVAILABLE
   }
 
-  public enum EObjectStateOfWear {
+  public enum ObjectStateOfWear {
     NEW,
     GOOD,
     WORN,
     DAMAGED
   }
 
-  public enum EObjectCategories {
+  public enum ObjectCategories {
     ELECTRONICS,
     FURNITURE,
     TOOLS,
@@ -62,7 +66,7 @@ public class ObjectEntity {
     OTHERS
   }
 
-  public enum EObjectMaterial {
+  public enum ObjectMaterial {
     PLASTIC,
     METAL,
     WOOD,

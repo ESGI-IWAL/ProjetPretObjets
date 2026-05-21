@@ -19,6 +19,8 @@ public final class ObjectMapper {
     ObjectDto dto = new ObjectDto();
     dto.setId(entity.getId());
     dto.setName(entity.getName());
+    dto.setWeight(entity.getWeight());
+    dto.setDimensions(entity.getDimensions());
     dto.setOwnedById(entity.getOwnedBy() != null ? entity.getOwnedBy().getId() : null);
     dto.setStatus(entity.getStatus());
     dto.setStateOfWear(entity.getStateOfWear());
@@ -35,6 +37,8 @@ public final class ObjectMapper {
     ObjectEntity entity = new ObjectEntity();
     entity.setId(dto.getId());
     entity.setName(dto.getName());
+    entity.setWeight(dto.getWeight());
+    entity.setDimensions(dto.getDimensions());
     entity.setStatus(
         dto.getStatus() != null ? dto.getStatus() : ObjectEntity.ObjectStatus.AVAILABLE);
     entity.setStateOfWear(dto.getStateOfWear());

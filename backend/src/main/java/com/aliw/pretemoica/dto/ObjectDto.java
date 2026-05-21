@@ -1,8 +1,8 @@
 package com.aliw.pretemoica.dto;
 
-import com.aliw.pretemoica.entity.ObjectEntity.EObjectCategories;
-import com.aliw.pretemoica.entity.ObjectEntity.EObjectMaterial;
-import com.aliw.pretemoica.entity.ObjectEntity.EObjectStateOfWear;
+import com.aliw.pretemoica.entity.ObjectEntity.ObjectCategories;
+import com.aliw.pretemoica.entity.ObjectEntity.ObjectMaterial;
+import com.aliw.pretemoica.entity.ObjectEntity.ObjectStateOfWear;
 import com.aliw.pretemoica.entity.ObjectEntity.ObjectStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,9 +17,11 @@ public class ObjectDto {
 
   private Long id;
   private String name;
+  private Double weight;
+  private String dimensions;
   private Long ownedById;
   private ObjectStatus status;
-  private EObjectStateOfWear stateOfWear;
-  private EObjectCategories category;
-  private EObjectMaterial material;
+  private ObjectStateOfWear stateOfWear;
+  private ObjectCategories category;
+  private ObjectMaterial material;
 }

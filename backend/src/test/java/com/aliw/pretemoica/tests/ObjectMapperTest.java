@@ -15,20 +15,24 @@ public class ObjectMapperTest {
     ObjectEntity entity = new ObjectEntity();
     entity.setId(3L);
     entity.setName("Ball");
+    entity.setWeight(1.2d);
+    entity.setDimensions("15x15x15 cm");
     UserEntity owner = new UserEntity();
     owner.setId(7L);
     entity.setOwnedBy(owner);
     entity.setStatus(ObjectEntity.ObjectStatus.LENT);
-    entity.setStateOfWear(ObjectEntity.EObjectStateOfWear.GOOD);
+    entity.setStateOfWear(ObjectEntity.ObjectStateOfWear.GOOD);
 
     ObjectDto dto = ObjectMapper.toDto(entity);
 
     assertNotNull(dto);
     assertEquals(3L, dto.getId());
     assertEquals("Ball", dto.getName());
+    assertEquals(1.2d, dto.getWeight());
+    assertEquals("15x15x15 cm", dto.getDimensions());
     assertEquals(7L, dto.getOwnedById());
     assertEquals(ObjectEntity.ObjectStatus.LENT, dto.getStatus());
-    assertEquals(ObjectEntity.EObjectStateOfWear.GOOD, dto.getStateOfWear());
+    assertEquals(ObjectEntity.ObjectStateOfWear.GOOD, dto.getStateOfWear());
   }
 
   @Test
@@ -36,20 +40,24 @@ public class ObjectMapperTest {
     ObjectDto dto = new ObjectDto();
     dto.setId(4L);
     dto.setName("Obj");
+    dto.setWeight(3.4d);
+    dto.setDimensions("20x10x5 cm");
     dto.setOwnedById(9L);
     dto.setStatus(null);
-    dto.setStateOfWear(ObjectEntity.EObjectStateOfWear.NEW);
+    dto.setStateOfWear(ObjectEntity.ObjectStateOfWear.NEW);
 
     ObjectEntity entity = ObjectMapper.toEntity(dto);
 
     assertNotNull(entity);
     assertEquals(4L, entity.getId());
     assertEquals("Obj", entity.getName());
+    assertEquals(3.4d, entity.getWeight());
+    assertEquals("20x10x5 cm", entity.getDimensions());
     assertNotNull(entity.getOwnedBy());
     assertEquals(9L, entity.getOwnedBy().getId());
     // when dto.status null, mapper sets AVAILABLE
     assertEquals(ObjectEntity.ObjectStatus.AVAILABLE, entity.getStatus());
-    assertEquals(ObjectEntity.EObjectStateOfWear.NEW, entity.getStateOfWear());
+    assertEquals(ObjectEntity.ObjectStateOfWear.NEW, entity.getStateOfWear());
   }
 
   @Test

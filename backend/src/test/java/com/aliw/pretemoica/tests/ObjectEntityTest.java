@@ -14,6 +14,8 @@ public class ObjectEntityTest {
     assertNotNull(obj);
     assertNull(obj.getId());
     assertNull(obj.getName());
+    assertNull(obj.getWeight());
+    assertNull(obj.getDimensions());
     assertNull(obj.getOwnedBy());
     assertEquals(ObjectEntity.ObjectStatus.AVAILABLE, obj.getStatus());
     assertNull(obj.getStateOfWear());
@@ -26,14 +28,18 @@ public class ObjectEntityTest {
     owner.setEmail("owner@example.com");
 
     obj.setName("Test Object");
+    obj.setWeight(2.5d);
+    obj.setDimensions("10x20x30 cm");
     obj.setOwnedBy(owner);
     obj.setStatus(ObjectEntity.ObjectStatus.LENT);
-    obj.setStateOfWear(ObjectEntity.EObjectStateOfWear.GOOD);
+    obj.setStateOfWear(ObjectEntity.ObjectStateOfWear.GOOD);
 
     assertEquals("Test Object", obj.getName());
+    assertEquals(2.5d, obj.getWeight());
+    assertEquals("10x20x30 cm", obj.getDimensions());
     assertEquals(owner, obj.getOwnedBy());
     assertEquals(ObjectEntity.ObjectStatus.LENT, obj.getStatus());
-    assertEquals(ObjectEntity.EObjectStateOfWear.GOOD, obj.getStateOfWear());
+    assertEquals(ObjectEntity.ObjectStateOfWear.GOOD, obj.getStateOfWear());
   }
 
   @Test
@@ -46,10 +52,10 @@ public class ObjectEntityTest {
   }
 
   @Test
-  public void testEObjectStateOfWearEnum() {
-    assertNotNull(ObjectEntity.EObjectStateOfWear.NEW);
-    assertNotNull(ObjectEntity.EObjectStateOfWear.GOOD);
-    assertNotNull(ObjectEntity.EObjectStateOfWear.WORN);
-    assertNotNull(ObjectEntity.EObjectStateOfWear.DAMAGED);
+  public void testObjectStateOfWearEnum() {
+    assertNotNull(ObjectEntity.ObjectStateOfWear.NEW);
+    assertNotNull(ObjectEntity.ObjectStateOfWear.GOOD);
+    assertNotNull(ObjectEntity.ObjectStateOfWear.WORN);
+    assertNotNull(ObjectEntity.ObjectStateOfWear.DAMAGED);
   }
 }
