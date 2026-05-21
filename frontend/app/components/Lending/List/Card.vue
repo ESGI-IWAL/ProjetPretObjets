@@ -14,12 +14,18 @@ const handleClick = () => {
 
 const getStatusClass = (status: ELendingStatus) => {
     switch (status) {
-        case ELendingStatus.ACTIVE:
+        case ELendingStatus.IN_PROGRESS:
             return 'chip-active'
         case ELendingStatus.COMPLETED:
             return 'chip-completed'
         case ELendingStatus.CANCELED:
             return 'chip-canceled'
+        case ELendingStatus.PENDING:
+            return 'chip-pending'
+        case ELendingStatus.REFUSED:
+            return 'chip-refused'
+        case ELendingStatus.VALIDATED:
+            return 'chip-validated'
         default:
             return 'chip-neutral'
     }
@@ -39,12 +45,12 @@ const getStatusClass = (status: ELendingStatus) => {
                 </div>
 
                 <p class="text-sm text-gray-500">
-                    Emprunté par <span class="font-medium text-gray-700">{{ lending.borrower.pseudo }}</span>
+                    Emprunté par <span class="font-medium text-gray-700">{{ lending.borrower.userName }}</span>
                 </p>
-                <p class="text-sm text-gray-500">Jusqu’au {{ lending.endDate }}</p>
+                <p class="text-sm text-gray-500">Jusqu’au {{ lending.endAt }}</p>
             </div>
 
-            <img :src="lending.object.image" alt="Objet prêté" class="thumb-md" />
+            <img :src="lending.object.images[0]" alt="Objet prêté" class="thumb-md" />
         </div>
 
         <div class="flex justify-end">

@@ -1,22 +1,22 @@
 <script setup lang="ts">
 
     const props = defineProps<{
-        endDate: Date|null,
-        startDate:Date,
+        endAt: Date|null,
+        startAt:Date,
         editMode: boolean
     }>()
 
     const emit = defineEmits(['handleSubmitUpdate', 'cancelEdit'])
     const toInputDate = (value: Date | null) => value ? value.toISOString().slice(0, 10) : ''
     const toDateValue = (value: string) => value ? new Date(value) : null
-    const editableEndDate = ref<string>(toInputDate(props.endDate))
-    const editableStartDate = ref<string>(toInputDate(props.endDate))
+    const editableEndDate = ref<string>(toInputDate(props.endAt))
+    const editableStartDate = ref<string>(toInputDate(props.endAt))
 
-    watch(() => props.endDate, (newValue) => {
+    watch(() => props.endAt, (newValue) => {
         editableEndDate.value = toInputDate(newValue)
     })
 
-        watch(() => props.startDate, (newValue) => {
+        watch(() => props.startAt, (newValue) => {
         editableStartDate.value = toInputDate(newValue)
     })
 
@@ -30,7 +30,7 @@
     }
 
     const resetForm = () => {
-        editableEndDate.value = toInputDate(props.endDate)
+        editableEndDate.value = toInputDate(props.endAt)
     }
 </script>
 <template>

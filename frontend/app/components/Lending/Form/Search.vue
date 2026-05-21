@@ -7,9 +7,9 @@ const emit = defineEmits(['search'])
 const form = reactive<ISearchLendingDto>({
     objectName: "",
     borrowerName: "",
-    startDate: undefined,
-    endDate: undefined,
-    status: ELendingStatus.ACTIVE
+    startAt: undefined,
+    endAt: undefined,
+    status: ELendingStatus.IN_PROGRESS
 })
 
 </script>
@@ -28,13 +28,13 @@ const form = reactive<ISearchLendingDto>({
             </div>
 
             <div class="form-field">
-                <label class="form-label" for="startDate">Début</label>
-                <input id="startDate" type="date" v-model="form.startDate" class="form-input"/>
+                <label class="form-label" for="startAt">Début</label>
+                <input id="startAt" type="date" v-model="form.startAt" class="form-input"/>
             </div>
 
             <div class="form-field">
-                <label class="form-label" for="endDate">Fin</label>
-                <input id="endDate" type="date" v-model="form.endDate" class="form-input"/>
+                <label class="form-label" for="endAt">Fin</label>
+                <input id="endAt" type="date" v-model="form.endAt" class="form-input"/>
             </div>
 
             <div class="form-field sm:col-span-2">

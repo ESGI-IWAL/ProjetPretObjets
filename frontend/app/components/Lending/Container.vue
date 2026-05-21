@@ -25,7 +25,7 @@ import type { ILending } from '~/types/lending';
 <template>
     <div>
         <div v-if="editMode">
-            <LendingFormModification :startDate="lending.startAt" :endDate="lending.endAt" @handleSubmitUpdate="handleSubmitUpdate" :editMode="editMode" />
+            <LendingFormModification :startAt="lending.startAt" :endAt="lending.endAt" @handleSubmitUpdate="handleSubmitUpdate" :editMode="editMode" />
         </div>
         <div v-if="deleteAsked">
             <p>Êtes-vous sûr de vouloir supprimer ce prêt ?</p>

@@ -22,10 +22,10 @@ import { createLending } from '~/services/lending';
     })
 
     const form = reactive<ICreateLendingDto>({
-        borrowerId: '',
-        objectId: '',
-        startDate: new Date(),
-        endDate: new Date()
+        borrowerId: 0,
+        objectId: 0,
+        startAt: new Date(),
+        endAt: null
     })
 
     const steps = ref<IStep[]>([
@@ -59,7 +59,7 @@ import { createLending } from '~/services/lending';
             case 2:
                 return !!form.objectId
             case 3:
-                return !!form.startDate && !!form.endDate && form.endDate >= form.startDate
+                return !!form.startAt && !!form.endAt && form.endAt >= form.startAt
             default:
                 return true
         }
@@ -87,10 +87,10 @@ import { createLending } from '~/services/lending';
     }
 
     const resetForm = () => {
-        form.borrowerId = ''
-        form.objectId = ''
-        form.startDate = new Date()
-        form.endDate = new Date()
+        form.borrowerId = 0
+        form.objectId = 0
+        form.startAt = new Date()
+        form.endAt = null
         currentStep.value = 1
     }
 </script>
@@ -107,7 +107,7 @@ import { createLending } from '~/services/lending';
         <select id="user" v-model="form.borrowerId" class="form-select">
           <option value="" disabled>Choisissez un utilisateur</option>
           <option v-for="user in users" :key="user.id" :value="user.id">
-            {{ user.pseudo }}
+            {{ user.userName }}
           </option>
         </select>
       </div>
@@ -124,13 +124,13 @@ import { createLending } from '~/services/lending';
 
       <div v-if="currentStep === 3" class="form-grid">
         <div class="form-field">
-          <label for="startDate" class="form-label">Date de début</label>
-          <input id="startDate" type="date" v-model="form.startDate" class="form-input" />
+          <label for="startAt" class="form-label">Date de début</label>
+          <input id="startAt" type="date" v-model="form.startAt" class="form-input" />
         </div>
 
         <div class="form-field">
-          <label for="endDate" class="form-label">Date de fin</label>
-          <input id="endDate" type="date" v-model="form.endDate" class="form-input" />
+          <label for="endAt" class="form-label">Date de fin</label>
+          <input id="endAt" type="date" v-model="form.endAt" class="form-input" />
         </div>
       </div>
     </div>

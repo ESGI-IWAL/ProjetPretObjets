@@ -6,3 +6,5 @@ export enum ELendingStatus {
   COMPLETED = "Terminé",
   CANCELED = "Annulé"
 }
+
+export type TLendingStatus = typeof ELendingStatus[keyof typeof ELendingStatus]
