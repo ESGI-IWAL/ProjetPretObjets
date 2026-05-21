@@ -36,6 +36,8 @@ class FixtureIntegrationTest {
     assertNotNull(object.getOwnedBy());
     assertEquals(user.getId(), object.getOwnedBy().getId());
     assertEquals(ObjectEntity.ObjectStatus.AVAILABLE, object.getStatus());
-    assertEquals(ObjectEntity.ObjectState.GOOD, object.getState());
+    assertEquals(ObjectEntity.EObjectStateOfWear.GOOD, object.getStateOfWear());
+    assertEquals(ObjectEntity.EObjectCategories.FURNITURE, object.getCategory());
+    assertEquals(ObjectEntity.EObjectMaterial.WOOD, object.getMaterial());
   }
 }

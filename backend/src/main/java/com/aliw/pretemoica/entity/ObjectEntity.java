@@ -25,7 +25,13 @@ public class ObjectEntity {
   private ObjectStatus status = ObjectStatus.AVAILABLE;
 
   @Enumerated(EnumType.STRING)
-  private ObjectState state;
+  private EObjectStateOfWear stateOfWear;
+
+  @Enumerated(EnumType.STRING)
+  private EObjectCategories category;
+
+  @Enumerated(EnumType.STRING)
+  private EObjectMaterial material;
 
   public ObjectEntity() {
     // En attente
@@ -38,10 +44,33 @@ public class ObjectEntity {
     UNAVAILABLE
   }
 
-  public enum ObjectState {
+  public enum EObjectStateOfWear {
     NEW,
     GOOD,
     WORN,
     DAMAGED
+  }
+
+  public enum EObjectCategories {
+    ELECTRONICS,
+    FURNITURE,
+    TOOLS,
+    CLOTHING,
+    BOOKS,
+    TOYS,
+    SPORTS,
+    OTHERS
+  }
+
+  public enum EObjectMaterial {
+    PLASTIC,
+    METAL,
+    WOOD,
+    FABRIC,
+    GLASS,
+    CERAMIC,
+    PAPER,
+    RUBBER,
+    OTHERS
   }
 }

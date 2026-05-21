@@ -19,7 +19,7 @@ public class ObjectMapperTest {
     owner.setId(7L);
     entity.setOwnedBy(owner);
     entity.setStatus(ObjectEntity.ObjectStatus.LENT);
-    entity.setState(ObjectEntity.ObjectState.GOOD);
+    entity.setStateOfWear(ObjectEntity.EObjectStateOfWear.GOOD);
 
     ObjectDto dto = ObjectMapper.toDto(entity);
 
@@ -28,7 +28,7 @@ public class ObjectMapperTest {
     assertEquals("Ball", dto.getName());
     assertEquals(7L, dto.getOwnedById());
     assertEquals(ObjectEntity.ObjectStatus.LENT, dto.getStatus());
-    assertEquals(ObjectEntity.ObjectState.GOOD, dto.getState());
+    assertEquals(ObjectEntity.EObjectStateOfWear.GOOD, dto.getStateOfWear());
   }
 
   @Test
@@ -38,7 +38,7 @@ public class ObjectMapperTest {
     dto.setName("Obj");
     dto.setOwnedById(9L);
     dto.setStatus(null);
-    dto.setState(ObjectEntity.ObjectState.NEW);
+    dto.setStateOfWear(ObjectEntity.EObjectStateOfWear.NEW);
 
     ObjectEntity entity = ObjectMapper.toEntity(dto);
 
@@ -49,7 +49,7 @@ public class ObjectMapperTest {
     assertEquals(9L, entity.getOwnedBy().getId());
     // when dto.status null, mapper sets AVAILABLE
     assertEquals(ObjectEntity.ObjectStatus.AVAILABLE, entity.getStatus());
-    assertEquals(ObjectEntity.ObjectState.NEW, entity.getState());
+    assertEquals(ObjectEntity.EObjectStateOfWear.NEW, entity.getStateOfWear());
   }
 
   @Test

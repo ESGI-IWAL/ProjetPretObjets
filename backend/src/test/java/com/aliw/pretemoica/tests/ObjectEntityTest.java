@@ -16,7 +16,7 @@ public class ObjectEntityTest {
     assertNull(obj.getName());
     assertNull(obj.getOwnedBy());
     assertEquals(ObjectEntity.ObjectStatus.AVAILABLE, obj.getStatus());
-    assertNull(obj.getState());
+    assertNull(obj.getStateOfWear());
   }
 
   @Test
@@ -28,12 +28,12 @@ public class ObjectEntityTest {
     obj.setName("Test Object");
     obj.setOwnedBy(owner);
     obj.setStatus(ObjectEntity.ObjectStatus.LENT);
-    obj.setState(ObjectEntity.ObjectState.GOOD);
+    obj.setStateOfWear(ObjectEntity.EObjectStateOfWear.GOOD);
 
     assertEquals("Test Object", obj.getName());
     assertEquals(owner, obj.getOwnedBy());
     assertEquals(ObjectEntity.ObjectStatus.LENT, obj.getStatus());
-    assertEquals(ObjectEntity.ObjectState.GOOD, obj.getState());
+    assertEquals(ObjectEntity.EObjectStateOfWear.GOOD, obj.getStateOfWear());
   }
 
   @Test
@@ -46,10 +46,10 @@ public class ObjectEntityTest {
   }
 
   @Test
-  public void testObjectStateEnum() {
-    assertNotNull(ObjectEntity.ObjectState.NEW);
-    assertNotNull(ObjectEntity.ObjectState.GOOD);
-    assertNotNull(ObjectEntity.ObjectState.WORN);
-    assertNotNull(ObjectEntity.ObjectState.DAMAGED);
+  public void testEObjectStateOfWearEnum() {
+    assertNotNull(ObjectEntity.EObjectStateOfWear.NEW);
+    assertNotNull(ObjectEntity.EObjectStateOfWear.GOOD);
+    assertNotNull(ObjectEntity.EObjectStateOfWear.WORN);
+    assertNotNull(ObjectEntity.EObjectStateOfWear.DAMAGED);
   }
 }

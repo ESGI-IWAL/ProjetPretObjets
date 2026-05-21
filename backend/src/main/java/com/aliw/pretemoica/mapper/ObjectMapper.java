@@ -21,7 +21,9 @@ public final class ObjectMapper {
     dto.setName(entity.getName());
     dto.setOwnedById(entity.getOwnedBy() != null ? entity.getOwnedBy().getId() : null);
     dto.setStatus(entity.getStatus());
-    dto.setState(entity.getState());
+    dto.setStateOfWear(entity.getStateOfWear());
+    dto.setCategory(entity.getCategory());
+    dto.setMaterial(entity.getMaterial());
     return dto;
   }
 
@@ -35,7 +37,9 @@ public final class ObjectMapper {
     entity.setName(dto.getName());
     entity.setStatus(
         dto.getStatus() != null ? dto.getStatus() : ObjectEntity.ObjectStatus.AVAILABLE);
-    entity.setState(dto.getState());
+    entity.setStateOfWear(dto.getStateOfWear());
+    entity.setCategory(dto.getCategory());
+    entity.setMaterial(dto.getMaterial());
     if (dto.getOwnedById() != null) {
       entity.setOwnedBy(toUserReference(dto.getOwnedById()));
     }
