@@ -4,7 +4,6 @@ import com.aliw.pretemoica.dto.auth.AuthResponse;
 import com.aliw.pretemoica.dto.auth.LoginRequest;
 import com.aliw.pretemoica.dto.auth.RegisterRequest;
 import com.aliw.pretemoica.service.AuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-  @Autowired private AuthenticationService authenticationService;
+  private final AuthenticationService authenticationService;
+
+  public AuthController(AuthenticationService authenticationService) {
+    this.authenticationService = authenticationService;
+  }
 
   /**
    * Register a new user
