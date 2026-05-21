@@ -3,7 +3,9 @@ package com.aliw.pretemoica.tests;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.aliw.pretemoica.dto.LendingSearchDto;
 import com.aliw.pretemoica.entity.LendingEntity;
+import com.aliw.pretemoica.entity.LendingStatus;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.repository.LendingRepository;
 import com.aliw.pretemoica.service.LendingService;
@@ -44,6 +46,25 @@ public class LendingServiceTest {
 
     assertEquals(2, list.size());
     verify(lendingRepository, times(1)).findAll();
+  }
+
+  @Test
+  public void searchShouldDelegateToRepositoryWithNormalizedCriteria() {
+    LendingSearchDto searchDto = new LendingSearchDto();
+    searchDto.setObjectName("  Vélo  ");
+    searchDto.setBorrowerName("  bob  ");
+    searchDto.setStatus(LendingStatus.COMPLETED);
+
+    LendingEntity lending = new LendingEntity();
+    lending.setId(9L);
+    when(lendingRepository.search("Vélo", "bob", null, null, LendingStatus.COMPLETED))
+        .thenReturn(List.of(lending));
+
+    List<LendingEntity> result = lendingService.search(searchDto);
+
+    assertEquals(1, result.size());
+    assertEquals(lending, result.get(0));
+    verify(lendingRepository, times(1)).search("Vélo", "bob", null, null, LendingStatus.COMPLETED);
   }
 
   @Test

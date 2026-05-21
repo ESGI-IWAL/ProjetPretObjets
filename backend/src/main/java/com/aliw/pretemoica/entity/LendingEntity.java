@@ -27,10 +27,14 @@ public class LendingEntity {
   @JoinColumn(name = "object_id", nullable = false)
   private ObjectEntity object;
 
+  @Enumerated(EnumType.STRING)
+  private LendingStatus status;
+
   private LocalDateTime startedAt;
   private LocalDateTime endedAt;
 
   public LendingEntity() {
     this.startedAt = LocalDateTime.now();
+    this.status = LendingStatus.IN_PROGRESS;
   }
 }

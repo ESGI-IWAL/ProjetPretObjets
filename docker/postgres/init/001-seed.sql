@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS lending (
   borrowed_by_id BIGINT NOT NULL REFERENCES app_user(id),
   offered_by_id BIGINT NOT NULL REFERENCES app_user(id),
   object_id BIGINT NOT NULL REFERENCES object(id),
+  status VARCHAR(32),
   started_at TIMESTAMP,
   ended_at TIMESTAMP
 );
@@ -35,6 +36,7 @@ CREATE TABLE IF NOT EXISTS lending_history (
   borrowed_by_id BIGINT NOT NULL REFERENCES app_user(id),
   offered_by_id BIGINT NOT NULL REFERENCES app_user(id),
   object_id BIGINT NOT NULL REFERENCES object(id),
+  status VARCHAR(32),
   started_at TIMESTAMP,
   ended_at TIMESTAMP
 );
@@ -64,20 +66,20 @@ VALUES
   (6, 'Vélo', 'Vélo de ville', 12.5, '170x25x100 cm', 3, 'GOOD', 'SPORTS', 'METAL');
 
 -- Prêts en cours / passés (lending)
-INSERT INTO lending (id, borrowed_by_id, offered_by_id, object_id, started_at, ended_at)
+INSERT INTO lending (id, borrowed_by_id, offered_by_id, object_id, status, started_at, ended_at)
 VALUES
   -- prêt passé : Bob a emprunté la Chaise à Alice et rendu
-  (1, 2, 1, 1, '2024-01-10 09:00:00', '2024-01-20 18:00:00'),
+  (1, 2, 1, 1, 'COMPLETED', '2024-01-10 09:00:00', '2024-01-20 18:00:00'),
   -- prêt en cours : Carol a emprunté la Lampe (object 3)
-  (2, 3, 2, 3, '2024-05-01 10:00:00', NULL),
+  (2, 3, 2, 3, 'IN_PROGRESS', '2024-05-01 10:00:00', NULL),
   -- prêt passé : Dave a emprunté la Perceuse à Bob
-  (3, 4, 2, 2, '2023-06-05 08:30:00', '2023-06-12 12:00:00');
+  (3, 4, 2, 2, 'COMPLETED', '2023-06-05 08:30:00', '2023-06-12 12:00:00');
 
 -- Historique des prêts
-INSERT INTO lending_history (id, borrowed_by_id, offered_by_id, object_id, started_at, ended_at)
+INSERT INTO lending_history (id, borrowed_by_id, offered_by_id, object_id, status, started_at, ended_at)
 VALUES
-  (1, 2, 1, 1, '2024-01-10 09:00:00', '2024-01-20 18:00:00'),
-  (2, 4, 2, 2, '2023-06-05 08:30:00', '2023-06-12 12:00:00');
+  (1, 2, 1, 1, 'COMPLETED', '2024-01-10 09:00:00', '2024-01-20 18:00:00'),
+  (2, 4, 2, 2, 'COMPLETED', '2023-06-05 08:30:00', '2023-06-12 12:00:00');
 
 -- Ajuster les séquences identity pour éviter les conflits si on insère des ids manuellement
 SELECT setval(pg_get_serial_sequence('app_user','id'), COALESCE((SELECT MAX(id) FROM app_user), 1));

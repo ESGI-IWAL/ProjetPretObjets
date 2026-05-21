@@ -11,13 +11,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LendingDto {
+public class LendingSearchDto {
 
-  private Long id;
-  private Long borrowedById;
-  private Long offeredById;
-  private Long objectId;
+  private String objectName;
+  private String borrowerName;
+  private LocalDateTime startAt;
+  private LocalDateTime endAt;
   private LendingStatus status;
-  private LocalDateTime startedAt;
-  private LocalDateTime endedAt;
 }

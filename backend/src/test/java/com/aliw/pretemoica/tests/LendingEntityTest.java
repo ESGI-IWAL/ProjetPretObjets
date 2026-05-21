@@ -3,6 +3,7 @@ package com.aliw.pretemoica.tests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.aliw.pretemoica.entity.LendingEntity;
+import com.aliw.pretemoica.entity.LendingStatus;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ class LendingEntityTest {
     assertNull(lending.getBorrowedBy());
     assertNull(lending.getOfferedBy());
     assertNull(lending.getObject());
+    assertEquals(LendingStatus.IN_PROGRESS, lending.getStatus());
     assertNotNull(lending.getStartedAt()); // should be set to now
     assertNull(lending.getEndedAt());
   }
@@ -41,12 +43,14 @@ class LendingEntityTest {
     lending.setBorrowedBy(borrower);
     lending.setOfferedBy(offerer);
     lending.setObject(obj);
+    lending.setStatus(LendingStatus.COMPLETED);
     lending.setStartedAt(start);
     lending.setEndedAt(end);
 
     assertEquals(borrower, lending.getBorrowedBy());
     assertEquals(offerer, lending.getOfferedBy());
     assertEquals(obj, lending.getObject());
+    assertEquals(LendingStatus.COMPLETED, lending.getStatus());
     assertEquals(start, lending.getStartedAt());
     assertEquals(end, lending.getEndedAt());
   }

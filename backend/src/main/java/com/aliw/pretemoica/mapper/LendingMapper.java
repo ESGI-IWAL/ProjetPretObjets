@@ -2,6 +2,7 @@ package com.aliw.pretemoica.mapper;
 
 import com.aliw.pretemoica.dto.LendingDto;
 import com.aliw.pretemoica.entity.LendingEntity;
+import com.aliw.pretemoica.entity.LendingStatus;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public final class LendingMapper {
     dto.setBorrowedById(entity.getBorrowedBy() != null ? entity.getBorrowedBy().getId() : null);
     dto.setOfferedById(entity.getOfferedBy() != null ? entity.getOfferedBy().getId() : null);
     dto.setObjectId(entity.getObject() != null ? entity.getObject().getId() : null);
+    dto.setStatus(entity.getStatus());
     dto.setStartedAt(entity.getStartedAt());
     dto.setEndedAt(entity.getEndedAt());
     return dto;
@@ -36,6 +38,11 @@ public final class LendingMapper {
     entity.setId(dto.getId());
     entity.setStartedAt(dto.getStartedAt() != null ? dto.getStartedAt() : entity.getStartedAt());
     entity.setEndedAt(dto.getEndedAt());
+    if (dto.getStatus() != null) {
+      entity.setStatus(dto.getStatus());
+    } else if (dto.getEndedAt() != null) {
+      entity.setStatus(LendingStatus.COMPLETED);
+    }
 
     if (dto.getBorrowedById() != null) {
       entity.setBorrowedBy(toUserReference(dto.getBorrowedById()));

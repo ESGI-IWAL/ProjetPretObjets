@@ -1,6 +1,7 @@
 package com.aliw.pretemoica.controller;
 
 import com.aliw.pretemoica.dto.LendingDto;
+import com.aliw.pretemoica.dto.LendingSearchDto;
 import com.aliw.pretemoica.mapper.LendingMapper;
 import com.aliw.pretemoica.service.LendingService;
 import java.util.List;
@@ -19,6 +20,12 @@ public class LendingController {
   @GetMapping
   public List<LendingDto> getAllLendings() {
     return LendingMapper.toDtoList(lendingService.getAll());
+  }
+
+  @PostMapping("/search")
+  public List<LendingDto> searchLendings(
+      @RequestBody(required = false) LendingSearchDto searchDto) {
+    return LendingMapper.toDtoList(lendingService.search(searchDto));
   }
 
   @GetMapping("/{id}")
