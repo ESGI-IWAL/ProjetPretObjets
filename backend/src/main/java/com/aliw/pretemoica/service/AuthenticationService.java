@@ -7,18 +7,24 @@ import com.aliw.pretemoica.entity.UserEntity;
 import com.aliw.pretemoica.repository.UserRepository;
 import com.aliw.pretemoica.security.JwtUtil;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationService {
 
-  @Autowired private UserRepository userRepository;
+  private final UserRepository userRepository;
 
-  @Autowired private JwtUtil jwtUtil;
+  private final JwtUtil jwtUtil;
 
-  @Autowired private PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
+
+  public AuthenticationService(
+      UserRepository userRepository, JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
+    this.userRepository = userRepository;
+    this.jwtUtil = jwtUtil;
+    this.passwordEncoder = passwordEncoder;
+  }
 
   /**
    * Register a new user
