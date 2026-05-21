@@ -2,7 +2,7 @@
 import type { IUpdateLendingDto } from '~/dto/lending/update.dto';
 import type { ILending } from '~/types/lending';
 
-    defineProps<{
+    const props = defineProps<{
         lending: ILending
     }>()
 
@@ -11,8 +11,8 @@ import type { ILending } from '~/types/lending';
 
     const emit = defineEmits(['handleSubmitUpdate', 'delete'])
 
-    const handleSubmitUpdate = (updateLending : IUpdateLendingDto) => {
-        emit('handleSubmitUpdate', updateLending)
+    const handleSubmitUpdate = (updateLending : Omit<IUpdateLendingDto, "id">) => {
+        emit('handleSubmitUpdate', {...updateLending, id: props.lending})
         editMode.value = false
     }
 

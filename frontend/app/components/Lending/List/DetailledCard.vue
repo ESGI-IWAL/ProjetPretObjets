@@ -15,7 +15,7 @@ defineProps<{
                 <p class="font-medium text-gray-900">{{ lending.object.name }}</p>
             </div>
 
-            <div @click="() => navigateTo(`/user/${lending.borrower.id}`)" class="card-link space-y-2">
+            <div @click="() => navigateTo(`/users/${lending.borrower.id}`)" class="card-link space-y-2">
                 <p class="text-sm font-semibold text-gray-700">Emprunteur</p>
                 <img :src="lending.borrower.avatar" alt="Avatar de l'emprunteur" class="avatar-md" />
                 <p class="font-medium text-gray-900">{{ lending.borrower.userName }}</p>
@@ -24,7 +24,7 @@ defineProps<{
             <div class="space-y-2">
                 <p class="text-sm font-semibold text-gray-700">Durée du prêt</p>
                 <p class="text-sm text-gray-600">Du {{ lending.startAt }} au {{ lending.endAt }}</p>
-                <button @click="() => navigateTo(`/lending/${lending.id}`)" type="button" class="form-button-primary w-fit">
+                <button @click="() => navigateTo(`/lendings/${lending.id}`)" type="button" class="form-button-primary w-fit">
                     Voir plus
                 </button>
             </div>

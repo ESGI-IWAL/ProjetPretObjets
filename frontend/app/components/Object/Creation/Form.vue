@@ -1,75 +1,73 @@
 <script setup lang="ts">
-import type { ICreateObjectDto } from '~/dto/object/create.dto';
-import { EObjectCategories } from '~/enums/object/categories.enum';
-import { EObjectMaterial } from '~/enums/object/material.enum';
-import { EObjectStateOfWear } from '~/enums/object/state-of-wear.enum';
-import { EObjectStatus } from '~/enums/object/status.enum';
-import { createObject } from '~/services/object';
+// import type { ICreateObjectDto } from '~/dto/object/create.dto';
+// import { EObjectCategories } from '~/enums/object/categories.enum';
+// import { EObjectMaterial } from '~/enums/object/material.enum';
+// import { EObjectState } from '~/enums/object/state.enum';
+// import { createObject } from '~/services/object';
 
-const router = useRouter();
+// const router = useRouter();
 
-const form = reactive<ICreateObjectDto>({
-  image: '',
-  name: '',
-  description: '',
-  category: EObjectCategories.AUTRES,
-  disponibility: EObjectStatus.DISPONIBLE,
-  weight: 0,
-  dimensions: '',
-  stateOfWear: EObjectStateOfWear.PEU_UTILISE,
-  material: EObjectMaterial.AUTRES,
-});
+// const form = reactive<ICreateObjectDto>({
+//   images: [],
+//   name: '',
+//   description: '',
+//   category: EObjectCategories.OTHERS,
+//   weight: 0,
+//   dimensions: '',
+//   state: EObjectState.GOOD,
+//   material: EObjectMaterial.OTHERS,
+// });
 
-const isSubmitting = ref(false);
-const errorMessage = ref('');
+// const isSubmitting = ref(false);
+// const errorMessage = ref('');
 
-const categoryOptions = Object.values(EObjectCategories) as EObjectCategories[];
-const stateOfWearOptions = Object.values(EObjectStateOfWear) as EObjectStateOfWear[];
-const materialOptions = Object.values(EObjectMaterial) as EObjectMaterial[];
+// const categoryOptions = Object.values(EObjectCategories) as EObjectCategories[];
+// const stateOfWearOptions = Object.values(EObjectState) as EObjectState[];
+// const materialOptions = Object.values(EObjectMaterial) as EObjectMaterial[];
 
-const resetForm = () => {
-  form.image = '';
-  form.name = '';
-  form.description = '';
-  form.category = EObjectCategories.AUTRES;
-  form.disponibility = EObjectStatus.DISPONIBLE;
-  form.weight = 0;
-  form.dimensions = '';
-  form.stateOfWear = EObjectStateOfWear.PEU_UTILISE;
-  form.material = EObjectMaterial.AUTRES;
-};
+// const resetForm = () => {
+//   form.image = '';
+//   form.name = '';
+//   form.description = '';
+//   form.category = EObjectCategories.AUTRES;
+//   form.disponibility = EObjectStatus.DISPONIBLE;
+//   form.weight = 0;
+//   form.dimensions = '';
+//   form.stateOfWear = EObjectState.PEU_UTILISE;
+//   form.material = EObjectMaterial.AUTRES;
+// };
 
-const handleCancel = async () => {
-  await router.push('/object');
-};
+// const handleCancel = async () => {
+//   await router.push('/object');
+// };
 
-const handleSubmit = async () => {
-  if (isSubmitting.value) {
-    return;
-  }
+// const handleSubmit = async () => {
+//   if (isSubmitting.value) {
+//     return;
+//   }
 
-  errorMessage.value = '';
-  isSubmitting.value = true;
+//   errorMessage.value = '';
+//   isSubmitting.value = true;
 
-  try {
-    await createObject({
-      ...form,
-      weight: Number(form.weight),
-      disponibility: EObjectStatus.DISPONIBLE,
-    });
+//   try {
+//     await createObject({
+//       ...form,
+//       weight: Number(form.weight),
+//       disponibility: EObjectStatus.DISPONIBLE,
+//     });
 
-    resetForm();
-    await router.push('/object');
-  } catch (error) {
-    errorMessage.value = 'Impossible de créer l’objet pour le moment. Vérifie les champs et réessaie.';
-  } finally {
-    isSubmitting.value = false;
-  }
-};
+//     resetForm();
+//     await router.push('/object');
+//   } catch (error) {
+//     errorMessage.value = 'Impossible de créer l’objet pour le moment. Vérifie les champs et réessaie.';
+//   } finally {
+//     isSubmitting.value = false;
+//   }
+// };
 </script>
 
 <template>
-  <form class="form-content" @submit.prevent="handleSubmit">
+  <!-- <form class="form-content" @submit.prevent="handleSubmit">
     <div class="form-grid">
       <div class="form-field sm:col-span-2">
         <label for="image" class="form-label">Image</label>
@@ -168,7 +166,7 @@ const handleSubmit = async () => {
     <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
 
     <ButtonForm :cancelForm="handleCancel" :validateForm="handleSubmit" />
-  </form>
+  </form> -->
 </template>
 
 <style scoped>

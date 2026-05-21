@@ -21,16 +21,16 @@ const handleClick = () => {
         <div>
           <h3 class="flex text-lg font-semibold mb-2"> Prêts </h3>
           <div class="flex flex-col gap-3 ml-4">
-            <NuxtLink to="/lending" class="link"> En cours </NuxtLink>
-            <NuxtLink to="/lending/history" class="link"> Historique </NuxtLink>
-            <NuxtLink to="/lending/new" class="link"> Nouveau </NuxtLink>
+            <NuxtLink to="/lendings" class="link"> En cours </NuxtLink>
+            <NuxtLink to="/lendings/history" class="link"> Historique </NuxtLink>
+            <NuxtLink to="/lendings/new" class="link"> Nouveau </NuxtLink>
           </div>
         </div>       
         <div>
           <h3 class="flex text-lg font-semibold mb-2"> Objets </h3>
           <div class="flex flex-col gap-3 ml-4">
-            <NuxtLink to="/object" class="link"> Liste </NuxtLink>
-            <NuxtLink to="/object/new" class="link"> Nouveau </NuxtLink>
+            <NuxtLink to="/objects" class="link"> Liste </NuxtLink>
+            <NuxtLink to="/objects/new" class="link"> Nouveau </NuxtLink>
           </div>
         </div>
       </div>

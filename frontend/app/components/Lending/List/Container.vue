@@ -12,7 +12,7 @@ function search(dto : ISearchLendingDto) {
 }
 
 const handleClick = (lending : ILending) => {
-    navigateTo(`/lending/${lending.id}`)
+    navigateTo(`/lendings/${lending.id}`)
     }
 </script>
 
@@ -23,7 +23,7 @@ const handleClick = (lending : ILending) => {
         </section>
 
         <div class="flex justify-end">
-            <ButtonCreation :navigation-creation="() => navigateTo('/lending/new')" label="Créer un prêt"/>
+            <ButtonCreation :navigation-creation="() => navigateTo('/lendings/new')" label="Créer un prêt"/>
         </div>
 
         <div v-if="lendings.length === 0" class="surface-card text-center text-gray-500">

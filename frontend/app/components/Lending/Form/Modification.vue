@@ -21,7 +21,7 @@
     })
 
     const handleSubmitUpdate = async() => {
-        emit('handleSubmitUpdate', {})
+        emit('handleSubmitUpdate', {endAt: toDateValue(editableEndDate.value), editableStartDate: toDateValue(editableEndDate.value)})
     }
 
     const handleCancelEdit = () => {

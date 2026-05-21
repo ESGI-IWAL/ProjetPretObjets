@@ -8,7 +8,7 @@ const route = useRoute()
 const lending = ref<ILending | null>(null)
 lending.value = await getLendingById(Number(route.params.id))
 
-const handleValidateForm = async(updateLendingDto: IUpdateLendingDto) => {
+const handleValidateForm = async(updateLendingDto:IUpdateLendingDto) => {
     await updateLending(updateLendingDto)
     lending.value = await getLendingById(updateLendingDto.id)
 }

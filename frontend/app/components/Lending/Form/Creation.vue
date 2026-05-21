@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import type { ICreateLendingDto } from '~/dto/lending/create.dto';
-import { createLending } from '~/services/lending';
+    import { createLending } from '~/services/lending';
     import type { IObject } from '~/types/object';
     import type { IUser } from '~/types/user';
 
@@ -76,14 +76,14 @@ import { createLending } from '~/services/lending';
             currentStep.value--
         } else {
             resetForm()
-            navigateTo('/lending')
+            navigateTo('/lendings')
         }
     }
 
     const handleValidateForm = async () => {
         await createLending(form)
         resetForm()
-        navigateTo('/lending')
+        navigateTo('/lendings')
     }
 
     const resetForm = () => {

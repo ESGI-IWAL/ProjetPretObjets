@@ -1,15 +1,27 @@
 <script setup lang="ts">
+import AutoComplete from '~/components/AutoComplete.vue';
 import type { ISearchLendingDto } from '~/dto/lending/search.dto';
 import { ELendingStatus } from '~/enums/lending/status.enum';
+import { getObjects } from '~/services/object';
 
 const emit = defineEmits(['search'])
 
 const form = reactive<ISearchLendingDto>({
     objectName: "",
     borrowerName: "",
-    startAt: undefined,
-    endAt: undefined,
+    startAt: null,
+    endAt: null,
     status: ELendingStatus.IN_PROGRESS
+})
+
+const objectNames = ref<string[]| null>(null)
+onMounted(async () => {
+    try{
+        const objects = await getObjects()
+        objectNames.value = objects.map(objet => objet.name)
+    } catch {
+        objectNames.value= []
+    }
 })
 
 </script>
@@ -19,6 +31,7 @@ const form = reactive<ISearchLendingDto>({
         <div class="form-grid">
             <div class="form-field">
                 <label class="form-label" for="objectName">Objet</label>
+                            <AutoComplete :model-value="form.objectName" :options="objectNames ?? []" :placeholder="'Nom de l\'objet'"/>
                 <input id="objectName" v-model="form.objectName" class="form-input" placeholder="Nom de l'objet"/>
             </div>
 

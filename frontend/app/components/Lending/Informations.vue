@@ -12,14 +12,14 @@ import type { ILending } from '~/types/lending';
         <div>
             <div>
                 <h2 class="text-xl font-semibold">Emprunteur</h2>
-                <div @click="() => navigateTo(`/user/${lending.borrower.id}`)">
+                <div @click="() => navigateTo(`/users/${lending.borrower.id}`)">
                     <img :src="lending.borrower.avatar" alt="Avatar de l'emprunteur" class="w-16 h-16 rounded-full" />
                     <p>{{ lending.borrower.userName }}</p>
                 </div>
             </div>
             <div>
                 <h2 class="text-xl font-semibold">Objet prêté</h2>
-                <div @click="() => navigateTo(`/object/${lending.object.id}`)">
+                <div @click="() => navigateTo(`/objects/${lending.object.id}`)">
                     <img :src="lending.object.images[0]" alt="Objet prêté" class="w-32 h-32 object-cover" />
                     <p>{{ lending.object.name }}</p>
                 </div>
