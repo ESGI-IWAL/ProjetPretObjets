@@ -3,6 +3,7 @@ package com.aliw.pretemoica.tests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.aliw.pretemoica.dto.ObjectDto;
+import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
 import com.aliw.pretemoica.mapper.ObjectMapper;
@@ -70,5 +71,48 @@ public class ObjectMapperTest {
     assertEquals(0, ObjectMapper.toDtoList(null).size());
     assertNotNull(ObjectMapper.toEntityList(null));
     assertEquals(0, ObjectMapper.toEntityList(null).size());
+  }
+
+  @Test
+  public void toEntityFromUpdateShouldUpdateOnlyProvidedFields() {
+    ObjectEntity existingEntity = new ObjectEntity();
+    existingEntity.setId(5L);
+    existingEntity.setName("Original Name");
+    existingEntity.setDescription("Original Description");
+    existingEntity.setWeight(2.0d);
+    existingEntity.setDimensions("10x10x10 cm");
+    existingEntity.setStateOfWear(ObjectEntity.ObjectStateOfWear.NEW);
+    existingEntity.setCategory(ObjectEntity.ObjectCategories.ELECTRONICS);
+    existingEntity.setMaterial(ObjectEntity.ObjectMaterial.PLASTIC);
+
+    UpdateObjectDto updateDto = new UpdateObjectDto();
+    updateDto.setName("Updated Name");
+    updateDto.setWeight(3.5d);
+    // description, dimensions, state, category, material are null (not updated)
+
+    ObjectEntity updatedEntity = ObjectMapper.toEntityFromUpdate(updateDto, existingEntity);
+
+    assertNotNull(updatedEntity);
+    assertEquals(5L, updatedEntity.getId());
+    assertEquals("Updated Name", updatedEntity.getName());
+    assertEquals("Original Description", updatedEntity.getDescription());
+    assertEquals(3.5d, updatedEntity.getWeight());
+    assertEquals("10x10x10 cm", updatedEntity.getDimensions());
+    assertEquals(ObjectEntity.ObjectStateOfWear.NEW, updatedEntity.getStateOfWear());
+    assertEquals(ObjectEntity.ObjectCategories.ELECTRONICS, updatedEntity.getCategory());
+    assertEquals(ObjectEntity.ObjectMaterial.PLASTIC, updatedEntity.getMaterial());
+  }
+
+  @Test
+  public void toEntityFromUpdateWithNullDtoShouldReturnUnchangedEntity() {
+    ObjectEntity entity = new ObjectEntity();
+    entity.setId(6L);
+    entity.setName("Name");
+
+    ObjectEntity result = ObjectMapper.toEntityFromUpdate(null, entity);
+
+    assertEquals(entity, result);
+    assertEquals(6L, result.getId());
+    assertEquals("Name", result.getName());
   }
 }

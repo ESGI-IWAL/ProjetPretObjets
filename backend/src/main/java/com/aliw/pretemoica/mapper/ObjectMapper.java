@@ -2,6 +2,7 @@ package com.aliw.pretemoica.mapper;
 
 import com.aliw.pretemoica.dto.CreateObjectDto;
 import com.aliw.pretemoica.dto.ObjectDto;
+import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
 import java.util.ArrayList;
@@ -85,6 +86,35 @@ public final class ObjectMapper {
     entity.setCategory(dto.getCategory());
     entity.setMaterial(dto.getMaterial());
     entity.setStatus(ObjectEntity.ObjectStatus.AVAILABLE);
+    return entity;
+  }
+
+  public static ObjectEntity toEntityFromUpdate(UpdateObjectDto dto, ObjectEntity entity) {
+    if (dto == null) {
+      return entity;
+    }
+
+    if (dto.getName() != null) {
+      entity.setName(dto.getName());
+    }
+    if (dto.getDescription() != null) {
+      entity.setDescription(dto.getDescription());
+    }
+    if (dto.getWeight() != null) {
+      entity.setWeight(dto.getWeight());
+    }
+    if (dto.getDimensions() != null) {
+      entity.setDimensions(dto.getDimensions());
+    }
+    if (dto.getStateOfWear() != null) {
+      entity.setStateOfWear(dto.getState());
+    }
+    if (dto.getCategory() != null) {
+      entity.setCategory(dto.getCategory());
+    }
+    if (dto.getMaterial() != null) {
+      entity.setMaterial(dto.getMaterial());
+    }
     return entity;
   }
 

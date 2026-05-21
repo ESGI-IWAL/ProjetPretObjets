@@ -2,6 +2,7 @@ package com.aliw.pretemoica.service;
 
 import com.aliw.pretemoica.dto.CreateObjectDto;
 import com.aliw.pretemoica.dto.ObjectDto;
+import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.ObjectMapper;
@@ -53,5 +54,12 @@ public class ObjectService {
   public void delete(Long id) {
     ObjectEntity objectEntity = getById(id);
     objectRepository.delete(objectEntity);
+  }
+
+  public ObjectDto update(Long id, UpdateObjectDto updateObjectDto) {
+    ObjectEntity objectEntity = getById(id);
+    ObjectEntity updatedEntity = ObjectMapper.toEntityFromUpdate(updateObjectDto, objectEntity);
+    ObjectEntity savedEntity = objectRepository.save(updatedEntity);
+    return ObjectMapper.toDto(savedEntity);
   }
 }

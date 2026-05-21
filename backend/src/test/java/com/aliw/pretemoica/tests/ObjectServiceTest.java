@@ -3,6 +3,7 @@ package com.aliw.pretemoica.tests;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.repository.ObjectRepository;
@@ -79,5 +80,37 @@ public class ObjectServiceTest {
     objectService.delete(3L);
 
     verify(objectRepository, times(1)).delete(o);
+  }
+
+  @Test
+  public void updateShouldUpdateObjectWhenFound() {
+    ObjectEntity existingObject = new ObjectEntity();
+    existingObject.setId(5L);
+    existingObject.setName("Original Name");
+    existingObject.setDescription("Original Description");
+    existingObject.setWeight(2.0d);
+
+    UpdateObjectDto updateDto = new UpdateObjectDto();
+    updateDto.setName("Updated Name");
+    updateDto.setWeight(3.5d);
+
+    when(objectRepository.findById(5L)).thenReturn(Optional.of(existingObject));
+    when(objectRepository.save(any(ObjectEntity.class))).thenReturn(existingObject);
+
+    objectService.update(5L, updateDto);
+
+    verify(objectRepository, times(1)).findById(5L);
+    verify(objectRepository, times(1)).save(any(ObjectEntity.class));
+  }
+
+  @Test
+  public void updateShouldThrowWhenObjectNotFound() {
+    UpdateObjectDto updateDto = new UpdateObjectDto();
+    when(objectRepository.findById(99L)).thenReturn(Optional.empty());
+
+    ResourceNotFoundException ex =
+        assertThrows(
+            ResourceNotFoundException.class, () -> objectService.update(99L, updateDto));
+    assertTrue(ex.getMessage().contains("99"));
   }
 }

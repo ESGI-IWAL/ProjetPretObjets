@@ -2,6 +2,8 @@ package com.aliw.pretemoica.controller;
 
 import com.aliw.pretemoica.dto.CreateObjectDto;
 import com.aliw.pretemoica.dto.ObjectDto;
+import com.aliw.pretemoica.dto.UpdateObjectDto;
+import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.ObjectMapper;
 import com.aliw.pretemoica.service.ObjectService;
 import com.aliw.pretemoica.service.UserService;
@@ -45,6 +47,19 @@ public class ObjectController {
       return ResponseEntity.status(HttpStatus.CREATED).body(createdObject);
     } catch (IllegalArgumentException e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<ObjectDto> updateObject(
+      @PathVariable Long id, @Valid @RequestBody UpdateObjectDto updateObjectDto) {
+    try {
+      ObjectDto updatedObject = objectService.update(id, updateObjectDto);
+      return ResponseEntity.ok(updatedObject);
+    } catch (ResourceNotFoundException e) {
+      return ResponseEntity.notFound().build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
