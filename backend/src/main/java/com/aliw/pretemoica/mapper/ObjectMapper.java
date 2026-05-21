@@ -102,7 +102,7 @@ public final class ObjectMapper {
     if (dto.getDimensions() != null) {
       entity.setDimensions(dto.getDimensions());
     }
-    if (dto.getState() != null) {
+    if (dto.getStateOfWear() != null) {
       entity.setStateOfWear(dto.getState());
     }
     if (dto.getCategory() != null) {

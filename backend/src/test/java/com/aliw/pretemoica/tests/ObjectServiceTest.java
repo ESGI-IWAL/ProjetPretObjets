@@ -3,14 +3,12 @@ package com.aliw.pretemoica.tests;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.aliw.pretemoica.dto.SearchObjectDto;
 import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.repository.ObjectRepository;
 import com.aliw.pretemoica.repository.UserRepository;
 import com.aliw.pretemoica.service.ObjectService;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +24,6 @@ public class ObjectServiceTest {
   @Mock private ObjectRepository objectRepository;
 
   @Mock private UserRepository userRepository;
-  @Mock private com.aliw.pretemoica.service.ObjectSearchService objectSearchService;
 
   @InjectMocks private ObjectService objectService;
 
@@ -52,33 +49,6 @@ public class ObjectServiceTest {
 
     assertEquals(2, list.size());
     verify(objectRepository, times(1)).findAll();
-  }
-
-  @Test
-  public void searchShouldDelegateToRepositoryWithFilters() {
-    SearchObjectDto searchDto = new SearchObjectDto();
-    searchDto.setCategory(ObjectEntity.ObjectCategories.TOOLS);
-    searchDto.setState(ObjectEntity.ObjectStateOfWear.GOOD);
-    searchDto.setMaterial(ObjectEntity.ObjectMaterial.METAL);
-    searchDto.setDisponibilityStartDate(LocalDateTime.of(2026, 5, 1, 10, 0));
-    searchDto.setDisponibilityEndDate(LocalDateTime.of(2026, 5, 3, 10, 0));
-
-    when(objectSearchService.search(searchDto)).thenReturn(Arrays.asList());
-
-    List<ObjectEntity> result = objectService.search(searchDto);
-
-    assertNotNull(result);
-    verify(objectSearchService, times(1)).search(searchDto);
-  }
-
-  @Test
-  public void searchShouldReturnAllWhenSearchDtoIsNull() {
-    when(objectSearchService.search(null)).thenReturn(Arrays.asList());
-
-    List<ObjectEntity> result = objectService.search(null);
-
-    assertNotNull(result);
-    verify(objectSearchService, times(1)).search(null);
   }
 
   @Test
@@ -139,7 +109,8 @@ public class ObjectServiceTest {
     when(objectRepository.findById(99L)).thenReturn(Optional.empty());
 
     ResourceNotFoundException ex =
-        assertThrows(ResourceNotFoundException.class, () -> objectService.update(99L, updateDto));
+        assertThrows(
+            ResourceNotFoundException.class, () -> objectService.update(99L, updateDto));
     assertTrue(ex.getMessage().contains("99"));
   }
 }

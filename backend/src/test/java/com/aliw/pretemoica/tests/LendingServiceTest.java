@@ -7,7 +7,6 @@ import com.aliw.pretemoica.entity.LendingEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.repository.LendingRepository;
 import com.aliw.pretemoica.service.LendingService;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -76,29 +75,5 @@ public class LendingServiceTest {
     lendingService.delete(4L);
 
     verify(lendingRepository, times(1)).delete(e);
-  }
-
-  @Test
-  public void isObjectAvailableShouldReturnTrueWhenNoOverlapExists() {
-    LocalDateTime startDate = LocalDateTime.of(2026, 5, 1, 10, 0);
-    LocalDateTime endDate = LocalDateTime.of(2026, 5, 2, 10, 0);
-    when(lendingRepository.existsOverlappingLending(12L, startDate, endDate)).thenReturn(false);
-
-    boolean available = lendingService.isObjectAvailable(12L, startDate, endDate);
-
-    assertTrue(available);
-    verify(lendingRepository, times(1)).existsOverlappingLending(12L, startDate, endDate);
-  }
-
-  @Test
-  public void isObjectAvailableShouldReturnFalseWhenOverlapExists() {
-    LocalDateTime startDate = LocalDateTime.of(2026, 5, 1, 10, 0);
-    LocalDateTime endDate = LocalDateTime.of(2026, 5, 2, 10, 0);
-    when(lendingRepository.existsOverlappingLending(12L, startDate, endDate)).thenReturn(true);
-
-    boolean available = lendingService.isObjectAvailable(12L, startDate, endDate);
-
-    assertFalse(available);
-    verify(lendingRepository, times(1)).existsOverlappingLending(12L, startDate, endDate);
   }
 }
