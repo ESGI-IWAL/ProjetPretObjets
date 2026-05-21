@@ -1,6 +1,9 @@
 <script setup lang="ts">
-    import type { ICreateLendingDto } from '~/dto/lending/create.dto';
+    import type { IOption } from '~/components/AutoComplete.vue';
+import type { ICreateLendingDto } from '~/dto/lending/create.dto';
     import { createLending } from '~/services/lending';
+import { getObjects } from '~/services/object';
+import { getUsers } from '~/services/user';
     import type { IObject } from '~/types/object';
     import type { IUser } from '~/types/user';
 
@@ -28,6 +31,24 @@
         endAt: null
     })
 
+    const namesOfSelected= reactive({
+        borrowerName:"",
+        objectName:""
+    })
+const objectsIOption = ref<IOption[]| null>(null)
+const usersIOption = ref<IOption[]|null>(null)
+onMounted(async () => {
+    try{
+        const objects = await getObjects()
+        const users = await getUsers()
+        objectsIOption.value = objects.map(objet => {return {id: objet.id, label: objet.name}} )
+        usersIOption.value = users.map(user => {return {id: user.id, label: user.username}})
+
+    } catch {
+        objectsIOption.value= []
+        usersIOption.value = []
+    }
+})
     const steps = ref<IStep[]>([
         {
             id: 1,
@@ -103,23 +124,14 @@
 
     <div>
       <div v-if="currentStep === 1" class="form-field">
-        <label for="user" class="form-label">Utilisateur</label>
-        <select id="user" v-model="form.borrowerId" class="form-select">
-          <option value="" disabled>Choisissez un utilisateur</option>
-          <option v-for="user in users" :key="user.id" :value="user.id">
-            {{ user.username }}
-          </option>
-        </select>
+        <label for="borrower" class="form-label">Utilisateur</label>
+        <AutoComplete id="borrowerId" v-model:selectedId="form.borrowerId" v-model:modelValue="namesOfSelected.borrowerName" :options="usersIOption ?? []" :placeholder="'Nom de l\'utilisateur'"/>
+
       </div>
 
       <div v-if="currentStep === 2" class="form-field">
         <label for="object" class="form-label">Objet</label>
-        <select id="object" v-model="form.objectId" class="form-select">
-          <option value="" disabled>Choisissez un objet</option>
-          <option v-for="object in objects" :key="object.id" :value="object.id">
-            {{ object.name }}
-          </option>
-        </select>
+            <AutoComplete id="objectId" v-model:selectedId="form.objectId" v-model:modelValue="namesOfSelected.objectName" :options="objectsIOption ?? []" :placeholder="'Nom de l\'objet'"/>
       </div>
 
       <div v-if="currentStep === 3" class="form-grid">
@@ -132,6 +144,9 @@
           <label for="endAt" class="form-label">Date de fin</label>
           <input id="endAt" type="date" v-model="form.endAt" class="form-input" />
         </div>
+      </div>
+       <div v-if="currentStep === 4" class="form-grid">
+            
       </div>
     </div>
 

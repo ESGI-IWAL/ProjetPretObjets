@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-import AutoComplete from '~/components/AutoComplete.vue';
+import AutoComplete, { type IOption } from '~/components/AutoComplete.vue';
 import type { ISearchLendingDto } from '~/dto/lending/search.dto';
 import { ELendingStatus } from '~/enums/lending/status.enum';
 import { getObjects } from '~/services/object';
+import { getUsers } from '~/services/user';
 
 const emit = defineEmits(['search'])
 
@@ -15,13 +16,18 @@ const form = reactive<ISearchLendingDto>({
     status: ELendingStatus.IN_PROGRESS
 })
 
-const objectNames = ref<string[]| null>(null)
+const objectsIOption = ref<IOption[]| null>(null)
+const usersIOption = ref<IOption[]|null>(null)
 onMounted(async () => {
     try{
         const objects = await getObjects()
-        objectNames.value = objects.map(objet => objet.name)
+        const users = await getUsers()
+        objectsIOption.value = objects.map(objet => {return {id: objet.id, label: objet.name}} )
+        usersIOption.value = users.map(user => {return {id: user.id, label: user.username}})
+
     } catch {
-        objectNames.value= []
+        objectsIOption.value= []
+        usersIOption.value = []
     }
 })
 
@@ -32,12 +38,12 @@ onMounted(async () => {
         <div class="form-grid">
             <div class="form-field">
                 <label class="form-label" for="objectName">Objet</label>
-                <AutoComplete id="objectName" v-model="form.objectName" :options="objectNames ?? []" :placeholder="'Nom de l\'objet'"/>
+                <AutoComplete id="objectName" v-model:model-value="form.objectName" :options="objectsIOption ?? []" :placeholder="'Nom de l\'objet'"/>
             </div>
 
             <div class="form-field">
                 <label class="form-label" for="borrowerName">Emprunteur</label>
-                <input id="borrowerName" v-model="form.borrowerName" class="form-input" placeholder="Nom de l'emprunteur"/>
+                <AutoComplete id="borrowerName" v-model:model-value="form.borrowerName" :options="usersIOption ?? []" :placeholder="'Nom de l\'emprunteur'"/>
             </div>
 
             <div class="form-field">

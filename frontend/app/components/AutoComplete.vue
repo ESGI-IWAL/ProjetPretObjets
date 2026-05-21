@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue"
 
+export interface IOption {
+  id: string | number
+  label: string
+}
+
 const props = defineProps<{
   id?: string
-  modelValue: string
-  options: string[]
+  modelValue?: string
+  selectedId?:string | number
+  options: IOption[]
   placeholder?: string
 }>()
 
-const emit = defineEmits(["update:modelValue"])
+const emit = defineEmits(["update:modelValue", "update:selectedId"])
 
 const input = ref<HTMLInputElement | null>(null)
 const open = ref(false)
@@ -22,14 +28,15 @@ const query = computed({
 const filteredOptions = computed(() => {
   if (!query.value) return props.options
   return props.options.filter(option =>
-    option
+    option.label
       .toLowerCase()
-      .startsWith(query.value.toLowerCase())
+      .startsWith(query?.value?.toLowerCase() ?? "")
   )
 })
 
-const selectOption = (option: string) => {
-  query.value = option
+const selectOption = (option: IOption) => {
+  query.value = option.label
+  emit("update:selectedId", option.id)
   open.value = false
   highlightedIndex.value = -1
 }
@@ -97,11 +104,11 @@ onBeforeUnmount(() => {
     <ul v-if="open && filteredOptions.length" class="dropdown">
       <li
         v-for="(option, index) in filteredOptions"
-        :key="option"
+        :key="option.id"
         :class="{ active: index === highlightedIndex }"
         @mousedown.prevent="selectOption(option)"
       >
-        {{ option }}
+        {{ option.label }}
       </li>
     </ul>
   </div>
