@@ -14,6 +14,7 @@ public class ObjectEntityTest {
     assertNotNull(obj);
     assertNull(obj.getId());
     assertNull(obj.getName());
+    assertNull(obj.getDescription());
     assertNull(obj.getWeight());
     assertNull(obj.getDimensions());
     assertNull(obj.getOwnedBy());
@@ -28,6 +29,7 @@ public class ObjectEntityTest {
     owner.setEmail("owner@example.com");
 
     obj.setName("Test Object");
+    obj.setDescription("Test description");
     obj.setWeight(2.5d);
     obj.setDimensions("10x20x30 cm");
     obj.setOwnedBy(owner);
@@ -35,6 +37,7 @@ public class ObjectEntityTest {
     obj.setStateOfWear(ObjectEntity.ObjectStateOfWear.GOOD);
 
     assertEquals("Test Object", obj.getName());
+    assertEquals("Test description", obj.getDescription());
     assertEquals(2.5d, obj.getWeight());
     assertEquals("10x20x30 cm", obj.getDimensions());
     assertEquals(owner, obj.getOwnedBy());

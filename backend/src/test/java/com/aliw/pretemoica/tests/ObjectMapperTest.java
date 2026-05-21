@@ -15,6 +15,7 @@ public class ObjectMapperTest {
     ObjectEntity entity = new ObjectEntity();
     entity.setId(3L);
     entity.setName("Ball");
+    entity.setDescription("Sports ball");
     entity.setWeight(1.2d);
     entity.setDimensions("15x15x15 cm");
     UserEntity owner = new UserEntity();
@@ -28,6 +29,7 @@ public class ObjectMapperTest {
     assertNotNull(dto);
     assertEquals(3L, dto.getId());
     assertEquals("Ball", dto.getName());
+    assertEquals("Sports ball", dto.getDescription());
     assertEquals(1.2d, dto.getWeight());
     assertEquals("15x15x15 cm", dto.getDimensions());
     assertEquals(7L, dto.getOwnedById());
@@ -40,6 +42,7 @@ public class ObjectMapperTest {
     ObjectDto dto = new ObjectDto();
     dto.setId(4L);
     dto.setName("Obj");
+    dto.setDescription("Object description");
     dto.setWeight(3.4d);
     dto.setDimensions("20x10x5 cm");
     dto.setOwnedById(9L);
@@ -51,6 +54,7 @@ public class ObjectMapperTest {
     assertNotNull(entity);
     assertEquals(4L, entity.getId());
     assertEquals("Obj", entity.getName());
+    assertEquals("Object description", entity.getDescription());
     assertEquals(3.4d, entity.getWeight());
     assertEquals("20x10x5 cm", entity.getDimensions());
     assertNotNull(entity.getOwnedBy());

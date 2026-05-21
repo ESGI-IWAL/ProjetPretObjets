@@ -33,6 +33,7 @@ class FixtureIntegrationTest {
     assertEquals("alice", user.getUsername());
     assertEquals("alice@example.com", user.getEmail());
     assertEquals("Chaise", object.getName());
+    assertEquals("Chaise en bois", object.getDescription());
     assertNotNull(object.getWeight());
     assertNotNull(object.getDimensions());
     assertNotNull(object.getOwnedBy());

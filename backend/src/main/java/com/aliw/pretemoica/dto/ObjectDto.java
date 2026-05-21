@@ -17,6 +17,7 @@ public class ObjectDto {
 
   private Long id;
   private String name;
+  private String description;
   private Double weight;
   private String dimensions;
   private Long ownedById;

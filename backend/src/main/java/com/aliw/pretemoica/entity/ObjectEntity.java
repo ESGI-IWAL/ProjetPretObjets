@@ -17,6 +17,8 @@ public class ObjectEntity {
   @Column(nullable = false)
   private String name;
 
+  private String description;
+
   private Double weight;
 
   private String dimensions;
