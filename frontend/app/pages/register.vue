@@ -7,16 +7,17 @@
     email:'',
     password:'',
     userInfo:{
-      pseudo:'',
+      username:'',
       firstName:'',
       lastName:'',
+      avatar:''
     }
   })
 
   const passwordConfirm = ref('')
 
   const validateForm = () => {
-    if (!form.userInfo.pseudo || !form.userInfo.firstName || !form.userInfo.lastName || !form.email || !form.password) {
+    if (!form.userInfo.username || !form.userInfo.firstName || !form.userInfo.lastName || !form.email || !form.password) {
       erreurConnexion.value = "Tous les champs sont requis.";
       return false;
     }
@@ -44,7 +45,7 @@
 
 <template>
     <form>
-        <input v-model="form.userInfo.pseudo" type="text" placeholder="Pseudo" required>
+        <input v-model="form.userInfo.username" type="text" placeholder="Pseudo" required>
         <input v-model="form.userInfo.firstName" type="text" placeholder="Prénom" required>
         <input v-model="form.userInfo.lastName" type="text" placeholder="Nom" required>
         <input v-model="form.email" type="email" placeholder="Email" required>  
