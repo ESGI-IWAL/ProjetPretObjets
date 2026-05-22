@@ -51,10 +51,6 @@ const getStatusClass = (status: string | ELendingStatus | null | undefined) => {
         <div class="flex flex-wrap items-center gap-2">
           <h3 class="truncate text-lg font-semibold text-gray-900">{{ lending.object.name }}</h3>
         </div>
-
-        <p class="text-sm text-gray-500">
-          Emprunté par <span class="font-medium text-gray-700">{{ lending.borrowedBy.username }}</span>
-        </p>
         <p v-if="lending.endAt" class="text-sm text-gray-500">Jusqu'au {{ formatDateLong(lending.endAt) }}</p>
         <p v-else class="text-sm text-gray-500">Depuis {{ formatDateLong(lending.startAt) }}</p>
       </div>
