@@ -1,0 +1,69 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: projetPret
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+      - postgres_data_dev:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d projetPret -h 127.0.0.1 || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    image: maven:3.9.6-eclipse-temurin-17
+    working_dir: /workspace
+    command: mvn -B spring-boot:run
+    volumes:
+      - ./backend:/workspace
+      - m2-cache:/root/.m2
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: projetPret
+      DB_USERNAME: admin
+      DB_PASSWORD: admin
+      JWT_SECRET: mySecretKeyForJwtTokenGenerationAndValidation12345
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/projetPret
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME:-admin}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-admin}
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+  frontend:
+    image: node:22-alpine
+    working_dir: /workspace
+    command: sh -c "npm install --no-audit --no-fund && npm run dev -- --host 0.0.0.0"
+    volumes:
+      - ./frontend:/workspace
+      - frontend_node_modules:/workspace/node_modules
+    environment:
+      NODE_ENV: development
+      NUXT_HOST: 0.0.0.0
+      NUXT_PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_started
+    stdin_open: true
+    tty: true
+
+volumes:
+  postgres_data_dev:
+  m2-cache:
+  frontend_node_modules:
+
