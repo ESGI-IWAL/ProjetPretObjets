@@ -58,12 +58,17 @@
 </script>
 <template>
     <PopIn :title="'Modification du prêt'" >
-        <form>
-            <label for="editableStartDate" class="form-label">Date de début</label>
-            <input type="date" v-model="editableStartDate" />
-            <label for="editableEndDate" class="form-label">Date de fin</label>
-            <input type="date" v-model="editableEndDate" />
-        </form>
+      <form class="flex flex-col gap-4">
+        <div class="form-field">
+          <label for="editableStartDate" class="form-label">Date de début</label>
+          <input id="editableStartDate" type="date" v-model="editableStartDate" class="form-input" />
+        </div>
+
+        <div class="form-field">
+          <label for="editableEndDate" class="form-label">Date de fin</label>
+          <input id="editableEndDate" type="date" v-model="editableEndDate" class="form-input" />
+        </div>
+      </form>
         <template #buttons>
             <ButtonForm :cancelForm="handleCancelEdit" :validateForm="() => handleSubmitUpdate()" />
         </template>

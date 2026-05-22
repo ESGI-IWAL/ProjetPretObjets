@@ -22,7 +22,7 @@ const filterIsOpen = ref<boolean>(false)
                 <LendingFormSearch @search="search" />
             </section>
         </div>
-        <div class="flex justify-end">
+        <div class="flex justify-end gap-4">
             <ButtonCreation :navigation-creation="() => navigateTo('/lendings/new')" label="Créer un prêt"/>
             <ButtonFilter :open-filter="() => filterIsOpen = !filterIsOpen" />
         </div>
