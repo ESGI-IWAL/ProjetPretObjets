@@ -63,11 +63,6 @@ onMounted(async () => {
             id: 3,
             title: "Dates de prêt",
             description: "Indiquez les dates de début et de fin du prêt."
-        },
-        {
-            id: 4,
-            title: "Confirmation",
-            description: "Vérifiez les informations et confirmez le prêt."
         }
     ])
 

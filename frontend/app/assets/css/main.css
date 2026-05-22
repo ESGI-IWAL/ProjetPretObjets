@@ -205,5 +205,43 @@
     .svg-icon {
         @apply cursor-pointer w-5 lg:w-6 text-white hover:text-gray-800
     }
+    .popin-backdrop {
+        @apply fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4 py-6;
+    }
+
+    .popin-card {
+        @apply w-full max-w-2xl rounded-3xl bg-white p-6 shadow-2xl ring-1 ring-gray-200 animate-[popIn_.2s_ease-out];
+    }
+
+    .popin-header {
+        @apply mb-4 flex items-start justify-between gap-4 border-b border-gray-200 pb-3;
+    }
+
+    .popin-title {
+        @apply text-2xl font-bold tracking-tight text-gray-900;
+    }
+
+    .popin-close {
+        @apply flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-600 transition hover:bg-gray-200 hover:text-gray-900;
+    }
+
+    .popin-content {
+        @apply space-y-4;
+    }
+
+    .popin-actions {
+        @apply mt-6 flex justify-end gap-3 border-t border-gray-200 pt-4;
+    }
+
+    @keyframes popIn {
+        from {
+            transform: translateY(12px) scale(0.96);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+    }
 }
 

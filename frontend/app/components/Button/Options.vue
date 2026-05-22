@@ -8,12 +8,22 @@
     }>()
 </script>
 <template>
-    <div class="flex gap-4">
-        <button v-for="action in actions" :key="action.label" @click="action.function" class="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
-            <img :src="action.svg" alt="" class="w-4 h-4">
-            {{ action.label }}
-        </button>
-    </div>
+  <div class="flex flex-wrap gap-3">
+    <button
+        v-for="action in actions"
+        :key="action.label"
+        type="button"
+        @click="action.function"
+        :class="[
+        'inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition shadow-sm',
+        action.label === 'Supprimer'
+          ? 'bg-red-600 text-white hover:bg-red-700 hover:shadow-md'
+          : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-md'
+      ]"
+    >
+      <span>{{ action.label }}</span>
+    </button>
+  </div>
 </template>
 
 
