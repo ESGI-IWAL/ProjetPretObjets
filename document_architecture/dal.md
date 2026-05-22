@@ -43,8 +43,8 @@ Il sert donc à :
 #### 3.3.1. API REST
 Communication entre le frontend et le backend.
 Routes principales :
-- GET /lending : Consulter les prets.
-- POST /lending :  Ajouter des prets.
+- GET /lendings : Consulter les prets.
+- POST /lendings :  Ajouter des prets.
   
 - GET /objects : Consulter les objets.
 - POST /objects : Ajouter des objets.
