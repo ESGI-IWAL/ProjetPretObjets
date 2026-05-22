@@ -3,9 +3,6 @@ defineProps<{
   title: string;
 }>();
 
-defineEmits<{
-  close: [];
-}>();
 </script>
 
 <template>
@@ -14,7 +11,6 @@ defineEmits<{
       <section class="popin-card" @click.stop>
         <header class="popin-header">
           <h1 class="popin-title">{{ title }}</h1>
-          <button class="popin-close" type="button" @click="$emit('close')">✕</button>
         </header>
 
         <main class="popin-content">
