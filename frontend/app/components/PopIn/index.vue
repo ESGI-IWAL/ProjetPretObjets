@@ -7,8 +7,8 @@ defineProps<{
 
 <template>
   <Teleport to="body">
-    <div class="popin-backdrop" @click="$emit('close')">
-      <section class="popin-card" @click.stop>
+    <div class="popin-backdrop">
+      <section class="popin-card">
         <header class="popin-header">
           <h1 class="popin-title">{{ title }}</h1>
         </header>
