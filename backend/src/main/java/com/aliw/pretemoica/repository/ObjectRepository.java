@@ -13,7 +13,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ObjectRepository extends JpaRepository<ObjectEntity, Long> {
 
-  @Query("""
+  @Query(
+      """
       select o
       from ObjectEntity o
       where (:name is null or lower(o.name) like lower(concat('%', :name, '%')))

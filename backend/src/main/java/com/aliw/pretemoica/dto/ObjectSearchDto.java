@@ -19,4 +19,3 @@ public class ObjectSearchDto {
   private ObjectCategories category;
   private ObjectMaterial material;
 }
-

@@ -12,7 +12,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LendingRepository extends JpaRepository<LendingEntity, Long> {
 
-  @Query("""
+  @Query(
+      """
 select distinct l
 from LendingEntity l
 join l.object o

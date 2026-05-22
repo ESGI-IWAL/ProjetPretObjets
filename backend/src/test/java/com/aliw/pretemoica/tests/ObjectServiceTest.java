@@ -22,14 +22,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class ObjectServiceTest {
+class ObjectServiceTest {
 
   @Mock private ObjectRepository objectRepository;
 
   @InjectMocks private ObjectService objectService;
 
   @Test
-  public void createShouldDelegateToRepository() {
+  void createShouldDelegateToRepository() {
     ObjectEntity o = new ObjectEntity();
     o.setName("Obj");
     when(objectRepository.save(o)).thenReturn(o);
@@ -41,7 +41,7 @@ public class ObjectServiceTest {
   }
 
   @Test
-  public void getAllShouldReturnList() {
+  void getAllShouldReturnList() {
     ObjectEntity o1 = new ObjectEntity();
     ObjectEntity o2 = new ObjectEntity();
     when(objectRepository.findAll()).thenReturn(Arrays.asList(o1, o2));
@@ -53,7 +53,7 @@ public class ObjectServiceTest {
   }
 
   @Test
-  public void getByIdShouldReturnWhenFound() {
+  void getByIdShouldReturnWhenFound() {
     ObjectEntity o = new ObjectEntity();
     o.setId(1L);
     when(objectRepository.findById(1L)).thenReturn(Optional.of(o));
@@ -64,7 +64,7 @@ public class ObjectServiceTest {
   }
 
   @Test
-  public void getByIdShouldThrowWhenNotFound() {
+  void getByIdShouldThrowWhenNotFound() {
     when(objectRepository.findById(9L)).thenReturn(Optional.empty());
 
     ResourceNotFoundException ex =
@@ -73,7 +73,7 @@ public class ObjectServiceTest {
   }
 
   @Test
-  public void deleteShouldCallRepositoryDelete() {
+  void deleteShouldCallRepositoryDelete() {
     ObjectEntity o = new ObjectEntity();
     o.setId(3L);
     when(objectRepository.findById(3L)).thenReturn(Optional.of(o));
@@ -84,7 +84,7 @@ public class ObjectServiceTest {
   }
 
   @Test
-  public void updateShouldUpdateObjectWhenFound() {
+  void updateShouldUpdateObjectWhenFound() {
     ObjectEntity existingObject = new ObjectEntity();
     existingObject.setId(5L);
     existingObject.setName("Original Name");
@@ -105,7 +105,7 @@ public class ObjectServiceTest {
   }
 
   @Test
-  public void updateShouldThrowWhenObjectNotFound() {
+  void updateShouldThrowWhenObjectNotFound() {
     UpdateObjectDto updateDto = new UpdateObjectDto();
     when(objectRepository.findById(99L)).thenReturn(Optional.empty());
 
@@ -115,7 +115,7 @@ public class ObjectServiceTest {
   }
 
   @Test
-  public void searchWithNullDtoShouldCallRepositoryWithAllNulls() {
+  void searchWithNullDtoShouldCallRepositoryWithAllNulls() {
     ObjectEntity o1 = new ObjectEntity();
     when(objectRepository.search(null, null, null, null)).thenReturn(Arrays.asList(o1));
 
@@ -126,25 +126,78 @@ public class ObjectServiceTest {
   }
 
   @Test
-  public void searchShouldCallRepositoryWithSearchCriteria() {
-      var objet = "Perceuse"
+  void searchShouldCallRepositoryWithPartialNameAndOptionalCriteria() {
     ObjectEntity o1 = new ObjectEntity();
-    o1.setName(objet);
+    o1.setName("Perceuse");
     o1.setCategory(ObjectCategories.TOOLS);
 
     ObjectSearchDto searchDto = new ObjectSearchDto();
-    searchDto.setName(objet);
+    searchDto.setName("Per");
+    searchDto.setCategory(ObjectCategories.TOOLS);
+
+    when(objectRepository.search("Per", null, ObjectCategories.TOOLS, null))
+        .thenReturn(Arrays.asList(o1));
+
+    List<ObjectEntity> result = objectService.search(searchDto);
+
+    assertEquals(1, result.size());
+    verify(objectRepository, times(1)).search("Per", null, ObjectCategories.TOOLS, null);
+  }
+
+  @Test
+  void searchShouldAllowSearchingWithOnlyOneCriterion() {
+    ObjectEntity o1 = new ObjectEntity();
+    o1.setName("Marteau");
+
+    ObjectSearchDto searchDto = new ObjectSearchDto();
+    searchDto.setName("Mar");
+
+    when(objectRepository.search("Mar", null, null, null)).thenReturn(Arrays.asList(o1));
+
+    List<ObjectEntity> result = objectService.search(searchDto);
+
+    assertEquals(1, result.size());
+    verify(objectRepository, times(1)).search("Mar", null, null, null);
+  }
+
+  @Test
+  void searchShouldTrimEmptyNameToNull() {
+    ObjectEntity o1 = new ObjectEntity();
+    ObjectSearchDto searchDto = new ObjectSearchDto();
+    searchDto.setName("   ");
+    searchDto.setStateOfWear(ObjectStateOfWear.NEW);
+
+    when(objectRepository.search(null, ObjectStateOfWear.NEW, null, null))
+        .thenReturn(Arrays.asList(o1));
+
+    List<ObjectEntity> result = objectService.search(searchDto);
+
+    assertEquals(1, result.size());
+    verify(objectRepository, times(1)).search(null, ObjectStateOfWear.NEW, null, null);
+  }
+
+  @Test
+  void searchShouldCallRepositoryWithAllCriteriaWhenProvided() {
+    ObjectEntity o1 = new ObjectEntity();
+    o1.setName("Perceuse");
+    o1.setCategory(ObjectCategories.TOOLS);
+    o1.setStateOfWear(ObjectStateOfWear.NEW);
+    o1.setMaterial(ObjectMaterial.METAL);
+
+    ObjectSearchDto searchDto = new ObjectSearchDto();
+    searchDto.setName("Perceuse");
     searchDto.setCategory(ObjectCategories.TOOLS);
     searchDto.setStateOfWear(ObjectStateOfWear.NEW);
     searchDto.setMaterial(ObjectMaterial.METAL);
 
-    when(objectRepository.search(objet, ObjectStateOfWear.NEW, ObjectCategories.TOOLS, ObjectMaterial.METAL))
+    when(objectRepository.search(
+            "Perceuse", ObjectStateOfWear.NEW, ObjectCategories.TOOLS, ObjectMaterial.METAL))
         .thenReturn(Arrays.asList(o1));
 
     List<ObjectEntity> result = objectService.search(searchDto);
 
     assertEquals(1, result.size());
     verify(objectRepository, times(1))
-        .search(objet, ObjectStateOfWear.NEW, ObjectCategories.TOOLS, ObjectMaterial.METAL);
+        .search("Perceuse", ObjectStateOfWear.NEW, ObjectCategories.TOOLS, ObjectMaterial.METAL);
   }
 }
