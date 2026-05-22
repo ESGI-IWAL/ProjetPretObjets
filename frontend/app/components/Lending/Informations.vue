@@ -13,7 +13,7 @@ const props = defineProps<{
   <div class="bg-white p-4 rounded-lg shadow-sm">
     <div class="flex items-start justify-between">
       <div>
-        <h1 class="text-2xl font-bold mb-1">Prêt — {{ getLendingStatusLabel(lending.status) }}</h1>
+        <h1 class="text-2xl font-bold mb-1">Votre prêt </h1>
       </div>
       <div class="text-right text-sm text-gray-500">
         <p>Statut: <span class="font-semibold">{{ getLendingStatusLabel(lending.status) }}</span></p>
