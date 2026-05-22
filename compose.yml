@@ -1,0 +1,59 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: projetPret
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d projetPret -h 127.0.0.1 || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: projetPret
+      DB_USERNAME: admin
+      DB_PASSWORD: admin
+      JWT_SECRET: mySecretKeyForJwtTokenGenerationAndValidation12345
+      # select spring profile at runtime (dev/prod)
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+      # explicit JDBC url and hibernate dialect to avoid Hibernate failing to determine dialect
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/projetPret
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME:-admin}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-admin}
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NITRO_HOST: 0.0.0.0
+      NITRO_PORT: 3000
+      # set NODE_ENV=development to run `npm run dev` (requires mounting sources and node_modules)
+      NODE_ENV: ${NODE_ENV:-production}
+    depends_on:
+      backend:
+        condition: service_started
+
+volumes:
+  postgres_data:
