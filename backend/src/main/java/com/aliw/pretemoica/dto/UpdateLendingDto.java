@@ -1,6 +1,5 @@
 package com.aliw.pretemoica.dto;
 
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,13 +9,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LendingDto {
+public class UpdateLendingDto {
 
-  private Long id;
-  private UserDto borrowedBy;
-  private UserDto offeredBy;
-  private ObjectDto object;
-  private LocalDateTime startAt;
-  private LocalDateTime endAt;
+  private String startAt;
+  private String endAt;
   private String status;
 }

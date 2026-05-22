@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS lending (
   borrowed_by_id BIGINT NOT NULL REFERENCES app_user(id),
   offered_by_id BIGINT NOT NULL REFERENCES app_user(id),
   object_id BIGINT NOT NULL REFERENCES object(id),
+  status VARCHAR(32) NOT NULL DEFAULT 'PENDING',
   started_at TIMESTAMP,
   ended_at TIMESTAMP
 );

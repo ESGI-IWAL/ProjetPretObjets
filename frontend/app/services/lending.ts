@@ -30,10 +30,15 @@ export const searchLending = async (searchParams: ISearchLendingDto) => {
 }
 
 export const updateLending = async ( dto: IUpdateLendingDto) => {
-  
+  const startAt = dto.startAt instanceof Date ? dto.startAt.toISOString() : dto.startAt
+  const endAt = dto.endAt instanceof Date ? dto.endAt.toISOString() : dto.endAt
+
   return await api()(`/lendings/${dto.id}`, {
     method: "PUT",
-    body: dto
+    body: {
+      startAt,
+      endAt
+    }
   })
 }
 
