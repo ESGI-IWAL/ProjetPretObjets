@@ -2,8 +2,12 @@ package com.aliw.pretemoica.service;
 
 import com.aliw.pretemoica.dto.CreateObjectDto;
 import com.aliw.pretemoica.dto.ObjectDto;
+import com.aliw.pretemoica.dto.ObjectSearchDto;
 import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.entity.ObjectEntity;
+import com.aliw.pretemoica.entity.ObjectEntity.ObjectCategories;
+import com.aliw.pretemoica.entity.ObjectEntity.ObjectMaterial;
+import com.aliw.pretemoica.entity.ObjectEntity.ObjectStateOfWear;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.ObjectMapper;
 import com.aliw.pretemoica.repository.ObjectRepository;
@@ -45,6 +49,18 @@ public class ObjectService {
     return objectRepository.findAll();
   }
 
+  public List<ObjectEntity> search(ObjectSearchDto searchDto) {
+    if (searchDto == null) {
+      return objectRepository.search(null, null, null, null);
+    }
+
+    return objectRepository.search(
+        normalize(searchDto.getName()),
+        searchDto.getStateOfWear(),
+        searchDto.getCategory(),
+        searchDto.getMaterial());
+  }
+
   public ObjectEntity getById(Long id) {
     return objectRepository
         .findById(id)
@@ -61,5 +77,14 @@ public class ObjectService {
     ObjectEntity updatedEntity = ObjectMapper.toEntityFromUpdate(updateObjectDto, objectEntity);
     ObjectEntity savedEntity = objectRepository.save(updatedEntity);
     return ObjectMapper.toDto(savedEntity);
+  }
+
+  private String normalize(String value) {
+    if (value == null) {
+      return null;
+    }
+
+    String trimmed = value.trim();
+    return trimmed.isEmpty() ? null : trimmed;
   }
 }

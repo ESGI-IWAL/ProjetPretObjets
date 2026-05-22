@@ -3,8 +3,12 @@ package com.aliw.pretemoica.tests;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.aliw.pretemoica.dto.ObjectSearchDto;
 import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.entity.ObjectEntity;
+import com.aliw.pretemoica.entity.ObjectEntity.ObjectCategories;
+import com.aliw.pretemoica.entity.ObjectEntity.ObjectMaterial;
+import com.aliw.pretemoica.entity.ObjectEntity.ObjectStateOfWear;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.repository.ObjectRepository;
 import com.aliw.pretemoica.service.ObjectService;
@@ -108,5 +112,39 @@ public class ObjectServiceTest {
     ResourceNotFoundException ex =
         assertThrows(ResourceNotFoundException.class, () -> objectService.update(99L, updateDto));
     assertTrue(ex.getMessage().contains("99"));
+  }
+
+  @Test
+  public void searchWithNullDtoShouldCallRepositoryWithAllNulls() {
+    ObjectEntity o1 = new ObjectEntity();
+    when(objectRepository.search(null, null, null, null)).thenReturn(Arrays.asList(o1));
+
+    List<ObjectEntity> result = objectService.search(null);
+
+    assertEquals(1, result.size());
+    verify(objectRepository, times(1)).search(null, null, null, null);
+  }
+
+  @Test
+  public void searchShouldCallRepositoryWithSearchCriteria() {
+      var objet = "Perceuse"
+    ObjectEntity o1 = new ObjectEntity();
+    o1.setName(objet);
+    o1.setCategory(ObjectCategories.TOOLS);
+
+    ObjectSearchDto searchDto = new ObjectSearchDto();
+    searchDto.setName(objet);
+    searchDto.setCategory(ObjectCategories.TOOLS);
+    searchDto.setStateOfWear(ObjectStateOfWear.NEW);
+    searchDto.setMaterial(ObjectMaterial.METAL);
+
+    when(objectRepository.search(objet, ObjectStateOfWear.NEW, ObjectCategories.TOOLS, ObjectMaterial.METAL))
+        .thenReturn(Arrays.asList(o1));
+
+    List<ObjectEntity> result = objectService.search(searchDto);
+
+    assertEquals(1, result.size());
+    verify(objectRepository, times(1))
+        .search(objet, ObjectStateOfWear.NEW, ObjectCategories.TOOLS, ObjectMaterial.METAL);
   }
 }

@@ -2,6 +2,7 @@ package com.aliw.pretemoica.controller;
 
 import com.aliw.pretemoica.dto.CreateObjectDto;
 import com.aliw.pretemoica.dto.ObjectDto;
+import com.aliw.pretemoica.dto.ObjectSearchDto;
 import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.ObjectMapper;
@@ -25,6 +26,12 @@ public class ObjectController {
   @GetMapping
   public ResponseEntity<List<ObjectDto>> getAllObjects() {
     return ResponseEntity.ok(ObjectMapper.toDtoList(objectService.getAll()));
+  }
+
+  @PostMapping("/search")
+  public ResponseEntity<List<ObjectDto>> searchObjects(
+      @RequestBody(required = false) ObjectSearchDto searchDto) {
+    return ResponseEntity.ok(ObjectMapper.toDtoList(objectService.search(searchDto)));
   }
 
   @GetMapping("/{id}")
@@ -55,7 +62,7 @@ public class ObjectController {
     try {
       ObjectDto updatedObject = objectService.update(id, updateObjectDto);
       return ResponseEntity.ok(updatedObject);
-    } catch (ResourceNotFoundException e) {
+    } catch (ResourceNotFoundException rnfe) {
       return ResponseEntity.notFound().build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
