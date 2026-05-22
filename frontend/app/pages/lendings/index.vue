@@ -7,7 +7,6 @@ const lendings = ref<ILending[]|null>(null)
 onMounted(async ()=> {
     try{
         lendings.value = await getLendings()
-        console.log(lendings)
     }
     catch{
         lendings.value = []
