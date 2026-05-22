@@ -48,7 +48,7 @@ public class ObjectService {
 
   public List<ObjectEntity> search(ObjectSearchDto searchDto) {
     if (searchDto == null) {
-      return objectRepository.search(null, null, null, null);
+      return getAll();
     }
 
     return objectRepository.search(
