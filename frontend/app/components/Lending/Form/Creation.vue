@@ -31,6 +31,24 @@ import { getUsers } from '~/services/user';
         endAt: null
     })
 
+    const formatDateForInput = (d: Date | null) => {
+        if (!d) return ''
+        const year = d.getFullYear()
+        const month = String(d.getMonth() + 1).padStart(2, '0')
+        const day = String(d.getDate()).padStart(2, '0')
+        return `${year}-${month}-${day}`
+    }
+
+    const onStartAtInput = (e: Event) => {
+        const v = (e.target as HTMLInputElement).value
+        form.startAt = v ? new Date(v + 'T00:00:00') : new Date()
+    }
+
+    const onEndAtInput = (e: Event) => {
+        const v = (e.target as HTMLInputElement).value
+        form.endAt = v ? new Date(v + 'T00:00:00') : null
+    }
+
     const namesOfSelected= reactive({
         borrowerName:"",
         objectName:""
@@ -68,6 +86,11 @@ onMounted(async () => {
 
     const currentStep = ref<number>(1)
 
+    const endDateVerification = () : boolean =>{
+        if(form.endAt) return form.startAt >= form.endAt
+        else return true
+    }
+
     const isEntryValid = computed(() => {
         switch(currentStep.value) {
             case 1:
@@ -75,7 +98,7 @@ onMounted(async () => {
             case 2:
                 return !!form.objectId
             case 3:
-                return !!form.startAt && !!form.endAt && form.endAt >= form.startAt
+                return !!form.startAt && endDateVerification()
             default:
                 return true
         }
@@ -132,16 +155,14 @@ onMounted(async () => {
       <div v-if="currentStep === 3" class="form-grid">
         <div class="form-field">
           <label for="startAt" class="form-label">Date de début</label>
-          <input id="startAt" type="date" v-model="form.startAt" class="form-input" />
+                    <input id="startAt" type="date" :value="formatDateForInput(form.startAt)" @input="onStartAtInput" class="form-input" />
+                                        <div style="margin-top:6px;font-size:0.9rem;color:#666">Date du jour: {{ formatDateLong(form.startAt) }}</div>
         </div>
 
         <div class="form-field">
           <label for="endAt" class="form-label">Date de fin</label>
-          <input id="endAt" type="date" v-model="form.endAt" class="form-input" />
+                    <input id="endAt" type="date" :value="formatDateForInput(form.endAt)" @input="onEndAtInput" class="form-input" />
         </div>
-      </div>
-       <div v-if="currentStep === 4" class="form-grid">
-            
       </div>
     </div>
 
