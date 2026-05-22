@@ -5,7 +5,7 @@ import type { IObject } from "./object";
 export interface ILending {
   id: number;
   object: IObject;
-  borrower: IUser;
+  borrowedBy: IUser;
   startAt: Date;
   endAt: Date | null;
   status: ELendingStatus;

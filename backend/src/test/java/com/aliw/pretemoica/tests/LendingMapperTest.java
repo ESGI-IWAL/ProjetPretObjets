@@ -2,7 +2,10 @@ package com.aliw.pretemoica.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.aliw.pretemoica.dto.CreateLendingDto;
 import com.aliw.pretemoica.dto.LendingDto;
+import com.aliw.pretemoica.dto.ObjectDto;
+import com.aliw.pretemoica.dto.UserDto;
 import com.aliw.pretemoica.entity.LendingEntity;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
@@ -34,28 +37,34 @@ public class LendingMapperTest {
 
     assertNotNull(dto);
     assertEquals(5L, dto.getId());
-    assertEquals(2L, dto.getBorrowedById());
-    assertEquals(3L, dto.getOfferedById());
-    assertEquals(6L, dto.getObjectId());
-    assertEquals(start, dto.getStartedAt());
-    assertEquals(end, dto.getEndedAt());
+    assertNotNull(dto.getBorrowedBy());
+    assertNotNull(dto.getOfferedBy());
+    assertNotNull(dto.getObject());
+    assertEquals(2L, dto.getBorrowedBy().getId());
+    assertEquals(3L, dto.getOfferedBy().getId());
+    assertEquals(6L, dto.getObject().getId());
+    assertEquals(start, dto.getStartAt());
+    assertEquals(end, dto.getEndAt());
 
     // Now toEntity
     LendingDto dto2 = new LendingDto();
     dto2.setId(7L);
-    dto2.setBorrowedById(11L);
-    dto2.setOfferedById(12L);
-    dto2.setObjectId(13L);
+    dto2.setBorrowedBy(new UserDto(11L, "borrower", "borrower@example.com", 5));
+    dto2.setOfferedBy(new UserDto(12L, "offerer", "offerer@example.com", 7));
+    dto2.setObject(new ObjectDto(13L, "object", 99L, ObjectEntity.ObjectStatus.AVAILABLE, null));
     LocalDateTime s2 = LocalDateTime.of(2021, 2, 2, 9, 0);
-    dto2.setStartedAt(s2);
-    dto2.setEndedAt(s2.plusDays(1));
+    dto2.setStartAt(s2);
+    dto2.setEndAt(s2.plusDays(1));
 
     LendingEntity e2 = LendingMapper.toEntity(dto2);
     assertNotNull(e2);
     assertEquals(7L, e2.getId());
     assertEquals(11L, e2.getBorrowedBy().getId());
+    assertEquals("borrower", e2.getBorrowedBy().getUsername());
     assertEquals(12L, e2.getOfferedBy().getId());
+    assertEquals("offerer", e2.getOfferedBy().getUsername());
     assertEquals(13L, e2.getObject().getId());
+    assertEquals("object", e2.getObject().getName());
     assertEquals(s2, e2.getStartedAt());
     assertEquals(s2.plusDays(1), e2.getEndedAt());
   }
@@ -63,9 +72,24 @@ public class LendingMapperTest {
   @Test
   public void toEntityShouldKeepDefaultStartedAtWhenDtoHasNull() {
     LendingDto dto = new LendingDto();
-    dto.setStartedAt(null);
+    dto.setStartAt(null);
     LendingEntity e = LendingMapper.toEntity(dto);
     assertNotNull(e.getStartedAt());
+  }
+
+  @Test
+  public void createDtoShouldMapBorrowerObjectAndDates() {
+    CreateLendingDto dto = new CreateLendingDto("13", "11", "2024-01-01", "2024-01-02T10:00:00Z");
+
+    LendingEntity entity = LendingMapper.toEntity(dto);
+
+    assertNotNull(entity);
+    assertNotNull(entity.getBorrowedBy());
+    assertEquals(11L, entity.getBorrowedBy().getId());
+    assertNotNull(entity.getObject());
+    assertEquals(13L, entity.getObject().getId());
+    assertEquals(LocalDateTime.of(2024, 1, 1, 0, 0), entity.getStartedAt());
+    assertEquals(LocalDateTime.of(2024, 1, 2, 10, 0), entity.getEndedAt());
   }
 
   @Test

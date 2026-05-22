@@ -8,7 +8,7 @@ const handleClick = () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col-2">
+  <div class="min-h-screen flex">
     <nav
       class="bg-gray-800 text-white p-4 transition-all duration-300"
       :class="isOpen ? 'w-40' : 'w-10'"
@@ -35,21 +35,17 @@ const handleClick = () => {
         </div>
       </div>
     </nav>
-    <div class="flex-1">
-      <header class="bg-blue-500 p-4 flex flex-col-2 sticky top-0">
-        <NuxtLink to="/" class="text-white text-2xl font-bold basis-9/10 text-center">
-          <h1 >
-            PreteMoiCa
-          </h1>
+    <div class="flex-1 flex flex-col min-h-screen">
+      <header class="bg-blue-500 p-4 flex justify-between items-center sticky top-0 z-10">
+        <NuxtLink to="/" class="text-white text-2xl font-bold">
+          PreteMoiCa
         </NuxtLink>
-        <NuxtLink to="/profile" class="text-white basis-1/10 text-right"> 
-            profil
-        </NuxtLink>  
+        <NuxtLink to="/profile" class="text-white">profil</NuxtLink>
       </header>
-      <main class="p-4 md:p-6 lg:p-8">
+      <main class="flex-1 p-4 md:p-6 lg:p-8">
         <slot />
       </main>
-      <footer class="bg-gray-800 text-white p-4 bottom-0">Footer</footer>
+      <footer class="bg-gray-800 text-white p-4">Footer</footer>
     </div>
   </div>
 </template>
