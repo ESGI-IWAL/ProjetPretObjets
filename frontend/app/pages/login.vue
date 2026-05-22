@@ -25,7 +25,7 @@ const { login, erreurConnexion } = useAuth()
         </div>
         <button type="submit" class="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200">Se connecter</button>
       </form>
-      <NuxtLink to="/register" class="link"> Pas encore de compte ? Inscrivez-vous </NuxtLink>
+      <NuxtLink to="/register"> Pas encore de compte ? Inscrivez-vous </NuxtLink>
       <p v-if="erreurConnexion" class="text-red-500 text-sm text-center">{{ erreurConnexion }}</p>     
     </div>
   </div>                                  
