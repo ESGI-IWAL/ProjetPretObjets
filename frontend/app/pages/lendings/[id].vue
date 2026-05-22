@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { errorMessages } from 'vue/compiler-sfc';
 import type { IUpdateLendingDto } from '~/dto/lending/update.dto';
 import { deleteLending, getLendingById, updateLending } from '~/services/lending';
 import type { ILending } from '~/types/lending';
