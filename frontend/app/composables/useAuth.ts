@@ -30,11 +30,7 @@ export const useAuth = () => {
   };
 
   const logout = () => {
-    console.log("test")
-    console.log(localStorage.getItem('token'))
     localStorage.removeItem('token')
-        console.log(localStorage.getItem('token'))
-
     isAuthenticated.value = false
     navigateTo("/login")
   }
