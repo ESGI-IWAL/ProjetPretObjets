@@ -16,4 +16,3 @@ public class SearchLendingWithIdsObjectsDto {
   private LocalDate disponibilityStartDate;
   private LocalDate disponibilityEndDate;
 }
-

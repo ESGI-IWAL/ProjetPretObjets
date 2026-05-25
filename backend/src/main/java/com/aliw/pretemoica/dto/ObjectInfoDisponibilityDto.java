@@ -15,4 +15,3 @@ public class ObjectInfoDisponibilityDto {
   private LocalDateTime nextLending;
   private LocalDateTime endCurrentLending;
 }
-

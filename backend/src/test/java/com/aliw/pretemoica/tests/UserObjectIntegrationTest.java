@@ -11,12 +11,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class UserObjectIntegrationTest {
 
   @Autowired private UserService userService;
@@ -34,9 +36,7 @@ class UserObjectIntegrationTest {
     user = userService.create(userEntity);
   }
 
-  /**
-   * Test : un utilisateur peut créer et posséder plusieurs objets
-   */
+  /** Test : un utilisateur peut créer et posséder plusieurs objets */
   @Test
   void testUserCanOwnMultipleObjects() {
     // Créer 5 objets appartenant à l'utilisateur
@@ -63,8 +63,8 @@ class UserObjectIntegrationTest {
   }
 
   /**
-   * Test : supprimer un utilisateur n'affecte pas directement ses objets (pas de suppression
-   * en cascade)
+   * Test : supprimer un utilisateur n'affecte pas directement ses objets (pas de suppression en
+   * cascade)
    */
   @Test
   void testUserDeletionPolicy() {
@@ -87,9 +87,7 @@ class UserObjectIntegrationTest {
     // pourrait être interdite ou traiter les objets différemment.
   }
 
-  /**
-   * Test : vérifier que les informations de l'utilisateur sont correctes après création
-   */
+  /** Test : vérifier que les informations de l'utilisateur sont correctes après création */
   @Test
   void testUserAttributesIntegrity() {
     UserEntity retrieved = userService.getById(user.getId());
@@ -100,14 +98,10 @@ class UserObjectIntegrationTest {
     assertNotNull(retrieved.getId());
   }
 
-  /**
-   * Test : créer des objets avec différentes catégories et matériaux
-   */
+  /** Test : créer des objets avec différentes catégories et matériaux */
   @Test
   void testCreateObjectsWithDifferentCategories() {
-    String[] categories = {
-      "FURNITURE", "TOOLS", "SPORTS", "ELECTRONICS", "BOOKS", "TOYS"
-    };
+    String[] categories = {"FURNITURE", "TOOLS", "SPORTS", "ELECTRONICS", "BOOKS", "TOYS"};
     String[] materials = {"WOOD", "PLASTIC", "METAL", "GLASS", "FABRIC", "RUBBER"};
 
     for (int i = 0; i < categories.length; i++) {
@@ -127,9 +121,7 @@ class UserObjectIntegrationTest {
     assertEquals(6, objectService.getAll().size());
   }
 
-  /**
-   * Test : vérifier l'unicité du username et email pour les utilisateurs
-   */
+  /** Test : vérifier l'unicité du username et email pour les utilisateurs */
   @Test
   void testUserNameAndEmailUpdate() {
     UserEntity retrieved = userService.getById(user.getId());
@@ -146,9 +138,7 @@ class UserObjectIntegrationTest {
     assertNotNull(retrieved.getId());
   }
 
-  /**
-   * Test : vérifier la notation d'un utilisateur
-   */
+  /** Test : vérifier la notation d'un utilisateur */
   @Test
   void testUserRating() {
     // Vérifier la notation initiale
@@ -169,9 +159,7 @@ class UserObjectIntegrationTest {
     assertEquals(6, allUsers.size());
   }
 
-  /**
-   * Test : créer plusieurs objets avec des états d'usure différents
-   */
+  /** Test : créer plusieurs objets avec des états d'usure différents */
   @Test
   void testObjectStateOfWear() {
     for (ObjectEntity.ObjectStateOfWear state : ObjectEntity.ObjectStateOfWear.values()) {
@@ -189,4 +177,3 @@ class UserObjectIntegrationTest {
     }
   }
 }
-

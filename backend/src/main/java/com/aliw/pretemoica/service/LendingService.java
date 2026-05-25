@@ -7,10 +7,8 @@ import com.aliw.pretemoica.entity.LendingEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.repository.LendingRepository;
 import com.aliw.pretemoica.repository.ObjectRepository;
-
 import java.util.Comparator;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -73,11 +71,12 @@ public class LendingService {
   public List<ObjectInfoDisponibilityDto> searchObjectsDisponibility(
       SearchLendingWithIdsObjectsDto searchDto) {
     // Si recherche null ou pas d'IDs fournis, retourner tous les objets
-    if (searchDto == null || searchDto.getIdsObject() == null || searchDto.getIdsObject().isEmpty()) {
+    if (searchDto == null
+        || searchDto.getIdsObject() == null
+        || searchDto.getIdsObject().isEmpty()) {
       // Récupère tous les objets
-      List<Long> allObjectIds = objectRepository.findAll().stream()
-          .map(obj -> obj.getId())
-          .toList();
+      List<Long> allObjectIds =
+          objectRepository.findAll().stream().map(obj -> obj.getId()).toList();
 
       if (allObjectIds.isEmpty()) {
         return List.of();
@@ -94,7 +93,8 @@ public class LendingService {
     }
 
     // Récupère les prêts pour les IDs d'objets demandés
-    List<LendingEntity> lendings = lendingRepository.findLendingsForObjects(searchDto.getIdsObject());
+    List<LendingEntity> lendings =
+        lendingRepository.findLendingsForObjects(searchDto.getIdsObject());
 
     return buildObjectsDisponibility(searchDto.getIdsObject(), lendings);
   }
@@ -103,28 +103,30 @@ public class LendingService {
       List<Long> objectIds, List<LendingEntity> lendings) {
     // Construit la réponse groupée par objet
     return objectIds.stream()
-        .map(objectId -> {
-          List<LendingEntity> objectLendings = lendings.stream()
-              .filter(l -> l.getObject().getId().equals(objectId))
-              .sorted(Comparator.comparing(LendingEntity::getStartedAt).reversed())
-              .toList();
+        .map(
+            objectId -> {
+              List<LendingEntity> objectLendings =
+                  lendings.stream()
+                      .filter(l -> l.getObject().getId().equals(objectId))
+                      .sorted(Comparator.comparing(LendingEntity::getStartedAt).reversed())
+                      .toList();
 
-          ObjectInfoDisponibilityDto dto = new ObjectInfoDisponibilityDto();
-          dto.setId(objectId);
+              ObjectInfoDisponibilityDto dto = new ObjectInfoDisponibilityDto();
+              dto.setId(objectId);
 
-          if (!objectLendings.isEmpty()) {
-            // Le prêt courant (le plus récent avec startedAt)
-            LendingEntity currentLending = objectLendings.get(0);
-            dto.setEndCurrentLending(currentLending.getEndedAt());
+              if (!objectLendings.isEmpty()) {
+                // Le prêt courant (le plus récent avec startedAt)
+                LendingEntity currentLending = objectLendings.get(0);
+                dto.setEndCurrentLending(currentLending.getEndedAt());
 
-            // Le prochain prêt (le 2ème le plus récent, ou null si pas de suivant)
-            if (objectLendings.size() > 1) {
-              dto.setNextLending(objectLendings.get(1).getStartedAt());
-            }
-          }
+                // Le prochain prêt (le 2ème le plus récent, ou null si pas de suivant)
+                if (objectLendings.size() > 1) {
+                  dto.setNextLending(objectLendings.get(1).getStartedAt());
+                }
+              }
 
-          return dto;
-        })
+              return dto;
+            })
         .toList();
   }
 }

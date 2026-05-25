@@ -163,8 +163,7 @@ class LendingServiceTest {
     when(lendingRepository.findLendingsForObjects(Arrays.asList(1L, 2L)))
         .thenReturn(Arrays.asList());
 
-    List<ObjectInfoDisponibilityDto> result =
-        lendingService.searchObjectsDisponibility(searchDto);
+    List<ObjectInfoDisponibilityDto> result = lendingService.searchObjectsDisponibility(searchDto);
 
     assertEquals(2, result.size());
     assertEquals(1L, result.get(0).getId());
@@ -192,8 +191,7 @@ class LendingServiceTest {
     when(lendingRepository.findLendingsForObjects(Arrays.asList(1L)))
         .thenReturn(Arrays.asList(currentLending));
 
-    List<ObjectInfoDisponibilityDto> result =
-        lendingService.searchObjectsDisponibility(searchDto);
+    List<ObjectInfoDisponibilityDto> result = lendingService.searchObjectsDisponibility(searchDto);
 
     assertEquals(1, result.size());
     assertEquals(1L, result.get(0).getId());
@@ -227,8 +225,7 @@ class LendingServiceTest {
     when(lendingRepository.findLendingsForObjects(Arrays.asList(1L)))
         .thenReturn(Arrays.asList(currentLending, nextLending));
 
-    List<ObjectInfoDisponibilityDto> result =
-        lendingService.searchObjectsDisponibility(searchDto);
+    List<ObjectInfoDisponibilityDto> result = lendingService.searchObjectsDisponibility(searchDto);
 
     assertEquals(1, result.size());
     assertEquals(1L, result.get(0).getId());
@@ -262,8 +259,7 @@ class LendingServiceTest {
     when(lendingRepository.findLendingsForObjects(Arrays.asList(1L, 2L)))
         .thenReturn(Arrays.asList(lending1, lending2));
 
-    List<ObjectInfoDisponibilityDto> result =
-        lendingService.searchObjectsDisponibility(searchDto);
+    List<ObjectInfoDisponibilityDto> result = lendingService.searchObjectsDisponibility(searchDto);
 
     assertEquals(2, result.size());
     assertEquals(1L, result.get(0).getId());

@@ -13,7 +13,8 @@ public interface LendingRepository extends JpaRepository<LendingEntity, Long> {
 
   @Query(
       nativeQuery = true,
-      value = """
+      value =
+          """
 select distinct l.id, l.borrowed_by_id, l.ended_at, l.object_id, l.offered_by_id, l.started_at, l.status
 from lending l
 join object o on o.id = l.object_id
@@ -41,8 +42,7 @@ order by o.id, l.startedAt desc
 """)
   List<LendingEntity> findLendingsForObjects(@Param("objectIds") List<Long> objectIds);
 
-  @Query(
-      """
+  @Query("""
 select l from LendingEntity l
 join l.object o
 order by o.id, l.startedAt desc

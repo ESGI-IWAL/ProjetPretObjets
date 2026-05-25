@@ -11,12 +11,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class LendingWorkflowIntegrationTest {
 
   @Autowired private UserService userService;
@@ -63,11 +65,9 @@ class LendingWorkflowIntegrationTest {
   }
 
   /**
-   * Test du flux complet de prêt :
-   * 1. Créer un prêt entre deux utilisateurs
-   * 2. Vérifier que le prêt est en base de données
-   * 3. Archiver le prêt dans l'historique
-   * 4. Vérifier que l'historique est enregistré
+   * Test du flux complet de prêt : 1. Créer un prêt entre deux utilisateurs 2. Vérifier que le prêt
+   * est en base de données 3. Archiver le prêt dans l'historique 4. Vérifier que l'historique est
+   * enregistré
    */
   @Test
   void testCompleteLendingWorkflow() {
@@ -116,9 +116,7 @@ class LendingWorkflowIntegrationTest {
     assertEquals(1, lendingHistoryRepository.count());
   }
 
-  /**
-   * Test : vérifier qu'un utilisateur peut avoir plusieurs prêts
-   */
+  /** Test : vérifier qu'un utilisateur peut avoir plusieurs prêts */
   @Test
   void testUserCanHaveMultipleLendings() {
     // Créer 3 objets
@@ -153,9 +151,7 @@ class LendingWorkflowIntegrationTest {
     assertEquals(3, borrowerLendings.size());
   }
 
-  /**
-   * Test : vérifier la relation entre Lending et LendingHistory
-   */
+  /** Test : vérifier la relation entre Lending et LendingHistory */
   @Test
   void testLendingHistoryTracksLendingProgression() {
     // Créer un prêt initial
@@ -177,17 +173,12 @@ class LendingWorkflowIntegrationTest {
     LendingHistoryEntity savedHistory = lendingHistoryService.create(history);
 
     // Vérifier l'intégrité référentielle
-    assertEquals(
-        savedLending.getBorrowedBy().getId(), savedHistory.getBorrowedBy().getId());
-    assertEquals(
-        savedLending.getOfferedBy().getId(), savedHistory.getOfferedBy().getId());
-    assertEquals(
-        savedLending.getObject().getId(), savedHistory.getObject().getId());
+    assertEquals(savedLending.getBorrowedBy().getId(), savedHistory.getBorrowedBy().getId());
+    assertEquals(savedLending.getOfferedBy().getId(), savedHistory.getOfferedBy().getId());
+    assertEquals(savedLending.getObject().getId(), savedHistory.getObject().getId());
   }
 
-  /**
-   * Test : vérifier que les objets sont bien liés à leurs propriétaires
-   */
+  /** Test : vérifier que les objets sont bien liés à leurs propriétaires */
   @Test
   void testObjectOwnershipIntegrity() {
     // Vérifier que l'objet créé appartient au prêteur
@@ -203,9 +194,7 @@ class LendingWorkflowIntegrationTest {
     assertTrue(lenderObjects.stream().anyMatch(o -> o.getId().equals(objectToLend.getId())));
   }
 
-  /**
-   * Test : vérifier la suppression en cascade
-   */
+  /** Test : vérifier la suppression en cascade */
   @Test
   void testLendingDeletionDoesNotAffectRelatedData() {
     // Créer un prêt
@@ -230,9 +219,7 @@ class LendingWorkflowIntegrationTest {
     assertNotNull(objectService.getById(objectToLend.getId()));
   }
 
-  /**
-   * Test de validation des dates du LendingHistory
-   */
+  /** Test de validation des dates du LendingHistory */
   @Test
   void testLendingHistoryDateValidation() {
     LendingHistoryEntity history = new LendingHistoryEntity();
@@ -252,8 +239,3 @@ class LendingWorkflowIntegrationTest {
     assertTrue(invalidHistory.hasDateError(), "Invalid dates should produce error");
   }
 }
-
-
-
-
-

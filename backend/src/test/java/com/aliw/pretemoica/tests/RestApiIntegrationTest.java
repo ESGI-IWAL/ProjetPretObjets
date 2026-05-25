@@ -14,16 +14,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Tests d'intégration pour vérifier le flux complet via les services.
- * Simule les interactions de l'API en appelant directement les services.
+ * Tests d'intégration pour vérifier le flux complet via les services. Simule les interactions de
+ * l'API en appelant directement les services.
  */
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class RestApiIntegrationTest {
 
   @Autowired private UserService userService;
@@ -62,9 +64,7 @@ class RestApiIntegrationTest {
     objectToLend = objectService.create(obj);
   }
 
-  /**
-   * Test : créer un prêt via le service
-   */
+  /** Test : créer un prêt via le service */
   @Test
   void testCreateLendingViaService() {
     LendingEntity lending = new LendingEntity();
@@ -80,9 +80,7 @@ class RestApiIntegrationTest {
     assertEquals(lender.getId(), created.getOfferedBy().getId());
   }
 
-  /**
-   * Test : récupérer tous les prêts
-   */
+  /** Test : récupérer tous les prêts */
   @Test
   void testGetAllLendingsViaService() {
     LendingEntity lending = new LendingEntity();
@@ -96,9 +94,7 @@ class RestApiIntegrationTest {
     assertEquals(1, allLendings.size());
   }
 
-  /**
-   * Test : obtenir les utilisateurs via le service
-   */
+  /** Test : obtenir les utilisateurs via le service */
   @Test
   void testGetUsersViaService() {
     List<UserEntity> users = userService.getAll();
@@ -106,9 +102,7 @@ class RestApiIntegrationTest {
     assertTrue(users.size() >= 2);
   }
 
-  /**
-   * Test : créer un utilisateur via le service
-   */
+  /** Test : créer un utilisateur via le service */
   @Test
   void testCreateUserViaService() {
     UserEntity newUser = new UserEntity();
@@ -123,9 +117,7 @@ class RestApiIntegrationTest {
     assertTrue(created.getUsername().startsWith("newuser_"));
   }
 
-  /**
-   * Test : intégration complète User -> Object -> Lending
-   */
+  /** Test : intégration complète User -> Object -> Lending */
   @Test
   void testCompleteWorkflowIntegration() {
     // Créer deux utilisateurs
@@ -170,8 +162,3 @@ class RestApiIntegrationTest {
     assertEquals(createdAlice.getId(), createdObject.getOwnedBy().getId());
   }
 }
-
-
-
-
-
