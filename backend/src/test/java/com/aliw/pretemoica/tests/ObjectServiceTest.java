@@ -115,14 +115,14 @@ class ObjectServiceTest {
   }
 
   @Test
-  void searchWithNullDtoShouldCallRepositoryWithAllNulls() {
+  void searchWithNullDtoShouldReturnAllObjects() {
     ObjectEntity o1 = new ObjectEntity();
-    when(objectRepository.search(null, null, null, null)).thenReturn(Arrays.asList(o1));
+    when(objectRepository.findAll()).thenReturn(Arrays.asList(o1));
 
     List<ObjectEntity> result = objectService.search(null);
 
     assertEquals(1, result.size());
-    verify(objectRepository, times(1)).search(null, null, null, null);
+    verify(objectRepository, times(1)).findAll();
   }
 
   @Test
