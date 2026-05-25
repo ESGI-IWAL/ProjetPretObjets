@@ -2,6 +2,8 @@ package com.aliw.pretemoica.controller;
 
 import com.aliw.pretemoica.dto.LendingDto;
 import com.aliw.pretemoica.dto.LendingSearchDto;
+import com.aliw.pretemoica.dto.ObjectInfoDisponibilityDto;
+import com.aliw.pretemoica.dto.SearchLendingWithIdsObjectsDto;
 import com.aliw.pretemoica.mapper.LendingMapper;
 import com.aliw.pretemoica.service.LendingService;
 import java.util.List;
@@ -41,5 +43,11 @@ public class LendingController {
   @DeleteMapping("/{id}")
   public void deleteLending(@PathVariable Long id) {
     lendingService.delete(id);
+  }
+
+  @PostMapping("/objects/disponibility")
+  public List<ObjectInfoDisponibilityDto> searchObjectsDisponibility(
+      @RequestBody SearchLendingWithIdsObjectsDto searchDto) {
+    return lendingService.searchObjectsDisponibility(searchDto);
   }
 }
