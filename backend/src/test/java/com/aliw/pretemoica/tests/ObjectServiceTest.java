@@ -115,14 +115,17 @@ class ObjectServiceTest {
   }
 
   @Test
-  void searchWithNullDtoShouldCallRepositoryWithAllNulls() {
+  void searchWithEmptyDtoShouldCallGetAll() {
     ObjectEntity o1 = new ObjectEntity();
-    when(objectRepository.search(null, null, null, null)).thenReturn(Arrays.asList(o1));
+    when(objectRepository.findAll()).thenReturn(List.of(o1));
 
-    List<ObjectEntity> result = objectService.search(null);
+    ObjectSearchDto searchDto = new ObjectSearchDto();
+
+    List<ObjectEntity> result = objectService.search(searchDto);
 
     assertEquals(1, result.size());
-    verify(objectRepository, times(1)).search(null, null, null, null);
+    verify(objectRepository, times(1)).findAll();
+    verify(objectRepository, never()).search(any(), any(), any(), any());
   }
 
   @Test
@@ -136,7 +139,7 @@ class ObjectServiceTest {
     searchDto.setCategory(ObjectCategories.TOOLS);
 
     when(objectRepository.search("Per", null, ObjectCategories.TOOLS, null))
-        .thenReturn(Arrays.asList(o1));
+        .thenReturn(List.of(o1));
 
     List<ObjectEntity> result = objectService.search(searchDto);
 
@@ -152,7 +155,7 @@ class ObjectServiceTest {
     ObjectSearchDto searchDto = new ObjectSearchDto();
     searchDto.setName("Mar");
 
-    when(objectRepository.search("Mar", null, null, null)).thenReturn(Arrays.asList(o1));
+    when(objectRepository.search("Mar", null, null, null)).thenReturn(List.of(o1));
 
     List<ObjectEntity> result = objectService.search(searchDto);
 
@@ -167,8 +170,7 @@ class ObjectServiceTest {
     searchDto.setName("   ");
     searchDto.setStateOfWear(ObjectStateOfWear.NEW);
 
-    when(objectRepository.search(null, ObjectStateOfWear.NEW, null, null))
-        .thenReturn(Arrays.asList(o1));
+    when(objectRepository.search(null, ObjectStateOfWear.NEW, null, null)).thenReturn(List.of(o1));
 
     List<ObjectEntity> result = objectService.search(searchDto);
 
@@ -192,7 +194,7 @@ class ObjectServiceTest {
 
     when(objectRepository.search(
             "Perceuse", ObjectStateOfWear.NEW, ObjectCategories.TOOLS, ObjectMaterial.METAL))
-        .thenReturn(Arrays.asList(o1));
+        .thenReturn(List.of(o1));
 
     List<ObjectEntity> result = objectService.search(searchDto);
 

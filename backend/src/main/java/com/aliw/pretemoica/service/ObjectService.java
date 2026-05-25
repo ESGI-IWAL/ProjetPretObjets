@@ -51,11 +51,17 @@ public class ObjectService {
       return getAll();
     }
 
+    String name = normalize(searchDto.getName());
+
+    if (name == null
+        && searchDto.getStateOfWear() == null
+        && searchDto.getCategory() == null
+        && searchDto.getMaterial() == null) {
+      return getAll();
+    }
+
     return objectRepository.search(
-        normalize(searchDto.getName()),
-        searchDto.getStateOfWear(),
-        searchDto.getCategory(),
-        searchDto.getMaterial());
+        name, searchDto.getStateOfWear(), searchDto.getCategory(), searchDto.getMaterial());
   }
 
   public ObjectEntity getById(Long id) {

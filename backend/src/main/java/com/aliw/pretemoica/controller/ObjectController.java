@@ -31,6 +31,15 @@ public class ObjectController {
   @PostMapping("/search")
   public ResponseEntity<List<ObjectDto>> searchObjects(
       @RequestBody(required = false) ObjectSearchDto searchDto) {
+
+    if (searchDto == null
+        || (searchDto.getName() == null
+            && searchDto.getStateOfWear() == null
+            && searchDto.getCategory() == null
+            && searchDto.getMaterial() == null)) {
+      return ResponseEntity.ok(ObjectMapper.toDtoList(objectService.getAll()));
+    }
+
     return ResponseEntity.ok(ObjectMapper.toDtoList(objectService.search(searchDto)));
   }
 
