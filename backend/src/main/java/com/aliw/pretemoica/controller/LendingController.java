@@ -27,7 +27,15 @@ public class LendingController {
   @PostMapping("/search")
   public List<LendingDto> searchLendings(
       @RequestBody(required = false) LendingSearchDto searchDto) {
-    return LendingMapper.toDtoList(lendingService.search(searchDto));
+
+    if (searchDto == null
+        || (searchDto.getObjectName() == null
+            && searchDto.getStartAt() == null
+            && searchDto.getEndAt() == null)) { // ← Parenthèse fermante manquante
+      return LendingMapper.toDtoList(lendingService.getAll());
+    } else {
+      return LendingMapper.toDtoList(lendingService.search(searchDto));
+    }
   }
 
   @GetMapping("/{id}")

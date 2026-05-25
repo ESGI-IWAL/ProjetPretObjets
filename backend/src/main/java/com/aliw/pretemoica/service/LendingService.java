@@ -129,4 +129,22 @@ public class LendingService {
             })
         .toList();
   }
+
+  public List<LendingEntity> searchByObjectId(LendingSearchDto searchDto) {
+    if (searchDto == null) {
+      return lendingRepository.search(null, null, null, null, null);
+    }
+
+    String statusStr = null;
+    if (searchDto.getStatus() != null) {
+      statusStr = searchDto.getStatus().toString();
+    }
+
+    return lendingRepository.search(
+        searchDto.getObjectName(), // ← Pas de normalize(), c'est un Long
+        normalize(searchDto.getBorrowerName()),
+        searchDto.getStartAt(),
+        searchDto.getEndAt(),
+        statusStr);
+  }
 }

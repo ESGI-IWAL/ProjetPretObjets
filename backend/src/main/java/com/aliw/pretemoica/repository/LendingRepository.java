@@ -15,19 +15,19 @@ public interface LendingRepository extends JpaRepository<LendingEntity, Long> {
       nativeQuery = true,
       value =
           """
-select distinct l.id, l.borrowed_by_id, l.ended_at, l.object_id, l.offered_by_id, l.started_at, l.status
-from lending l
-join object o on o.id = l.object_id
-join app_user b on b.id = l.borrowed_by_id
-where (:objectName is null or lower(cast(o.name as varchar)) like lower(concat('%', cast(:objectName as varchar), '%')))
-and (:borrowerName is null or lower(cast(b.username as varchar)) like lower(concat('%', cast(:borrowerName as varchar), '%')))
-and (:startAt is null or l.started_at >= cast(:startAt as timestamp))
-and (:endAt is null or l.ended_at <= cast(:endAt as timestamp))
-and (:status is null or l.status = cast(:status as text))
-order by l.started_at desc
-""")
+        select distinct l.id, l.borrowed_by_id, l.ended_at, l.object_id, l.offered_by_id, l.started_at, l.status
+        from lending l
+        join object o on o.id = l.object_id
+        join app_user b on b.id = l.borrowed_by_id
+        where (:objectId is null or lower(cast(o.name as varchar)) like lower(concat('%', cast(:objectName as varchar), '%')))
+        and (:borrowerName is null or lower(cast(b.username as varchar)) like lower(concat('%', cast(:borrowerName as varchar), '%')))
+        and (:startAt is null or l.started_at >= cast(:startAt as timestamp))
+        and (:endAt is null or l.ended_at <= cast(:endAt as timestamp))
+        and (:status is null or l.status = cast(:status as text))
+        order by l.started_at desc
+        """)
   List<LendingEntity> search(
-      @Param("objectName") String objectName,
+      @Param("objectId") String objectId,
       @Param("borrowerName") String borrowerName,
       @Param("startAt") LocalDateTime startAt,
       @Param("endAt") LocalDateTime endAt,
@@ -35,11 +35,11 @@ order by l.started_at desc
 
   @Query(
       """
-select l from LendingEntity l
-join l.object o
-where o.id in :objectIds
-order by o.id, l.startedAt desc
-""")
+    select l from LendingEntity l
+    join l.object o
+    where o.id in :objectIds
+    order by o.id, l.startedAt desc
+    """)
   List<LendingEntity> findLendingsForObjects(@Param("objectIds") List<Long> objectIds);
 
   @Query("""
