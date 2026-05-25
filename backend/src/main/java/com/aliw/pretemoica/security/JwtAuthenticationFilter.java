@@ -32,8 +32,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String email = jwtUtil.getEmailFromToken(jwt);
 
         UsernamePasswordAuthenticationToken authentication =
-            new UsernamePasswordAuthenticationToken(userId, null, null);
-        authentication.setDetails(email);
+            new UsernamePasswordAuthenticationToken(email, null, java.util.Collections.emptyList());
+        // stocke l'id dans les détails si besoin ailleurs
+        authentication.setDetails(userId);
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     } catch (Exception e) {
