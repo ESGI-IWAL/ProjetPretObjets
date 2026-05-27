@@ -1,6 +1,7 @@
 package com.aliw.pretemoica.repository;
 
 import com.aliw.pretemoica.entity.LendingEntity;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -48,4 +49,25 @@ join l.object o
 order by o.id, l.startedAt desc
 """)
   List<LendingEntity> findAllLendingsGroupedByObject();
+
+  @Query(
+      """
+  select l from LendingEntity l
+  where l.object.id in :objectIds
+  order by l.startedAt desc
+  """)
+  List<LendingEntity> findByObjectIdIn(@Param("objectIds") List<Long> objectIds);
+
+  @Query(
+      """
+  select l from LendingEntity l
+  where l.object.id in :objectIds
+  and ((:startDate is null or l.startedAt >= :startDate)
+       or (:endDate is null or l.endedAt <= :endDate))
+  order by l.startedAt desc
+  """)
+  List<LendingEntity> findByObjectIdInAndDates(
+      @Param("objectIds") List<Long> objectIds,
+      @Param("startDate") LocalDate startDate,
+      @Param("endDate") LocalDate endDate);
 }

@@ -1,7 +1,6 @@
 package com.aliw.pretemoica.controller;
 
 import com.aliw.pretemoica.dto.LendingDto;
-import com.aliw.pretemoica.dto.LendingSearchDto;
 import com.aliw.pretemoica.dto.ObjectInfoDisponibilityDto;
 import com.aliw.pretemoica.dto.SearchLendingWithIdsObjectsDto;
 import com.aliw.pretemoica.mapper.LendingMapper;
@@ -25,16 +24,12 @@ public class LendingController {
   }
 
   @PostMapping("/search")
-  public List<LendingDto> searchLendings(
-      @RequestBody(required = false) LendingSearchDto searchDto) {
-
-    if (searchDto == null
-        || (searchDto.getObjectName() == null
-            && searchDto.getStartAt() == null
-            && searchDto.getEndAt() == null)) { // ← Parenthèse fermante manquante
+  public List<LendingDto> searchLendingsByObjectsAndDates(
+      @RequestBody(required = false) SearchLendingWithIdsObjectsDto searchDto) {
+    if (searchDto == null) {
       return LendingMapper.toDtoList(lendingService.getAll());
     } else {
-      return LendingMapper.toDtoList(lendingService.search(searchDto));
+      return LendingMapper.toDtoList(lendingService.searchLendingsByObjectsAndDates(searchDto));
     }
   }
 
