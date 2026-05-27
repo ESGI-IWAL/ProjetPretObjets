@@ -130,21 +130,26 @@ public class LendingService {
         .toList();
   }
 
-  public List<LendingEntity> searchByObjectId(LendingSearchDto searchDto) {
-    if (searchDto == null) {
-      return lendingRepository.search(null, null, null, null, null);
+  public List<LendingEntity> searchLendingsByObjectsAndDates(
+      SearchLendingWithIdsObjectsDto searchDto) {
+
+    // Si aucun paramètre, retourner tous les lendings
+    if (searchDto == null
+        || searchDto.getIdsObject() == null
+        || searchDto.getIdsObject().isEmpty()) {
+      return lendingRepository.findAll();
     }
 
-    String statusStr = null;
-    if (searchDto.getStatus() != null) {
-      statusStr = searchDto.getStatus().toString();
+    // Si les deux dates sont nulles, retourner tous les lendings pour ces objets
+    if (searchDto.getDisponibilityStartDate() == null
+        && searchDto.getDisponibilityEndDate() == null) {
+      return lendingRepository.findByObjectIdIn(searchDto.getIdsObject());
     }
 
-    return lendingRepository.search(
-        searchDto.getObjectName(), // ← Pas de normalize(), c'est un Long
-        normalize(searchDto.getBorrowerName()),
-        searchDto.getStartAt(),
-        searchDto.getEndAt(),
-        statusStr);
+    // Sinon, filtrer par dates
+    return lendingRepository.findByObjectIdInAndDates(
+        searchDto.getIdsObject(),
+        searchDto.getDisponibilityStartDate(),
+        searchDto.getDisponibilityEndDate());
   }
 }
