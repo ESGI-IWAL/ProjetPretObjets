@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 class UserEntityTest {
 
   @Test
-  public void testDefaultConstructor() {
+  void testDefaultConstructor() {
     UserEntity user = new UserEntity();
     assertNotNull(user);
     assertNull(user.getId());
@@ -23,19 +23,23 @@ class UserEntityTest {
   }
 
   @Test
-  public void testSettersAndGetters() {
+  void testSettersAndGetters() {
     UserEntity user = new UserEntity();
     user.setEmail("test@example.com");
     user.setPassword("password123");
     user.setRating(5);
+    user.setAvatar("https://example.com/avatar.png");
+    user.setDescription("Utilisateur test");
 
     assertEquals("test@example.com", user.getEmail());
     assertEquals("password123", user.getPassword());
     assertEquals(5, user.getRating());
+    assertEquals("https://example.com/avatar.png", user.getAvatar());
+    assertEquals("Utilisateur test", user.getDescription());
   }
 
   @Test
-  public void testAddObject() {
+  void testAddObject() {
     UserEntity user = new UserEntity();
     ObjectEntity obj = new ObjectEntity();
     obj.setName("Test Object");
@@ -48,7 +52,7 @@ class UserEntityTest {
   }
 
   @Test
-  public void testAddLinkedUser() {
+  void testAddLinkedUser() {
     UserEntity user1 = new UserEntity();
     user1.setEmail("user1@example.com");
 
@@ -63,17 +67,17 @@ class UserEntityTest {
   }
 
   @Test
-  public void testGetRatingThrowsExceptionWhenNull() {
+  void testGetRatingThrowsExceptionWhenNull() {
     UserEntity user = new UserEntity();
     user.setRating(null);
 
     IllegalStateException exception =
-        assertThrows(IllegalStateException.class, () -> user.getRating());
+        assertThrows(IllegalStateException.class, user::getRating);
     assertTrue(exception.getMessage().contains("Le rating n'a pas été initialisé"));
   }
 
   @Test
-  public void testGetRatingReturnsValue() {
+  void testGetRatingReturnsValue() {
     UserEntity user = new UserEntity();
     user.setRating(10);
 
@@ -81,7 +85,7 @@ class UserEntityTest {
   }
 
   @Test
-  public void testAuthentificationSuccess() {
+  void testAuthentificationSuccess() {
     UserEntity user = new UserEntity();
     user.setEmail("test@example.com");
     user.setPassword("password123");
@@ -90,7 +94,7 @@ class UserEntityTest {
   }
 
   @Test
-  public void testAuthentificationFailureWrongEmail() {
+  void testAuthentificationFailureWrongEmail() {
     UserEntity user = new UserEntity();
     user.setEmail("test@example.com");
     user.setPassword("password123");
@@ -99,7 +103,7 @@ class UserEntityTest {
   }
 
   @Test
-  public void testAuthentificationFailureWrongPassword() {
+  void testAuthentificationFailureWrongPassword() {
     UserEntity user = new UserEntity();
     user.setEmail("test@example.com");
     user.setPassword("password123");
@@ -108,7 +112,7 @@ class UserEntityTest {
   }
 
   @Test
-  public void testAuthentificationFailureNullEmail() {
+  void testAuthentificationFailureNullEmail() {
     UserEntity user = new UserEntity();
     user.setPassword("password123");
 
@@ -116,7 +120,7 @@ class UserEntityTest {
   }
 
   @Test
-  public void testAuthentificationFailureNullPassword() {
+  void testAuthentificationFailureNullPassword() {
     UserEntity user = new UserEntity();
     user.setEmail("test@example.com");
 

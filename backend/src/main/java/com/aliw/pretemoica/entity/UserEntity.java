@@ -22,6 +22,11 @@ public class UserEntity {
   @Column(unique = true, nullable = false)
   private String email;
 
+  @Column private String avatar;
+
+  @Column(length = 1000)
+  private String description;
+
   private String password;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -31,7 +36,9 @@ public class UserEntity {
 
   private Integer rating = 0;
 
-  public UserEntity() {}
+  public UserEntity() {
+    //Creation vide
+  }
 
   public void addObject(ObjectEntity objectToAdd) {
     if (this.objects == null) {

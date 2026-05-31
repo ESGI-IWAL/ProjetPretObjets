@@ -20,6 +20,8 @@ public final class UserMapper {
     dto.setUsername(entity.getUsername());
     dto.setEmail(entity.getEmail());
     dto.setRating(safeRating(entity));
+    dto.setAvatar(entity.getAvatar());
+    dto.setDescription(entity.getDescription());
     return dto;
   }
 
@@ -33,6 +35,8 @@ public final class UserMapper {
     entity.setUsername(dto.getUsername());
     entity.setEmail(dto.getEmail());
     entity.setRating(dto.getRating() != null ? dto.getRating() : 0);
+    entity.setAvatar(dto.getAvatar());
+    entity.setDescription(dto.getDescription());
     return entity;
   }
 

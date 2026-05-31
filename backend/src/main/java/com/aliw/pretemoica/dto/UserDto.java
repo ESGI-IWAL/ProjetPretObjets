@@ -15,4 +15,6 @@ public class UserDto {
   private String username;
   private String email;
   private Integer rating;
+  private String avatar;
+  private String description;
 }
