@@ -33,8 +33,6 @@ public class UserEntity {
 
   private String lastName;
 
-  private String description;
-
   @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "profile_image_id")
   private ImageEntity profileImage;
