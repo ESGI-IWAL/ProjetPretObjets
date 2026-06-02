@@ -20,12 +20,17 @@ import org.springframework.stereotype.Service;
 public class LendingService {
 
   private final LendingRepository lendingRepository;
+  private final ObjectRepository objectRepository;
   private final ObjectService objectService;
   private final UserService userService;
 
   public LendingService(
-      LendingRepository lendingRepository, ObjectService objectService, UserService userService) {
+      LendingRepository lendingRepository,
+      ObjectRepository objectRepository,
+      ObjectService objectService,
+      UserService userService) {
     this.lendingRepository = lendingRepository;
+    this.objectRepository = objectRepository;
     this.objectService = objectService;
     this.userService = userService;
   }
@@ -45,7 +50,7 @@ public class LendingService {
 
     ObjectEntity lendingObject = objectService.getById(requiredId(lendingEntity.getObject()));
     lendingEntity.setObject(lendingObject);
-    lendingEntity.setOfferedBy(resolveOwner(lendingObject));
+    lendingEntity.setOwnedBy(resolveOwner(lendingObject));
 
     return create(lendingEntity);
   }
@@ -216,6 +221,7 @@ public class LendingService {
         searchDto.getDisponibilityStartDate(),
         searchDto.getDisponibilityEndDate());
   }
+
   private Long requiredId(UserEntity entity) {
     if (entity == null || entity.getId() == null) {
       throw new IllegalArgumentException("Le champ borrowerId est obligatoire");
@@ -253,7 +259,7 @@ public class LendingService {
     // Si le prêt est VALIDATED et que la date de début arrive -> IN_PROGRESS
     if (current == LendingEntity.LendingStatus.VALIDATED
         && lending.getStartedAt() != null
-        && today.isEqual(lending.getStartedAt().toLocalDate())) {
+        && !today.isBefore(lending.getStartedAt().toLocalDate())) {
       lending.setStatus(LendingEntity.LendingStatus.IN_PROGRESS);
       changed = true;
     }
@@ -261,7 +267,7 @@ public class LendingService {
     // Si le prêt est IN_PROGRESS et que la date de fin arrive -> COMPLETED
     if (current == LendingEntity.LendingStatus.IN_PROGRESS
         && lending.getEndedAt() != null
-        && today.isEqual(lending.getEndedAt().toLocalDate())) {
+        && !today.isBefore(lending.getEndedAt().toLocalDate())) {
       lending.setStatus(LendingEntity.LendingStatus.COMPLETED);
       changed = true;
     }
