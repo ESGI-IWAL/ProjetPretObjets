@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue"
 
-export interface IOption {
-  id: string | number
-  label: string
-}
+export type IOption =
+  | string
+  | {
+      id?: string | number
+      label: string
+    }
 
 const props = defineProps<{
   id?: string
   modelValue?: string
-  selectedId?:string | number
   options: IOption[]
   placeholder?: string
 }>()
 
-const emit = defineEmits(["update:modelValue", "update:selectedId"])
+const emit = defineEmits(["update:modelValue", "update:selectedId"] as const)
 
 const input = ref<HTMLInputElement | null>(null)
 const open = ref(false)
@@ -22,21 +23,40 @@ const highlightedIndex = ref(-1)
 
 const query = computed({
   get: () => props.modelValue,
-  set: (val) => emit("update:modelValue", val),
+  set: (val: string) => emit("update:modelValue", val),
+})
+
+const normalizedOptions = computed(() =>
+  props.options.map(option =>
+    typeof option === "string" ? { label: option } : option
+  )
+)
+
+const uniqueOptions = computed(() => {
+  const seen = new Map<string, { id?: string | number; label: string }>()
+  for (const option of normalizedOptions.value) {
+    const label = option.label.trim()
+    if (!seen.has(label)) {
+      seen.set(label, { ...option, label })
+    }
+  }
+  return Array.from(seen.values())
 })
 
 const filteredOptions = computed(() => {
-  if (!query.value) return props.options
-  return props.options.filter(option =>
-    option.label
-      .toLowerCase()
-      .startsWith(query?.value?.toLowerCase() ?? "")
+  const queryValue = props.modelValue?.toLowerCase() ?? ""
+  if (!queryValue) return uniqueOptions.value
+
+  return uniqueOptions.value.filter(option =>
+    option.label.toLowerCase().startsWith(queryValue)
   )
 })
 
-const selectOption = (option: IOption) => {
+const selectOption = (option: { id?: string | number; label: string }) => {
   query.value = option.label
-  emit("update:selectedId", option.id)
+  if (option.id !== undefined) {
+    emit("update:selectedId", option.id)
+  }
   open.value = false
   highlightedIndex.value = -1
 }
@@ -95,7 +115,7 @@ onBeforeUnmount(() => {
       ref="input"
       :id="props.id"
       v-model="query"
-      :placeholder="placeholder"
+      :placeholder="props.placeholder"
       class="form-input"
       @focus="open = true"
       @keydown="onKeyDown"
@@ -104,7 +124,7 @@ onBeforeUnmount(() => {
     <ul v-if="open && filteredOptions.length" class="dropdown">
       <li
         v-for="(option, index) in filteredOptions"
-        :key="option.id"
+        :key="option.label"
         :class="{ active: index === highlightedIndex }"
         @mousedown.prevent="selectOption(option)"
       >

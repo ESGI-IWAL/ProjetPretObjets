@@ -2,6 +2,7 @@ import type { ILending } from "~/types/lending"
 import type { ICreateLendingDto } from "../dto/lending/create.dto"
 import type { ISearchLendingDto } from "../dto/lending/search.dto"
 import type { IUpdateLendingDto } from "~/dto/lending/update.dto"
+import type { IObjectInfoDisponibilityDto, ISearchLendingWithIdsObjectsDto } from "~/dto/object/search.dto"
 
 const api = () => useNuxtApp().$api
 
@@ -29,6 +30,12 @@ export const searchLending = async (searchParams: ISearchLendingDto) => {
   })
 }
 
+export const searchLendingWithObjectsIds= async(searchParams : ISearchLendingWithIdsObjectsDto) => {
+  return await api()<IObjectInfoDisponibilityDto[]>("/lendings/se", {
+    method: "POST", 
+    body: searchParams
+  })
+}
 export const updateLending = async ( dto: IUpdateLendingDto) => {
   const startAt = dto.startAt instanceof Date ? dto.startAt.toISOString() : dto.startAt
   const endAt = dto.endAt instanceof Date ? dto.endAt.toISOString() : dto.endAt

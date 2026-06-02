@@ -14,4 +14,6 @@ export interface IObject {
     state?: EObjectState | string,
     material?: EObjectMaterial,
     status?: string
+    nextLending?: Date
+    endCurrentLending?: Date
 }

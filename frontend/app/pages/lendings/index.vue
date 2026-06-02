@@ -1,19 +1,27 @@
 <script setup lang="ts">
+import useToaster from '~/composables/useToaster';
 import type { ISearchLendingDto } from '~/dto/lending/search.dto';
 import { getLendings, searchLending } from '~/services/lending';
 import type { ILending } from '~/types/lending';
 
 const lendings = ref<ILending[]|null>(null)
+const toaster = useToaster()
 onMounted(async ()=> {
     try{
         lendings.value = await getLendings()
     }
     catch{
         lendings.value = []
+        toaster.show("Erreur lors de la récupération des prêts", "error", 5000)
     }
 })
 const handleSearch = async (dto : ISearchLendingDto) => {
-     lendings.value = await searchLending(dto)
+    try{
+        lendings.value = await searchLending(dto)
+    }
+    catch{
+        toaster.show("Erreur lors de la recherche des prêts ", "error", 5000)
+    }
 }
 </script>
 

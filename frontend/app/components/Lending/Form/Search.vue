@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import AutoComplete, { type IOption } from '~/components/AutoComplete.vue';
+import useToaster from '~/composables/useToaster';
 import type { ISearchLendingDto } from '~/dto/lending/search.dto';
 import { ELendingStatus } from '~/enums/lending/status.enum';
 import { getObjects } from '~/services/object';
 import { getUsers } from '~/services/user';
 
 const emit = defineEmits(['search'])
-
+const toaster = useToaster()
 const form = reactive<ISearchLendingDto>({
     objectName: "",
     borrowerName: "",
@@ -22,12 +23,13 @@ onMounted(async () => {
     try{
         const objects = await getObjects()
         const users = await getUsers()
-        objectsIOption.value = objects.map(objet => {return {id: objet.id, label: objet.name}} )
-        usersIOption.value = users.map(user => {return {id: user.id, label: user.username}})
+        objectsIOption.value = objects.map(objet => {return { label: objet.name}} )
+        usersIOption.value = users.map(user => {return {label: user.username}})
 
     } catch {
         objectsIOption.value= []
         usersIOption.value = []
+        toaster.show("Erreur lors de la recherche des objets et des users", "error", 5000)
     }
 })
 

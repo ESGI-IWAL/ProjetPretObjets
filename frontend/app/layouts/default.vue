@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Toaster from '~/components/Toaster.vue'
+
 const isOpen = ref<boolean>(false);
 const {logout} = useAuth()
 const handleClick = () => {
@@ -45,6 +47,9 @@ const handleClick = () => {
       <main class="flex-1 p-4 md:p-6 lg:p-8">
         <slot />
       </main>
+
+      <Toaster />
+
       <footer class="bg-gray-800 text-white p-4">Footer</footer>
     </div>
   </div>

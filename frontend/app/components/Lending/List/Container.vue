@@ -7,6 +7,7 @@ defineProps<{
 }>()
 
 const emit = defineEmits(['search'])
+
 function search(dto : ISearchLendingDto) {
     emit('search', dto)
 }
