@@ -14,10 +14,10 @@ import lombok.Setter;
 public class LendingDto {
 
   private Long id;
-  private Long borrowedById;
-  private Long offeredById;
-  private Long objectId;
+  private UserDto borrowedBy;
+  private UserDto offeredBy;
+  private ObjectDto object;
+  private LocalDateTime startAt;
+  private LocalDateTime endAt;
   private LendingStatus status;
-  private LocalDateTime startedAt;
-  private LocalDateTime endedAt;
 }

@@ -4,13 +4,14 @@ import { EObjectState } from '../enums/object/state.enum';
 
 export interface IObject {
     id: number,
-    ownerId: number
+    ownerId: number,
     name: string,
-    images: string[],
-    description:string,
-    weight: number;
-    dimensions: string;
-    category: EObjectCategories,
-    state: EObjectState,
-    material: EObjectMaterial,
+    images?: string[],
+    description?: string,
+    weight?: number;
+    dimensions?: string;
+    category?: EObjectCategories,
+    state?: EObjectState | string,
+    material?: EObjectMaterial,
+    status?: string
 }

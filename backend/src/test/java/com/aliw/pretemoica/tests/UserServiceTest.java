@@ -3,6 +3,7 @@ package com.aliw.pretemoica.tests;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.aliw.pretemoica.dto.UserDto;
 import com.aliw.pretemoica.entity.UserEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.repository.UserRepository;
@@ -76,5 +77,40 @@ public class UserServiceTest {
     userService.delete(2L);
 
     verify(userRepository, times(1)).delete(u);
+  }
+
+  @Test
+  public void getMyProfileShouldFindByEmailFirst() {
+    UserEntity u = new UserEntity();
+    u.setEmail("me@ex.com");
+    when(userRepository.findByEmailIgnoreCase("me@ex.com")).thenReturn(Optional.of(u));
+
+    UserEntity found = userService.getMyProfile("me@ex.com");
+
+    assertSame(u, found);
+    verify(userRepository, times(1)).findByEmailIgnoreCase("me@ex.com");
+    verify(userRepository, never()).findByUsernameIgnoreCase(anyString());
+  }
+
+  @Test
+  public void updateMyProfileShouldMergeFieldsAndPersist() {
+    UserEntity current = new UserEntity();
+    current.setEmail("me@ex.com");
+    current.setUsername("old");
+    current.setRating(1);
+    when(userRepository.findByEmailIgnoreCase("me@ex.com")).thenReturn(Optional.of(current));
+    when(userRepository.save(any(UserEntity.class)))
+        .thenAnswer(invocation -> invocation.getArgument(0));
+
+    UserDto dto = new UserDto();
+    dto.setUsername("new");
+    dto.setRating(5);
+
+    UserEntity updated = userService.updateMyProfile("me@ex.com", dto);
+
+    assertEquals("new", updated.getUsername());
+    assertEquals("me@ex.com", updated.getEmail());
+    assertEquals(5, updated.getRating());
+    verify(userRepository, times(1)).save(current);
   }
 }
