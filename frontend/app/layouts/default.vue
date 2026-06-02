@@ -1,9 +1,8 @@
 <script setup lang="ts">
 const isOpen = ref<boolean>(false);
-
+const {logout} = useAuth()
 const handleClick = () => {
   isOpen.value = !isOpen.value;
-  console.log(isOpen.value);
 };
 </script>
 
@@ -41,6 +40,7 @@ const handleClick = () => {
           PreteMoiCa
         </NuxtLink>
         <NuxtLink to="/profile" class="text-white">profil</NuxtLink>
+        <NuxtLink to="/login" @click="() => logout()" class="text-black"> logout</NuxtLink>
       </header>
       <main class="flex-1 p-4 md:p-6 lg:p-8">
         <slot />
