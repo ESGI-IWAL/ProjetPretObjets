@@ -71,8 +71,7 @@ class UserEntityTest {
     UserEntity user = new UserEntity();
     user.setRating(null);
 
-    IllegalStateException exception =
-        assertThrows(IllegalStateException.class, user::getRating);
+    IllegalStateException exception = assertThrows(IllegalStateException.class, user::getRating);
     assertTrue(exception.getMessage().contains("Le rating n'a pas été initialisé"));
   }
 

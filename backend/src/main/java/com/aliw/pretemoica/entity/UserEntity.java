@@ -37,7 +37,7 @@ public class UserEntity {
   private Integer rating = 0;
 
   public UserEntity() {
-    //Creation vide
+    // Creation vide
   }
 
   public void addObject(ObjectEntity objectToAdd) {
