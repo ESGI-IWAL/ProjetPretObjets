@@ -215,6 +215,7 @@ public class LendingService {
         searchDto.getIdsObject(),
         searchDto.getDisponibilityStartDate(),
         searchDto.getDisponibilityEndDate());
+  }
   private Long requiredId(UserEntity entity) {
     if (entity == null || entity.getId() == null) {
       throw new IllegalArgumentException("Le champ borrowerId est obligatoire");
