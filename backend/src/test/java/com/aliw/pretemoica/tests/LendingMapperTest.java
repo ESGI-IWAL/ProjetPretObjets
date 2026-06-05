@@ -45,18 +45,24 @@ public class LendingMapperTest {
     assertEquals(2L, dto.getBorrowedBy().getId());
     assertEquals(3L, dto.getOfferedBy().getId());
     assertEquals(6L, dto.getObject().getId());
-    assertEquals(start, dto.getStartAt());
-    assertEquals(end, dto.getEndAt());
+    assertEquals(start, dto.getStartedAt()); // FIX: getStartAt() -> getStartedAt()
+    assertEquals(end, dto.getEndedAt()); // FIX: getEndAt() -> getEndedAt()
 
     // Now toEntity
     LendingDto dto2 = new LendingDto();
     dto2.setId(7L);
-    dto2.setBorrowedBy(new UserDto(11L, "borrower", "borrower@example.com", 5));
-    dto2.setOfferedBy(new UserDto(12L, "offerer", "offerer@example.com", 7));
-    dto2.setObject(new ObjectDto(13L, "object", 99L, ObjectEntity.ObjectStatus.AVAILABLE, null));
+    // FIX: UserDto attend 6 paramètres (Long, String, String, Integer, String, String)
+    dto2.setBorrowedBy(new UserDto(11L, "borrower", "borrower@example.com", 5, null, null));
+    dto2.setOfferedBy(new UserDto(12L, "offerer", "offerer@example.com", 7, null, null));
+    // FIX: ObjectEntity.ObjectStatus n'existe pas — à adapter selon ton ObjectDto
+    ObjectDto objDto = new ObjectDto();
+    objDto.setId(13L);
+    objDto.setName("object");
+    objDto.setOwnedById(99L);
+    dto2.setObject(objDto);
     LocalDateTime s2 = LocalDateTime.of(2021, 2, 2, 9, 0);
-    dto2.setStartAt(s2);
-    dto2.setEndAt(s2.plusDays(1));
+    dto2.setStartedAt(s2); // FIX: setStartAt() -> setStartedAt()
+    dto2.setEndedAt(s2.plusDays(1)); // FIX: setEndAt() -> setEndedAt()
 
     LendingEntity e2 = LendingMapper.toEntity(dto2);
     assertNotNull(e2);
@@ -74,7 +80,7 @@ public class LendingMapperTest {
   @Test
   public void toEntityShouldKeepDefaultStartedAtWhenDtoHasNull() {
     LendingDto dto = new LendingDto();
-    dto.setStartAt(null);
+    dto.setStartedAt(null); // FIX: setStartAt() -> setStartedAt()
     LendingEntity e = LendingMapper.toEntity(dto);
     assertNotNull(e.getStartedAt());
   }

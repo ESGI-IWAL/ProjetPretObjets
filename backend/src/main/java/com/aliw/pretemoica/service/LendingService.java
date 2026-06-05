@@ -1,11 +1,12 @@
 package com.aliw.pretemoica.service;
 
+import com.aliw.pretemoica.dto.CreateLendingDto;
 import com.aliw.pretemoica.dto.LendingSearchDto;
 import com.aliw.pretemoica.dto.ObjectInfoDisponibilityDto;
 import com.aliw.pretemoica.dto.SearchLendingWithIdsObjectsDto;
-import com.aliw.pretemoica.dto.CreateLendingDto;
 import com.aliw.pretemoica.dto.UpdateLendingDto;
 import com.aliw.pretemoica.entity.LendingEntity;
+import com.aliw.pretemoica.entity.LendingStatus;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
@@ -38,7 +39,7 @@ public class LendingService {
   public LendingEntity create(LendingEntity lendingEntity) {
     // Assurer le statut par défaut lors de la création
     if (lendingEntity.getStatus() == null) {
-      lendingEntity.setStatus(LendingEntity.LendingStatus.PENDING);
+      lendingEntity.setStatus(LendingStatus.PENDING);
     }
     return lendingRepository.save(lendingEntity);
   }
@@ -50,7 +51,7 @@ public class LendingService {
 
     ObjectEntity lendingObject = objectService.getById(requiredId(lendingEntity.getObject()));
     lendingEntity.setObject(lendingObject);
-    lendingEntity.setOwnedBy(resolveOwner(lendingObject));
+    lendingEntity.setOfferedBy(resolveOwner(lendingObject));
 
     return create(lendingEntity);
   }
@@ -75,7 +76,7 @@ public class LendingService {
 
     // Gestion du changement de statut via l'endpoint update
     if (lendingDto.getStatus() != null) {
-      LendingEntity.LendingStatus newStatus = parseStatus(lendingDto.getStatus());
+      LendingStatus newStatus = parseStatus(lendingDto.getStatus());
       changeStatus(lendingEntity, newStatus);
     }
 
@@ -145,7 +146,7 @@ public class LendingService {
         || searchDto.getIdsObject().isEmpty()) {
       // Récupère tous les objets
       List<Long> allObjectIds =
-          objectRepository.findAll().stream().map(obj -> obj.getId()).toList();
+          objectRepository.findAll().stream().map(ObjectEntity::getId).toList();
 
       if (allObjectIds.isEmpty()) {
         return List.of();
@@ -251,24 +252,24 @@ public class LendingService {
   private LendingEntity refreshStatusIfNeeded(LendingEntity lending) {
     if (lending == null) return null;
 
-    LendingEntity.LendingStatus current = lending.getStatus();
+    LendingStatus current = lending.getStatus();
     boolean changed = false;
 
     java.time.LocalDate today = java.time.LocalDate.now();
 
     // Si le prêt est VALIDATED et que la date de début arrive -> IN_PROGRESS
-    if (current == LendingEntity.LendingStatus.VALIDATED
+    if (current == LendingStatus.VALIDATED
         && lending.getStartedAt() != null
         && !today.isBefore(lending.getStartedAt().toLocalDate())) {
-      lending.setStatus(LendingEntity.LendingStatus.IN_PROGRESS);
+      lending.setStatus(LendingStatus.IN_PROGRESS);
       changed = true;
     }
 
     // Si le prêt est IN_PROGRESS et que la date de fin arrive -> COMPLETED
-    if (current == LendingEntity.LendingStatus.IN_PROGRESS
+    if (current == LendingStatus.IN_PROGRESS
         && lending.getEndedAt() != null
         && !today.isBefore(lending.getEndedAt().toLocalDate())) {
-      lending.setStatus(LendingEntity.LendingStatus.COMPLETED);
+      lending.setStatus(LendingStatus.COMPLETED);
       changed = true;
     }
 
@@ -280,13 +281,13 @@ public class LendingService {
   }
 
   /** Permet de changer explicitement le statut en respectant les transitions autorisées. */
-  public void changeStatus(Long id, LendingEntity.LendingStatus newStatus) {
+  public void changeStatus(Long id, LendingStatus newStatus) {
     LendingEntity entity = getById(id);
     changeStatus(entity, newStatus);
   }
 
-  private void changeStatus(LendingEntity entity, LendingEntity.LendingStatus newStatus) {
-    LendingEntity.LendingStatus current = entity.getStatus();
+  private void changeStatus(LendingEntity entity, LendingStatus newStatus) {
+    LendingStatus current = entity.getStatus();
 
     if (current == newStatus) return; // Pas de changement
 
@@ -294,40 +295,36 @@ public class LendingService {
     entity.setStatus(newStatus);
   }
 
-  private LendingEntity.LendingStatus parseStatus(String value) {
+  private LendingStatus parseStatus(String value) {
     if (value == null) return null;
-    for (LendingEntity.LendingStatus s : LendingEntity.LendingStatus.values()) {
+    for (LendingStatus s : LendingStatus.values()) {
       if (s.getValue().equalsIgnoreCase(value)) return s;
     }
     throw new IllegalArgumentException("Statut inconnu: " + value);
   }
 
-  private void validateTransition(
-      LendingEntity.LendingStatus current, LendingEntity.LendingStatus newStatus) {
+  private void validateTransition(LendingStatus current, LendingStatus newStatus) {
     if (current == newStatus) return;
     switch (current) {
       case PENDING:
-        if (newStatus != LendingEntity.LendingStatus.VALIDATED
-            && newStatus != LendingEntity.LendingStatus.REFUSED) {
+        if (newStatus != LendingStatus.VALIDATED && newStatus != LendingStatus.REFUSED) {
           throw new IllegalArgumentException(
               "Depuis PENDING seul VALIDATED ou REFUSED sont autorisés");
         }
         break;
       case VALIDATED:
-        if (newStatus != LendingEntity.LendingStatus.IN_PROGRESS
-            && newStatus != LendingEntity.LendingStatus.CANCELED) {
+        if (newStatus != LendingStatus.IN_PROGRESS && newStatus != LendingStatus.CANCELED) {
           throw new IllegalArgumentException(
               "Depuis VALIDATED seul IN_PROGRESS (automatique) ou CANCELED sont autorisés");
         }
         break;
       case REFUSED:
-        if (newStatus != LendingEntity.LendingStatus.CANCELED) {
+        if (newStatus != LendingStatus.CANCELED) {
           throw new IllegalArgumentException("Depuis REFUSED seul CANCELED est autorisé");
         }
         break;
       case IN_PROGRESS:
-        if (newStatus != LendingEntity.LendingStatus.COMPLETED
-            && newStatus != LendingEntity.LendingStatus.CANCELED) {
+        if (newStatus != LendingStatus.COMPLETED && newStatus != LendingStatus.CANCELED) {
           throw new IllegalArgumentException(
               "Depuis IN_PROGRESS seul COMPLETED (automatique) ou CANCELED sont autorisés");
         }

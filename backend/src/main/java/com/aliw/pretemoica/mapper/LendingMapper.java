@@ -28,9 +28,9 @@ public final class LendingMapper {
     dto.setBorrowedBy(UserMapper.toDto(entity.getBorrowedBy()));
     dto.setOfferedBy(UserMapper.toDto(entity.getOfferedBy()));
     dto.setObject(ObjectMapper.toDto(entity.getObject()));
-    dto.setStartAt(entity.getStartedAt());
-    dto.setEndAt(entity.getEndedAt());
-    dto.setStatus(entity.getStatus() != null ? entity.getStatus().getValue() : null);
+    dto.setStartedAt(entity.getStartedAt());
+    dto.setEndedAt(entity.getEndedAt());
+    dto.setStatus(entity.getStatus() != null ? entity.getStatus() : null);
     return dto;
   }
 

@@ -20,7 +20,7 @@ class LendingEntityTest {
     assertNull(lending.getBorrowedBy());
     assertNull(lending.getOfferedBy());
     assertNull(lending.getObject());
-    assertEquals(LendingStatus.IN_PROGRESS, lending.getStatus());
+    assertEquals(LendingStatus.PENDING, lending.getStatus());
     assertNotNull(lending.getStartedAt()); // should be set to now
     assertNull(lending.getEndedAt());
   }
