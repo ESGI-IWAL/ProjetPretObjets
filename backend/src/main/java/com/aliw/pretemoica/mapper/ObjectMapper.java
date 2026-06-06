@@ -1,6 +1,8 @@
 package com.aliw.pretemoica.mapper;
 
+import com.aliw.pretemoica.dto.CreateObjectDto;
 import com.aliw.pretemoica.dto.ObjectDto;
+import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
 import java.util.ArrayList;
@@ -19,9 +21,13 @@ public final class ObjectMapper {
     ObjectDto dto = new ObjectDto();
     dto.setId(entity.getId());
     dto.setName(entity.getName());
+    dto.setDescription(entity.getDescription());
+    dto.setWeight(entity.getWeight());
+    dto.setDimensions(entity.getDimensions());
     dto.setOwnedById(entity.getOwnedBy() != null ? entity.getOwnedBy().getId() : null);
-    dto.setStatus(entity.getStatus());
-    dto.setState(entity.getState());
+    dto.setStateOfWear(entity.getStateOfWear());
+    dto.setCategory(entity.getCategory());
+    dto.setMaterial(entity.getMaterial());
     return dto;
   }
 
@@ -33,9 +39,12 @@ public final class ObjectMapper {
     ObjectEntity entity = new ObjectEntity();
     entity.setId(dto.getId());
     entity.setName(dto.getName());
-    entity.setStatus(
-        dto.getStatus() != null ? dto.getStatus() : ObjectEntity.ObjectStatus.AVAILABLE);
-    entity.setState(dto.getState());
+    entity.setDescription(dto.getDescription());
+    entity.setWeight(dto.getWeight());
+    entity.setDimensions(dto.getDimensions());
+    entity.setStateOfWear(dto.getStateOfWear());
+    entity.setCategory(dto.getCategory());
+    entity.setMaterial(dto.getMaterial());
     if (dto.getOwnedById() != null) {
       entity.setOwnedBy(toUserReference(dto.getOwnedById()));
     }
@@ -58,6 +67,57 @@ public final class ObjectMapper {
     return dtos.stream()
         .map(ObjectMapper::toEntity)
         .collect(Collectors.toCollection(ArrayList::new));
+  }
+
+  public static ObjectEntity toEntityFromCreate(CreateObjectDto dto) {
+    if (dto == null) {
+      return null;
+    }
+
+    ObjectEntity entity = new ObjectEntity();
+    entity.setName(dto.getName());
+    entity.setDescription(dto.getDescription());
+    entity.setWeight(dto.getWeight());
+    entity.setDimensions(dto.getDimensions());
+    entity.setStateOfWear(dto.getState());
+    entity.setCategory(dto.getCategory());
+    entity.setMaterial(dto.getMaterial());
+    if (dto.getOwnerId() != null) {
+      entity.setOwnedBy(toUserReference(dto.getOwnerId()));
+    } else {
+      throw new IllegalArgumentException("OwnerId is required for creating an object");
+    }
+    return entity;
+  }
+
+  public static ObjectEntity toEntityFromUpdate(UpdateObjectDto dto, ObjectEntity entity) {
+    if (dto == null) {
+      return entity;
+    }
+
+    if (dto.getName() != null) {
+      entity.setName(dto.getName());
+    }
+    if (dto.getDescription() != null) {
+      entity.setDescription(dto.getDescription());
+    }
+    if (dto.getWeight() != null) {
+      entity.setWeight(dto.getWeight());
+    }
+    if (dto.getDimensions() != null) {
+      entity.setDimensions(dto.getDimensions());
+    }
+    if (dto.getState() != null) {
+      entity.setStateOfWear(dto.getState());
+    }
+    if (dto.getCategory() != null) {
+      entity.setCategory(dto.getCategory());
+    }
+    if (dto.getMaterial() != null) {
+      entity.setMaterial(dto.getMaterial());
+    }
+    // ownerId is handled only on create. During update, owner must not be changed here.
+    return entity;
   }
 
   private static UserEntity toUserReference(Long userId) {

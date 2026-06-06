@@ -14,9 +14,11 @@ public class ObjectEntityTest {
     assertNotNull(obj);
     assertNull(obj.getId());
     assertNull(obj.getName());
+    assertNull(obj.getDescription());
+    assertNull(obj.getWeight());
+    assertNull(obj.getDimensions());
     assertNull(obj.getOwnedBy());
-    assertEquals(ObjectEntity.ObjectStatus.AVAILABLE, obj.getStatus());
-    assertNull(obj.getState());
+    assertNull(obj.getStateOfWear());
   }
 
   @Test
@@ -26,30 +28,25 @@ public class ObjectEntityTest {
     owner.setEmail("owner@example.com");
 
     obj.setName("Test Object");
+    obj.setDescription("Test description");
+    obj.setWeight(2.5d);
+    obj.setDimensions("10x20x30 cm");
     obj.setOwnedBy(owner);
-    obj.setStatus(ObjectEntity.ObjectStatus.LENT);
-    obj.setState(ObjectEntity.ObjectState.GOOD);
+    obj.setStateOfWear(ObjectEntity.ObjectStateOfWear.GOOD);
 
     assertEquals("Test Object", obj.getName());
+    assertEquals("Test description", obj.getDescription());
+    assertEquals(2.5d, obj.getWeight());
+    assertEquals("10x20x30 cm", obj.getDimensions());
     assertEquals(owner, obj.getOwnedBy());
-    assertEquals(ObjectEntity.ObjectStatus.LENT, obj.getStatus());
-    assertEquals(ObjectEntity.ObjectState.GOOD, obj.getState());
+    assertEquals(ObjectEntity.ObjectStateOfWear.GOOD, obj.getStateOfWear());
   }
 
   @Test
-  public void testObjectStatusEnum() {
-    // Just to ensure enums are accessible
-    assertNotNull(ObjectEntity.ObjectStatus.AVAILABLE);
-    assertNotNull(ObjectEntity.ObjectStatus.LENT);
-    assertNotNull(ObjectEntity.ObjectStatus.RESERVED);
-    assertNotNull(ObjectEntity.ObjectStatus.UNAVAILABLE);
-  }
-
-  @Test
-  public void testObjectStateEnum() {
-    assertNotNull(ObjectEntity.ObjectState.NEW);
-    assertNotNull(ObjectEntity.ObjectState.GOOD);
-    assertNotNull(ObjectEntity.ObjectState.WORN);
-    assertNotNull(ObjectEntity.ObjectState.DAMAGED);
+  public void testObjectStateOfWearEnum() {
+    assertNotNull(ObjectEntity.ObjectStateOfWear.NEW);
+    assertNotNull(ObjectEntity.ObjectStateOfWear.GOOD);
+    assertNotNull(ObjectEntity.ObjectStateOfWear.WORN);
+    assertNotNull(ObjectEntity.ObjectStateOfWear.DAMAGED);
   }
 }

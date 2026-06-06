@@ -2,6 +2,8 @@ package com.aliw.pretemoica.controller;
 
 import com.aliw.pretemoica.dto.CreateLendingDto;
 import com.aliw.pretemoica.dto.LendingDto;
+import com.aliw.pretemoica.dto.ObjectInfoDisponibilityDto;
+import com.aliw.pretemoica.dto.SearchLendingWithIdsObjectsDto;
 import com.aliw.pretemoica.dto.UpdateLendingDto;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.LendingMapper;
@@ -31,6 +33,16 @@ public class LendingController {
   @GetMapping
   public ResponseEntity<List<LendingDto>> getAllLendings() {
     return ResponseEntity.ok(LendingMapper.toDtoList(lendingService.getAll()));
+  }
+
+  @PostMapping("/search")
+  public List<LendingDto> searchLendingsByObjectsAndDates(
+      @RequestBody(required = false) SearchLendingWithIdsObjectsDto searchDto) {
+    if (searchDto == null) {
+      return LendingMapper.toDtoList(lendingService.getAll());
+    } else {
+      return LendingMapper.toDtoList(lendingService.searchLendingsByObjectsAndDates(searchDto));
+    }
   }
 
   @GetMapping("/{id}")
@@ -71,5 +83,11 @@ public class LendingController {
   public ResponseEntity<Void> deleteLending(@PathVariable Long id) {
     lendingService.delete(id);
     return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/objects/disponibility")
+  public List<ObjectInfoDisponibilityDto> searchObjectsDisponibility(
+      @RequestBody SearchLendingWithIdsObjectsDto searchDto) {
+    return lendingService.searchObjectsDisponibility(searchDto);
   }
 }

@@ -12,15 +12,22 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ObjectDto {
+public class UpdateObjectDto {
 
-  private Long id;
   private String name;
+
   private String description;
-  private Double weight;
-  private String dimensions;
-  private Long ownedById;
-  private ObjectStateOfWear stateOfWear;
+
   private ObjectCategories category;
+
+  private Double weight;
+
+  private String dimensions;
+
+  private ObjectStateOfWear state;
+
   private ObjectMaterial material;
+
+  // ownerId is intentionally omitted: on ne doit pas pouvoir changer le propriétaire via l'update
+  // DTO
 }

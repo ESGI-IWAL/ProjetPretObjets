@@ -22,13 +22,16 @@ public class UserEntity {
   @Column(unique = true, nullable = false)
   private String email;
 
+  @Column private String avatar;
+
+  @Column(length = 1000)
+  private String description;
+
   private String password;
 
   private String firstName;
 
   private String lastName;
-
-  private String description;
 
   @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "profile_image_id")
@@ -51,7 +54,7 @@ public class UserEntity {
   private Integer rating = 0;
 
   public UserEntity() {
-    // passe pas sans comm
+    // Creation vide
   }
 
   public void addObject(ObjectEntity objectToAdd) {

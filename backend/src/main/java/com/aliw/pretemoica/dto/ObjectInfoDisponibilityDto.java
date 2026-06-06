@@ -1,5 +1,6 @@
 package com.aliw.pretemoica.dto;
 
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
-
+public class ObjectInfoDisponibilityDto {
   private Long id;
-  private String username;
-  private String email;
-  private Integer rating;
-  private String avatar;
-  private String description;
+  private LocalDateTime nextLending;
+  private LocalDateTime endCurrentLending;
 }

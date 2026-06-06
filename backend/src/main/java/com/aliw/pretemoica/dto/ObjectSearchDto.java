@@ -12,14 +12,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ObjectDto {
+public class ObjectSearchDto {
 
-  private Long id;
   private String name;
-  private String description;
-  private Double weight;
-  private String dimensions;
-  private Long ownedById;
   private ObjectStateOfWear stateOfWear;
   private ObjectCategories category;
   private ObjectMaterial material;

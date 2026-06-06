@@ -4,6 +4,7 @@ import com.aliw.pretemoica.dto.CreateLendingDto;
 import com.aliw.pretemoica.dto.LendingDto;
 import com.aliw.pretemoica.dto.UpdateLendingDto;
 import com.aliw.pretemoica.entity.LendingEntity;
+import com.aliw.pretemoica.entity.LendingStatus;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
 import java.time.LocalDate;
@@ -27,9 +28,9 @@ public final class LendingMapper {
     dto.setBorrowedBy(UserMapper.toDto(entity.getBorrowedBy()));
     dto.setOfferedBy(UserMapper.toDto(entity.getOfferedBy()));
     dto.setObject(ObjectMapper.toDto(entity.getObject()));
-    dto.setStartAt(entity.getStartedAt());
-    dto.setEndAt(entity.getEndedAt());
-    dto.setStatus(entity.getStatus() != null ? entity.getStatus().getValue() : null);
+    dto.setStartedAt(entity.getStartedAt());
+    dto.setEndedAt(entity.getEndedAt());
+    dto.setStatus(entity.getStatus() != null ? entity.getStatus() : null);
     return dto;
   }
 
@@ -40,8 +41,13 @@ public final class LendingMapper {
 
     LendingEntity entity = new LendingEntity();
     entity.setId(dto.getId());
-    entity.setStartedAt(dto.getStartAt() != null ? dto.getStartAt() : entity.getStartedAt());
-    entity.setEndedAt(dto.getEndAt());
+    entity.setStartedAt(dto.getStartedAt() != null ? dto.getStartedAt() : entity.getStartedAt());
+    entity.setEndedAt(dto.getEndedAt());
+    if (dto.getStatus() != null) {
+      entity.setStatus(dto.getStatus());
+    } else if (dto.getEndedAt() != null) {
+      entity.setStatus(LendingStatus.COMPLETED);
+    }
 
     entity.setBorrowedBy(UserMapper.toEntity(dto.getBorrowedBy()));
     entity.setOfferedBy(UserMapper.toEntity(dto.getOfferedBy()));

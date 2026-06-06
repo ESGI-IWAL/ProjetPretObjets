@@ -30,10 +30,24 @@ public class UserController {
     return UserMapper.toDto(userService.create(UserMapper.toEntity(user)));
   }
 
+  @PutMapping("/{id}")
+  public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto user) {
+    var existingUser = userService.getById(id);
+
+    existingUser.setUsername(user.getUsername());
+    existingUser.setEmail(user.getEmail());
+    existingUser.setAvatar(user.getAvatar());
+    existingUser.setDescription(user.getDescription());
+    existingUser.setRating(user.getRating());
+
+    return UserMapper.toDto(userService.create(existingUser));
+  }
+
   @DeleteMapping("/{id}")
   public void deleteUser(@PathVariable Long id) {
     userService.delete(id);
   }
 
   // Ajoute d’autres endpoints selon besoin
+
 }
