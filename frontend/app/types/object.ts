@@ -11,9 +11,8 @@ export interface IObject {
     weight?: number;
     dimensions?: string;
     category?: EObjectCategories,
-    state?: EObjectState | string,
-    material?: EObjectMaterial,
-    status?: string
+    state: EObjectState | string,
+    material: EObjectMaterial,
     nextLending?: Date
     endCurrentLending?: Date
 }
