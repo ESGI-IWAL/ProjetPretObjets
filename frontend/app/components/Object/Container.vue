@@ -99,7 +99,7 @@ const handleCancelEdit = () => {
         </p>
       </div>
 
-      <ObjectModificationForm
+      <ObjectFormModification
         v-if="editMode"
         :object="object"
         @handleSubmitUpdate="handleSubmitUpdate"
@@ -111,23 +111,42 @@ const handleCancelEdit = () => {
           <p class="block-title">Informations</p>
           <div class="info-row">
             <span>État</span>
-            <strong>{{ object.state }}</strong>
+            <div>
+              <sub v-if="!object.state"> aucun état renseigné</sub>
+              <strong v-else>{{ object.state }}</strong>
+            </div>
           </div>
           <div class="info-row" v-if="object.weight !== undefined">
             <span>Poids</span>
-            <strong>{{ object.weight }} kg</strong>
+            <div>
+              <sub v-if="!object.weight"> aucun poids renseigné </sub>
+              <strong v-else>{{ object.weight }} kg</strong>
+            </div>
           </div>
           <div class="info-row">
             <span>Matière</span>
-            <strong>{{ object.material }}</strong>
+            <div>
+              <sub v-if="!object.material">
+                aucune matière renseignée
+              </sub>
+              <strong v-else>{{object.material }}</strong>
+            </div>
           </div>
-          <div class="info-row" v-if="object.dimensions">
+          <div class="info-row">
             <span>Dimensions</span>
-            <strong>{{ object.dimensions }}</strong>
+            <div>
+              <sub v-if="!object.dimensions"> aucune dimension renseignée</sub>
+              <strong v-else>{{ object.dimensions }}</strong>
+            </div>
           </div>
-          <div class="info-row" v-if="object.category">
+          <div class="info-row">
             <span>Catégorie</span>
-            <strong>{{ object.category }}</strong>
+            <div>
+              <sub v-if="object.category">
+                aucun catégorie renseignée
+              </sub>
+              <strong v-else >{{ object.category }}</strong>
+            </div>
           </div>
         </div>
 

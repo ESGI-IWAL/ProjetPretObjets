@@ -12,7 +12,7 @@ defineProps<{
 </script>
 
 <template>
-    <div @click="route.push(`${object.id}`)">
+    <div @click="route.push(`/objects/${object.id}`)">
         <img :src="object?.images?.[0] ?? '/objectImage.png'" alt="Objet"/>
         <p>{{ object.name }}</p>
         <p v-if="objectInfo?.nextLendingDate"> Disponible jusqu'au {{ formatDateLong(objectInfo.nextLendingDate) }}</p>
