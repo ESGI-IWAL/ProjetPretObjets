@@ -57,7 +57,7 @@ export const deleteLending = async (id: number) => {
 }
 
 export const searchLendingsOnDateByIdObject = async (objectId: number) => {
-  return await api()<ISearchLendingPeriodDto[]>(`/lendings/${objectId}/periods`)
+  return await api()<ISearchLendingPeriodDto[]>(`/lendings/objects/${objectId}/periods`)
 }
 // GET all
 // GET by ID

@@ -60,6 +60,17 @@ order by o.id, l.startedAt desc
 
   @Query(
       """
+      select l from LendingEntity l
+      where l.object.id in :objectIds
+      and (l.startedAt >= :startDate
+        or l.endedAt IS NULL or l.endedAt >= :startDate)
+      order by l.startedAt desc
+      """)
+  List<LendingEntity> findByObjectIdInAfterDate(
+      @Param("objectIds") List<Long> objectIds, @Param("startDate") LocalDateTime startDate);
+
+  @Query(
+      """
   select l from LendingEntity l
   where l.object.id in :objectIds
   and ((:startDate is null or l.startedAt >= :startDate)
