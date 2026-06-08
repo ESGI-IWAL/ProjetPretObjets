@@ -10,8 +10,8 @@ OTHERS = 'Autres'
 }
 
 export const objectCategoryOptions = Object.entries(EObjectCategories).map(
-  ([value, label]) => ({
-    value,
+  ([key, label]) => ({
+    value: key,
     label,
   })
 )

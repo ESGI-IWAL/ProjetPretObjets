@@ -1,30 +1,24 @@
 <script setup lang="ts">
 import useToaster from '~/composables/useToaster';
-import type { ISearchObjectDto } from '~/dto/object/search.dto';
-import { searchObject, searchObjectOnList } from '~/services/object';
+import type { ISearchLendingPeriodDto } from '~/dto/lending/search.dto';
+import type { ISearchObjectDto, ISearchObjectWithDatesDto } from '~/dto/object/search.dto';
+import { searchLendingsOnDateByIdObject } from '~/services/lending';
+import { getObjects, searchObject } from '~/services/object';
 import { getUsers } from '~/services/user';
 import type { IObject } from '~/types/object';
+import type { IUser } from '~/types/user';
 
-    const users = await getUsers()
-    const toaster = useToaster()
+const toaster = useToaster()
+const users = ref<IUser[]|null>(null)
+const objects = ref<IObject[]|null>(null)
 
-    const objects = ref<IObject[]|null>(null)
-    const idsObject= ref<number[]>([])
-
-    const handleSearchObjectsOnDate = async (endDate: Date|null, startDate: Date|null) => {
-        try{
-            objects.value = await searchObject({disponibilityEndDate: endDate, disponibilityStartDate: startDate})
-            idsObject.value = objects.value.map(object => object.id) 
-        }
-        catch {
-            objects.value= []
-            toaster.show("Erreur lors de la récupération des objects correspondants à cette date", "error", 5000)
-        }
-    }
-
-    const handleSearchObjects = async (dto: Omit<ISearchObjectDto, "disponibilityEndDate" | "disponibilityStartDate">) => {
+onMounted(async() => {
+        users.value = await getUsers()
+        objects.value = await getObjects()
+    })
+    const handleSearchObjects = async (dto: ISearchObjectDto) => {
         try {
-            objects.value = await searchObjectOnList(idsObject.value,  dto)
+            objects.value = await searchObject(dto)
         }
         catch {
             toaster.show("Erreur lors de la recherche des objets", "error", 5000)
@@ -35,7 +29,12 @@ import type { IObject } from '~/types/object';
 <template>
     <div class="app-page">
         <div class="app-container">
-            <LendingFormCreation :users="users" :objects="objects" @handleSearchObjectsOnDate="handleSearchObjectsOnDate" @handleSearchObjects="handleSearchObjects"/>
+            <div v-if="!users || !objects">
+                Chargement ... 
+            </div>
+            <div v-else> 
+                <LendingFormCreation :users="users" :objects="objects"  @handleSearchObjects="handleSearchObjects"/>
+            </div>
         </div>
     </div>
 </template>

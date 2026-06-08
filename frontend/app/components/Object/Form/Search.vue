@@ -1,44 +1,50 @@
 <script setup lang="ts">
 import type { IOption } from '~/components/AutoComplete.vue';
 import useToaster from '~/composables/useToaster';
-import type { ISearchObjectDto } from '~/dto/object/search.dto';
+import type { ISearchObjectWithDatesDto } from '~/dto/object/search.dto';
 import { EObjectCategories } from '~/enums/object/categories.enum';
 import { EObjectState } from '~/enums/object/state.enum';
 import { EObjectMaterial } from '~/enums/object/material.enum';
 import { getObjects } from '~/services/object';
 
-const emit = defineEmits(["search"]);
+defineProps<{
+  optionDisponibilityDate: boolean
+}>()
+const emit = defineEmits(["handleSearch"]);
 const toaster = useToaster();
-const form = reactive({
+const form = reactive<ISearchObjectWithDatesDto>({
   name: "",
-  category: "",
-  disponibilityEndDate: "",
-  disponibilityStartDate: "",
-  material: "",
-  state: "",
+  category: null,
+  disponibilityDate: null,
+  material: null,
+  state: null,
 });
 
 const objectsIOption = ref<IOption[] | null>(null);
-const objectCategoryOptions = Object.values(EObjectCategories);
+const objectCategoryOptions = Object.entries(EObjectCategories).map(([value, label]) => ({ value, label }));
 const objectStateOptions = Object.entries(EObjectState).map(([value, label]) => ({ value, label }));
 const objectMaterialOptions = Object.entries(EObjectMaterial).map(([value, label]) => ({ value, label }));
 
 const handleSubmit = () => {
-  const dto: ISearchObjectDto = {
+  const dto: ISearchObjectWithDatesDto = {
     name: form.name,
     category: form.category ? (form.category as EObjectCategories) : null,
     state: form.state ? (form.state as EObjectState) : null,
     material: form.material ? (form.material as EObjectMaterial) : null,
-    disponibilityStartDate: form.disponibilityStartDate
-      ? new Date(form.disponibilityStartDate)
-      : null,
-    disponibilityEndDate: form.disponibilityEndDate
-      ? new Date(form.disponibilityEndDate)
-      : null,
+    disponibilityDate: form.disponibilityDate || null,
   };
 
-  emit("search", dto);
+  emit("handleSearch", dto);
 };
+
+const handleResetForm = () => {
+  form.name = "";
+  form.category = null;
+  form.disponibilityDate = null;
+  form.material = null;
+  form.state = null;
+  emit("handleSearch", form)
+}
 
 onMounted(async () => {
   try {
@@ -65,47 +71,43 @@ onMounted(async () => {
 
       <div class="form-field">
         <label class="form-label" for="category">Catégorie</label>
-        <AutoComplete
-          id="category"
-          v-model:model-value="form.category"
-          :options="objectCategoryOptions"
-          :placeholder="'Catégorie'"
-        />
+         <select id="category" v-model="form.category" class="form-select">
+          <option value="null">Tous</option>
+          <option v-for="option in objectCategoryOptions" :key="option.value" :value="option.value">
+            {{ option.label }}
+          </option>
+        </select>
       </div>
 
-      <div class="form-field">
-        <label class="form-label" for="startAt">Début</label>
-        <input id="startAt" type="date" v-model="form.disponibilityStartDate" class="form-input" />
-      </div>
-
-      <div class="form-field">
-        <label class="form-label" for="endAt">Fin</label>
-        <input id="endAt" type="date" v-model="form.disponibilityEndDate" class="form-input" />
-      </div>
-
+      
       <div class="form-field">
         <label class="form-label" for="state">État</label>
         <select id="state" v-model="form.state" class="form-select">
-          <option value="">Tous</option>
+          <option value="null">Tous</option>
           <option v-for="option in objectStateOptions" :key="option.value" :value="option.value">
             {{ option.label }}
           </option>
         </select>
       </div>
-
+      
       <div class="form-field">
         <label class="form-label" for="material">Matériau</label>
         <select id="material" v-model="form.material" class="form-select">
-          <option value="">Tous</option>
+          <option value="null">Tous</option>
           <option v-for="option in objectMaterialOptions" :key="option.value" :value="option.value">
             {{ option.label }}
           </option>
         </select>
       </div>
+      
+      <div class="form-field" v-if="optionDisponibilityDate">
+        <label class="form-label" for="disponibilityDate">Date de disponibilité</label>
+        <input id="disponibilityDate" type="date" v-model="form.disponibilityDate" class="form-input" />
+      </div>
     </div>
 
     <div class="flex justify-end">
-      <ButtonSearch />
+      <ButtonSearch :reset-form="() => handleResetForm()"/>
     </div>
   </form>
 </template>

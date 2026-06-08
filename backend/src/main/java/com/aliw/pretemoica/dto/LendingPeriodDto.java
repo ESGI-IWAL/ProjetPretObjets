@@ -10,9 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ObjectInfoDisponibilityDto {
-  private Long id;
-  private LocalDateTime nextLending;
-  private LocalDateTime endCurrentLending;
-  private LocalDateTime currentLendingStart;
+public class LendingPeriodDto {
+
+  private LocalDateTime startedAt;
+  private LocalDateTime endedAt;
 }

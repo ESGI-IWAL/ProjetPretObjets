@@ -7,11 +7,24 @@ import {
 } from '~/enums/lending/status.enum';
 import formatDateLong from '~/utils/date';
 
-defineProps<{
-  lending: ILending,
+const props = defineProps<{
+  lending: ILending
 }>()
 
 const showDetails = ref<boolean>(false)
+
+const emit = defineEmits<{
+  (event: 'lendingEdit', id: number): void,
+  (event: 'lendingDelete', id: number): void,
+}>()
+
+const handleEdit = () => {
+  emit('lendingEdit', props.lending.id)
+}
+
+const handleDelete = () => {
+  emit('lendingDelete', props.lending.id)
+}
 
 const handleClick = () => {
   showDetails.value = !showDetails.value
@@ -36,13 +49,20 @@ const getStatusClass = (status: string | ELendingStatus | null | undefined) => {
   }
 }
 
+    
 </script>
 
 <template>
   <article class="surface-card surface-card-hover space-y-4">
-    <!-- Status badge top-right of card -->
-    <div class="flex justify-end mb-4">
+    <!-- Status badge and action buttons -->
+    <div class="flex justify-between items-start gap-4 mb-4">
       <span :class="getStatusClass(lending.status)">{{ getLendingStatusLabel(lending.status) }}</span>
+      <ButtonOptions
+        :actions="[
+          { function: handleEdit, label: 'Modifier', svg: '/icons/edit.svg' },
+          { function: handleDelete, label: 'Supprimer', svg: '/icons/delete.svg' }
+        ]"
+      />
     </div>
 
     <div class="flex items-start gap-4">
@@ -51,8 +71,8 @@ const getStatusClass = (status: string | ELendingStatus | null | undefined) => {
         <div class="flex flex-wrap items-center gap-2">
           <h3 class="truncate text-lg font-semibold text-gray-900">{{ lending.object.name }}</h3>
         </div>
-        <p v-if="lending.endAt" class="text-sm text-gray-500">Jusqu'au {{ formatDateLong(lending.endAt) }}</p>
-        <p v-else class="text-sm text-gray-500">Depuis {{ formatDateLong(lending.startAt) }}</p>
+        <p v-if="lending.endedAt" class="text-sm text-gray-500">Jusqu'au {{ formatDateLong(lending.endedAt) }}</p>
+        <p v-else class="text-sm text-gray-500">Depuis {{ formatDateLong(lending.startedAt) }}</p>
       </div>
 
       <img

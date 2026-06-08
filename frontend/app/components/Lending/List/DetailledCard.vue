@@ -68,11 +68,11 @@ const getStatusClass = (status: string | ELendingStatus | null | undefined) => {
     <!-- Durée + bouton -->
     <div class="space-y-3">
       <p class="text-sm font-semibold text-gray-700">Emprunt</p>
-      <p v-if="lending.endAt" class="text-sm text-gray-600">
-        Début {{ formatDateLong(lending.startAt) }} jusqu’au {{ formatDateLong(lending.endAt) }}
+      <p v-if="lending.endedAt" class="text-sm text-gray-600">
+        Début {{ formatDateLong(lending.startedAt) }} jusqu'au {{ formatDateLong(lending.endedAt) }}
       </p>
-      <p v-else class="text-sm text-gray-600">
-        Depuis le {{ formatDateLong(lending.startAt) }}
+      <p v-else class="text-sm text-gray-500">
+        Depuis le {{ formatDateLong(lending.startedAt) }}
       </p>
 
       <div class="flex justify-end">

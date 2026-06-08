@@ -2,6 +2,7 @@ package com.aliw.pretemoica.controller;
 
 import com.aliw.pretemoica.dto.CreateLendingDto;
 import com.aliw.pretemoica.dto.LendingDto;
+import com.aliw.pretemoica.dto.LendingPeriodDto;
 import com.aliw.pretemoica.dto.ObjectInfoDisponibilityDto;
 import com.aliw.pretemoica.dto.SearchLendingWithIdsObjectsDto;
 import com.aliw.pretemoica.dto.UpdateLendingDto;
@@ -89,5 +90,15 @@ public class LendingController {
   public List<ObjectInfoDisponibilityDto> searchObjectsDisponibility(
       @RequestBody SearchLendingWithIdsObjectsDto searchDto) {
     return lendingService.searchObjectsDisponibility(searchDto);
+  }
+
+  @GetMapping("/objects/{objectId}/periods")
+  public ResponseEntity<List<LendingPeriodDto>> getLendingPeriodsForObject(
+      @PathVariable Long objectId) {
+    try {
+      return ResponseEntity.ok(lendingService.getLendingPeriodsForObject(objectId));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
   }
 }

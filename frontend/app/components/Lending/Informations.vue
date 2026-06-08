@@ -41,7 +41,7 @@ const props = defineProps<{
 
       <div>
         <h2 class="text-sm font-semibold">Dates</h2>
-        <p class="text-sm text-gray-700">Début : {{ lending.startAt }}</p>
+        <p class="text-sm text-gray-700">Début : {{ lending.startedAt }}</p>
         <p v-if=lending.endAt class="text-sm text-gray-700">Fin : {{ lending.endAt}}</p>
         <p v-else=lending.endAt class="text-sm text-gray-700"> Aucune fin déterminée </p>
       </div>

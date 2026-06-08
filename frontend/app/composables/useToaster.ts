@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 
 export type ToastType = 'success' | 'error'
 
@@ -9,9 +8,9 @@ export interface Toast {
   timeout?: number
 }
 
-const toasts = useState<Toast[]>('toasts', () => [])
-
 export function useToaster() {
+  const toasts = useState<Toast[]>('toasts', () => [])
+
   const add = (message: string, type: ToastType = 'success', timeout = 3500) => {
     const id = Date.now() + Math.floor(Math.random() * 1000)
     const toast: Toast = { id, message, type, timeout }

@@ -1,6 +1,6 @@
 export interface ICreateLendingDto {
     objectId: number;
     borrowerId: number;
-    startAt: Date;
-    endAt: Date|null;  
+    startAt: string|null;
+    endAt: string|null;  
 }

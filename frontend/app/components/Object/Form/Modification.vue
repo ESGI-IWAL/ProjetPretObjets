@@ -114,8 +114,8 @@ const handleCancel = () => {
     <div class="form-group">
       <label for="category">Catégorie</label>
       <select id="category" v-model="editForm.category">
-        <option v-for="option in objectCategoryOptions" :key="option.value" :value="option.label">
-          {{ option.label }}
+        <option v-for="categorie in Object.values(EObjectCategories)" :key="categorie" :value="categorie">
+          {{ categorie }}
         </option>
       </select>
     </div>

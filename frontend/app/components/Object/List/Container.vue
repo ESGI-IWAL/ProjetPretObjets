@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ISearchObjectDto } from "~/dto/object/search.dto";
+import type { ISearchObjectWithDatesDto } from "~/dto/object/search.dto";
 import type { IObjectInfos } from "~/pages/objects/index.vue";
 import type { IObject } from "~/types/object";
 
@@ -10,7 +10,7 @@ defineProps<{
 
 const emit = defineEmits(["handleSearch"]);
 
-const handleSearch = (dto: ISearchObjectDto) => {
+const handleSearch = (dto: ISearchObjectWithDatesDto) => {
   emit("handleSearch", dto);
 };
 
@@ -21,7 +21,7 @@ const filterIsOpen = ref<boolean>(false);
 <template>
   <div v-if="filterIsOpen">
     <section class="surface-card space-y-4">
-      <ObjectFormSearch @handleSearch="handleSearch" />
+      <ObjectFormSearch @handleSearch="handleSearch" :option-disponibility-date="true"/>
     </section>
   </div>
   <div class="flex justify-end gap-4">

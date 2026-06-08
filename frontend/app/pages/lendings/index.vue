@@ -5,8 +5,10 @@ import { getLendings, searchLending } from '~/services/lending';
 import type { ILending } from '~/types/lending';
 
 const lendings = ref<ILending[]|null>(null)
+const refreshToggle = ref<boolean>(false)
 const toaster = useToaster()
-onMounted(async ()=> {
+
+const refreshList = async () => {
     try{
         lendings.value = await getLendings()
     }
@@ -14,7 +16,20 @@ onMounted(async ()=> {
         lendings.value = []
         toaster.show("Erreur lors de la récupération des prêts", "error", 5000)
     }
+}
+
+onMounted(async ()=> {
+    await refreshList()
 })
+
+watch(refreshToggle, async () => {
+    await refreshList()
+})
+
+const toggleRefresh = () => {
+    refreshToggle.value = !refreshToggle.value
+}
+
 const handleSearch = async (dto : ISearchLendingDto) => {
     try{
         lendings.value = await searchLending(dto)
@@ -41,11 +56,11 @@ const handleSearch = async (dto : ISearchLendingDto) => {
             <LendingListContainer
                 v-else
                 :lendings="lendings"
+                :refresh-list="toggleRefresh"
                 @search="handleSearch"
             />
         </div>
     </div>
 </template>
 
-<style scoped>
-</style>
+<!-- no page-specific styles -->

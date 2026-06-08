@@ -6,7 +6,7 @@ export interface ILending {
   id: number;
   object: IObject;
   borrowedBy: IUser;
-  startAt: Date;
-  endAt: Date | null;
+  startedAt: Date;
+  endedAt: Date | null;
   status: ELendingStatus;
 }

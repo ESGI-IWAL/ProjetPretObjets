@@ -27,21 +27,6 @@ export const searchObject = async (searchParams: ISearchObjectDto) => {
   });
 };
 
-export const searchObjectOnList = async (
-  ids: number[],
-  searchParams: Omit<
-    ISearchObjectDto,
-    "disponibilityStartDate" | "disponibilityEndDate"
-  >,
-) => {
-  return await api()<IObject[]>("/objects/searchOnIds", {
-    method: "POST",
-    body: {
-      ids: ids, 
-      searchParams},
-  });
-};
-
 export const updateObject = async (dto: IUpdateObjectDto) => {
   return await api()<IObject>(`/objects/${dto.id}`, {
     method: "PUT",

@@ -1,52 +1,37 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+import { toInputDate } from '~/composables/useDate';
+import type { ILending } from '~/types/lending';
+import type { IUpdateLendingDto } from '~/dto/lending/update.dto';
+
 const props = defineProps<{
-  endAt: Date | string | null;
-  startAt: Date | string;
-  editMode: boolean;
+  lending: ILending
 }>();
 
 const emit = defineEmits(["handleSubmitUpdate", "cancelEdit"]);
 
-const toInputDate = (value: Date | string | null) => {
-  if (!value) return "";
-  if (typeof value === "string") {
-    const m = value.match(/^(\d{4}-\d{2}-\d{2})/);
-    if (m) return m[1];
-    const d = new Date(value);
-    if (isNaN(d.getTime())) return "";
-    const yyyy = d.getFullYear();
-    const mm = String(d.getMonth() + 1).padStart(2, "0");
-    const dd = String(d.getDate()).padStart(2, "0");
-    return `${yyyy}-${mm}-${dd}`;
-  }
-  const d = value as Date;
-  const yyyy = d.getFullYear();
-  const mm = String(d.getMonth() + 1).padStart(2, "0");
-  const dd = String(d.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
-};
-
-const editableEndDate = ref<string>(toInputDate(props.endAt) ?? "");
-const editableStartDate = ref<string>(toInputDate(props.startAt) ?? "");
+const editableEndDate = ref<string>(toInputDate(props.lending.endedAt) ?? "");
+const editableStartDate = ref<string>(toInputDate(props.lending.startedAt) ?? "");
 
 watch(
-  () => props.endAt,
+  () => props.lending.endedAt,
   (newValue) => {
     editableEndDate.value = toInputDate(newValue) ?? "";
   },
 );
 
 watch(
-  () => props.startAt,
+  () => props.lending.startedAt,
   (newValue) => {
     editableStartDate.value = toInputDate(newValue) ?? "";
   },
 );
 
 const handleSubmitUpdate = async () => {
-  const payload = {
-    endAt: editableEndDate.value || null,
+  const payload: IUpdateLendingDto = {
+    id: props.lending.id,
     startAt: editableStartDate.value || null,
+    endAt: editableEndDate.value || null,
   };
   emit("handleSubmitUpdate", payload);
 };
@@ -57,8 +42,8 @@ const handleCancelEdit = () => {
 };
 
 const resetForm = () => {
-  editableEndDate.value = toInputDate(props.endAt) ?? "";
-  editableStartDate.value = toInputDate(props.startAt) ?? "";
+  editableEndDate.value = toInputDate(props.lending.endedAt) ?? "";
+  editableStartDate.value = toInputDate(props.lending.startedAt) ?? "";
 };
 </script>
 

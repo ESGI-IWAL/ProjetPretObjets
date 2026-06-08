@@ -7,3 +7,8 @@ export interface ISearchLendingDto {
     endAt: Date| null;  
     status: ELendingStatus | null;
 }
+
+export interface ISearchLendingPeriodDto {
+        startedAt: Date;
+        endedAt: Date
+}

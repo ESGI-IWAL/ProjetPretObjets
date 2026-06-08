@@ -1,6 +1,6 @@
 import type { ILending } from "~/types/lending"
 import type { ICreateLendingDto } from "../dto/lending/create.dto"
-import type { ISearchLendingDto } from "../dto/lending/search.dto"
+import type { ISearchLendingDto, ISearchLendingPeriodDto } from "../dto/lending/search.dto"
 import type { IUpdateLendingDto } from "~/dto/lending/update.dto"
 import type { IObjectInfoDisponibilityDto, ISearchLendingWithIdsObjectsDto } from "~/dto/object/search.dto"
 
@@ -31,20 +31,21 @@ export const searchLending = async (searchParams: ISearchLendingDto) => {
 }
 
 export const searchLendingWithObjectsIds= async(searchParams : ISearchLendingWithIdsObjectsDto) => {
-  return await api()<IObjectInfoDisponibilityDto[]>("/lendings/se", {
+  return await api()<IObjectInfoDisponibilityDto[]>("/lendings/objects/disponibility", {
     method: "POST", 
     body: searchParams
   })
 }
 export const updateLending = async ( dto: IUpdateLendingDto) => {
-  const startAt = dto.startAt instanceof Date ? dto.startAt.toISOString() : dto.startAt
-  const endAt = dto.endAt instanceof Date ? dto.endAt.toISOString() : dto.endAt
+  const startAt = dto.startAt ?? null
+  const endAt = dto.endAt ?? null
 
   return await api()(`/lendings/${dto.id}`, {
     method: "PUT",
     body: {
       startAt,
-      endAt
+      endAt,
+      ...(dto.status ? { status: dto.status } : {})
     }
   })
 }
@@ -55,6 +56,9 @@ export const deleteLending = async (id: number) => {
   })
 }
 
+export const searchLendingsOnDateByIdObject = async (objectId: number) => {
+  return await api()<ISearchLendingPeriodDto[]>(`/lendings/${objectId}/periods`)
+}
 // GET all
 // GET by ID
 // POST RECHERCHE { via objet, via utilisateur, via date debut, via date fin}

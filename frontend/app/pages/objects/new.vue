@@ -8,7 +8,7 @@
 		title="Créer un objet"
 		subtitle="Renseigne les informations principales de l’objet pour le rendre réutilisable dans tout le site."
 	  >
-		<ObjectCreationForm />
+		<ObjectFormCreation />
 	  </ObjectCreationContainer>
 	</div>
   </div>
