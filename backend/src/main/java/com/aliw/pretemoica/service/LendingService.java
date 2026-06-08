@@ -14,6 +14,8 @@ import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.LendingMapper;
 import com.aliw.pretemoica.repository.LendingRepository;
 import com.aliw.pretemoica.repository.ObjectRepository;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -406,18 +408,17 @@ public class LendingService {
    */
   public List<LendingPeriodDto> getLendingPeriodsForObject(Long objectId) {
     // Vérifier que l'objet existe
-    objectService.getById(objectId);
+    if (objectService.getById(objectId) == null)
+      throw new ResourceNotFoundException("Objet introuvable avec l'id: " + objectId);
 
-    java.time.LocalDate today = java.time.LocalDate.now();
-    java.time.LocalDateTime todayStart = today.atStartOfDay();
+    LocalDateTime today = LocalDate.now().atStartOfDay();
 
     // Récupérer tous les lendings pour cet objet
-    List<LendingEntity> lendings = lendingRepository.findByObjectIdIn(List.of(objectId));
+    List<LendingEntity> lendings =
+        lendingRepository.findByObjectIdInAfterDate(List.of(objectId), today);
 
     // Filtrer les lendings à partir d'aujourd'hui et mapper vers LendingPeriodDto
     return lendings.stream()
-        .filter(
-            lending -> lending.getEndedAt() != null && !lending.getEndedAt().isBefore(todayStart))
         .map(lending -> new LendingPeriodDto(lending.getStartedAt(), lending.getEndedAt()))
         .toList();
   }
