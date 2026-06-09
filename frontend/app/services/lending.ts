@@ -19,6 +19,10 @@ export const getLendings = async () => {
   return await api()<ILending[]>("/lendings")
 }
 
+export const getLendingsOfConnectedUser = async () => {
+  return await api()<ILending[]>("/lendings/lent")
+}
+
 export const getLendingById = async (id: number) => {
   return await api()<ILending>(`/lendings/${id}`)
 }

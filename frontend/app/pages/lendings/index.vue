@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useToaster from '~/composables/useToaster';
 import type { ISearchLendingDto } from '~/dto/lending/search.dto';
-import { getLendings, searchLending } from '~/services/lending';
+import { getLendingsOfConnectedUser, searchLending } from '~/services/lending';
 import type { ILending } from '~/types/lending';
 
 const lendings = ref<ILending[]|null>(null)
@@ -10,7 +10,7 @@ const toaster = useToaster()
 
 const refreshList = async () => {
     try{
-        lendings.value = await getLendings()
+        lendings.value = await getLendingsOfConnectedUser()
     }
     catch{
         lendings.value = []
