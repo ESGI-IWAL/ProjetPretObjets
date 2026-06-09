@@ -52,6 +52,13 @@ public class ObjectService {
     return objectRepository.findAll();
   }
 
+  /**
+   * Récupère tous les objets appartenant à l'utilisateur donné
+   */
+  public List<ObjectEntity> getAllByOwner(Long ownerId) {
+    return objectRepository.findAllByOwnedById(ownerId);
+  }
+
   public List<ObjectEntity> search(ObjectSearchDto searchDto) {
     if (searchDto == null) {
       return getAll();

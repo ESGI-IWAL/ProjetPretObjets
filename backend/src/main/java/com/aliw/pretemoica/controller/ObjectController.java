@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.aliw.pretemoica.security.SecurityUtils;
 
 @RestController
 @RequestMapping("/objects")
@@ -26,6 +27,19 @@ public class ObjectController {
   @GetMapping
   public ResponseEntity<List<ObjectDto>> getAllObjects() {
     return ResponseEntity.ok(ObjectMapper.toDtoList(objectService.getAll()));
+  }
+
+  /**
+   * GET /objects/me - retourne les objets appartenant à l'utilisateur connecté
+   */
+  @GetMapping("/me")
+  public ResponseEntity<List<ObjectDto>> getMyObjects() {
+    try {
+      Long currentUserId = SecurityUtils.getCurrentUserId();
+      return ResponseEntity.ok(ObjectMapper.toDtoList(objectService.getAllByOwner(currentUserId)));
+    } catch (IllegalStateException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
   }
 
   @PostMapping("/search")

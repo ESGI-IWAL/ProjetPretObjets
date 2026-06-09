@@ -28,4 +28,8 @@ public interface ObjectRepository extends JpaRepository<ObjectEntity, Long> {
       @Param("stateOfWear") ObjectStateOfWear stateOfWear,
       @Param("category") ObjectCategories category,
       @Param("material") ObjectMaterial material);
+
+  // Retourne tous les objets appartenant à un utilisateur (ownedBy.id)
+  List<ObjectEntity> findAllByOwnedById(Long ownerId);
+
 }
