@@ -23,7 +23,7 @@ export const getLendingById = async (id: number) => {
   return await api()<ILending>(`/lendings/${id}`)
 }
 
-export const searchLending = async (searchParams: ISearchLendingDto) => {
+export const searchLending = async (searchParams: Omit<ISearchLendingDto, "date">) => {
   return await api()<ILending[]>("/lendings/search", {
     method: "POST",
     body: searchParams
@@ -37,8 +37,8 @@ export const searchLendingWithObjectsIds= async(searchParams : ISearchLendingWit
   })
 }
 export const updateLending = async ( dto: IUpdateLendingDto) => {
-  const startAt = dto.startAt ?? null
-  const endAt = dto.endAt ?? null
+  const startAt = dto.startedAt ?? null
+  const endAt = dto.endedAt ?? null
 
   return await api()(`/lendings/${dto.id}`, {
     method: "PUT",

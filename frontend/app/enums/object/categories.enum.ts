@@ -8,10 +8,3 @@ TOYS = 'Jouets',
 SPORTS = 'Sports',
 OTHERS = 'Autres'
 }
-
-export const objectCategoryOptions = Object.entries(EObjectCategories).map(
-  ([key, label]) => ({
-    value: key,
-    label,
-  })
-)

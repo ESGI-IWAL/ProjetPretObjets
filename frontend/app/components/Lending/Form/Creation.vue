@@ -7,14 +7,18 @@ import { createLending, searchLendingsOnDateByIdObject } from "~/services/lendin
 import type { IObject } from "~/types/object";
 import type { IUser } from "~/types/user";
 import type { ISearchLendingPeriodDto } from "~/dto/lending/search.dto";
-import {VueDatePicker} from '@vuepic/vue-datepicker'
+import { VueDatePicker } from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
+import { fr } from 'date-fns/locale'
 
 interface IStep {
   id: number;
   title: string;
   description: string;
 }
+
+const today = new Date().toISOString().split('T')[0] as string
+
 
 const props = defineProps({
   users: {
@@ -26,14 +30,14 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits([ "handleSearchObjects"]);
+const emit = defineEmits(["handleSearchObjects"]);
 
 const toaster = useToaster();
 
 const form = reactive<ICreateLendingDto>({
   borrowerId: 0,
   objectId: 0,
-  startAt: null,
+  startAt: today,
   endAt: null,
 });
 
@@ -41,7 +45,8 @@ const namesOfSelected = reactive({
   borrowerName: "",
   objectName: "",
 });
-const blockedDates = ref<ISearchLendingPeriodDto[]>([])
+
+const blockedDates = ref<ISearchLendingPeriodDto[]>([]);
 const usersIOption = ref<IOption[] | null>(null);
 const currentStep = ref<number>(1);
 const steps = ref<IStep[]>([
@@ -72,29 +77,75 @@ onMounted(async () => {
   }
 });
 
-const handleSearchPeriodOnObjects = async (id: number) => {
-    try{
-        blockedDates.value = await searchLendingsOnDateByIdObject(id)
-    }
-    catch {
-        blockedDates.value= []
-        toaster.show("Erreur lors de la récupération des objects correspondants à cette date", "error", 5000)
-    }
+// ─── Computed v-model pour VueDatePicker (string <-> Date) ───────────────────
+
+const startDatePicker = computed({
+  get: () => (form.startAt ? new Date(form.startAt) : null),
+  set: (val: Date | null) => {
+    form.startAt =  val?.toISOString().split('T')[0] ?? "";
+  },
+});
+
+const endDatePicker = computed({
+  get: () => (form.endAt ? new Date(form.endAt) : null),
+  set: (val: Date | null) => {
+    form.endAt = val?.toISOString().split('T')[0] ?? null;
+  },
+});
+
+// ─── Format d'affichage dd/MM/yyyy ──────────────────────────────────────────
+
+const formatDate = (date: Date) => {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
+// ─── Dates désactivées (gestion timezone) ───────────────────────────────────
+
+function isDisabled(date: Date): boolean {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+
+return blockedDates.value.some((period) => {
+    const startStr = period.startedAt.split('T')[0];
+    const endStr = period.endedAt?.split('T')[0] ?? "";
+
+    if (!startStr || !endStr) return false;
+
+    const [sy, sm, sd] = startStr.split('-').map(Number);
+    const [ey, em, ed] = endStr.split('-').map(Number);
+
+    if(!sy || !sm || !sd || !ey || !em || !ed) return false
+    const start = new Date(sy, sm - 1, sd, 0, 0, 0);
+    const end = new Date(ey, em - 1, ed, 23, 59, 59);
+
+    return d >= start && d <= end;
+  });
 }
 
-const handleSearchObjects = async (
-  dto: 
-    ISearchObjectDto,
-) => {
+// ─── Handlers ────────────────────────────────────────────────────────────────
+
+const handleSearchPeriodOnObjects = async (id: number) => {
+  try {
+    blockedDates.value = await searchLendingsOnDateByIdObject(id);
+  } catch {
+    blockedDates.value = [];
+    toaster.show(
+      "Erreur lors de la récupération des objects correspondants à cette date",
+      "error",
+      5000
+    );
+  }
+};
+
+const handleSearchObjects = async (dto: ISearchObjectDto) => {
   emit("handleSearchObjects", dto);
 };
 
 const handleSelectionObject = (id: number) => {
   form.objectId = id;
-};
-const endDateVerification = (): boolean => {
-  if (form.endAt &&  form.startAt) return form.startAt >= form.endAt;
-  else return true;
 };
 
 const isEntryValid = computed(() => {
@@ -104,16 +155,14 @@ const isEntryValid = computed(() => {
     case 2:
       return !!form.objectId;
     case 3:
-      return !!form.startAt && endDateVerification();
+      return !!form.startAt ;
     default:
       return true;
   }
 });
 
 const nextStep = () => {
-
-  if (currentStep.value == 2) {
-    console.log("piou")
+  if (currentStep.value === 2) {
     handleSearchPeriodOnObjects(form.objectId);
   }
   if (currentStep.value < steps.value.length) {
@@ -130,7 +179,29 @@ const previousStep = () => {
   }
 };
 
+const hasConflict = computed(() => {
+  if (!form.startAt || !form.endAt) return false;
+
+  const start = new Date(form.startAt);
+  const end = new Date(form.endAt);
+
+  return blockedDates.value.some((period) => {
+
+    const pStart = new Date(period.startedAt);
+    const pEnd = new Date(period.endedAt ?? "");
+
+    // Chevauchement si les périodes se croisent
+    return start <= pEnd && end >= pStart;
+  });
+});
+
+
+
 const handleValidateForm = async () => {
+    if (hasConflict.value) {
+    toaster.show("Un prêt existe déjà sur cette période", "error", 5000);
+    return;
+  }
   try {
     await createLending(form);
     resetForm();
@@ -146,21 +217,12 @@ const handleValidateForm = async () => {
 const resetForm = () => {
   form.borrowerId = 0;
   form.objectId = 0;
-  form.startAt = new Date();
+  form.startAt = today;
   form.endAt = null;
   currentStep.value = 1;
 };
-
-function isDisabled(date: Date ) {
-  return blockedDates.value.some(period => {
-    const start = new Date(period.startedAt)
-    const end = new Date(period.endedAt)
-    end.setHours(23, 59, 59) // inclure le dernier jour
-    return date >= start && date <= end
-  })
-}
-
 </script>
+
 <template>
   <form class="form-card form-content">
     <div class="form-header">
@@ -179,10 +241,13 @@ function isDisabled(date: Date ) {
           :placeholder="'Nom de l\'utilisateur'"
         />
       </div>
-      
+
       <div v-if="currentStep === 2 && objects" class="form-field">
-        <div> 
-          <ObjectFormSearch @handleSearch="handleSearchObjects" :optionDisponibilityDate="false"/>
+        <div>
+          <ObjectFormSearch
+            @handleSearch="handleSearchObjects"
+            :optionDisponibilityDate="false"
+          />
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           <ObjectListCardSelection
@@ -195,30 +260,35 @@ function isDisabled(date: Date ) {
         </div>
       </div>
     </div>
-    <div v-if="currentStep === 3" class="form-grid">
-       <div class="form-field">
-    <label class="form-label">Date de début</label>
-    <VueDatePicker
-      v-model="form.startAt"
-      :disabled-dates="isDisabled"
-      :enable-time-picker="false"
-      format="dd/MM/yyyy"
-      placeholder="Sélectionner une date"
-      auto-apply
-    />
-  </div>
 
-  <div class="form-field">
-    <label class="form-label">Date de fin</label>
-    <VueDatePicker
-      v-model="form.endAt"
-      :disabled-dates="isDisabled"
-      :enable-time-picker="false"
-      format="dd/MM/yyyy"
-      placeholder="Sélectionner une date"
-      auto-apply
-    />
-  </div>
+    <div v-if="currentStep === 3" class="form-grid">
+      <div class="form-field">
+        <label class="form-label">Date de début</label>
+        <VueDatePicker
+          v-model="startDatePicker"
+          :disabled-dates="isDisabled"
+          :enable-time-picker="false"
+          :format="formatDate"
+          placeholder="Sélectionner une date"
+          :locale="fr"
+          auto-apply
+        />
+      </div>
+
+      <div class="form-field">
+        <label class="form-label">Date de fin</label>
+        <VueDatePicker
+          v-model="endDatePicker"
+          :disabled-dates="isDisabled"
+          :enable-time-picker="false"
+          :key="form.startAt"
+          :format="formatDate"
+          placeholder="Sélectionner une date"
+          :locale="fr"
+          auto-apply
+          :min-date="startDatePicker ?? undefined"
+        />
+      </div>
     </div>
 
     <div class="form-actions">
@@ -234,4 +304,11 @@ function isDisabled(date: Date ) {
   </form>
 </template>
 
-<style scoped></style>
+<style>
+.dp__cell_disabled {
+  color: #9ca3af !important;
+  background-color: #f3f4f6 !important;
+  cursor: not-allowed !important;
+  text-decoration: line-through; /* optionnel */
+}
+</style>

@@ -10,6 +10,7 @@ import com.aliw.pretemoica.entity.ObjectEntity.ObjectCategories;
 import com.aliw.pretemoica.entity.ObjectEntity.ObjectMaterial;
 import com.aliw.pretemoica.entity.ObjectEntity.ObjectStateOfWear;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
+import com.aliw.pretemoica.repository.LendingHistoryRepository;
 import com.aliw.pretemoica.repository.ObjectRepository;
 import com.aliw.pretemoica.service.ObjectService;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ObjectServiceTest {
 
   @Mock private ObjectRepository objectRepository;
+  @Mock private LendingHistoryRepository lendingHistoryRepository; // <-- ajouter
 
   @InjectMocks private ObjectService objectService;
 
@@ -80,6 +82,7 @@ class ObjectServiceTest {
 
     objectService.delete(3L);
 
+    verify(lendingHistoryRepository, times(1)).deleteAllByObjectId(3L); // <-- ajouter
     verify(objectRepository, times(1)).delete(o);
   }
 

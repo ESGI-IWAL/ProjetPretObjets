@@ -7,9 +7,9 @@ export interface IUpdateObjectDto {
     images?: string[];
     name?: string;
     description?: string;
-    category?: EObjectCategories;
+    category?: keyof typeof EObjectCategories;
     weight?: number;
     dimensions?: string;
-    state?: EObjectState;
-    material?: EObjectMaterial;
+    state?: keyof typeof EObjectState;
+    material?: keyof typeof EObjectMaterial;
 }

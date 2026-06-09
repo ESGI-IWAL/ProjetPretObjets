@@ -2,7 +2,7 @@
 import { reactive, ref, watch } from "vue";
 import type { IObject } from "~/types/object";
 import type { IUpdateObjectDto } from "~/dto/object/update.dto";
-import { EObjectCategories, objectCategoryOptions } from "~/enums/object/categories.enum";
+import { EObjectCategories } from "~/enums/object/categories.enum";
 import { EObjectMaterial } from "~/enums/object/material.enum";
 import { EObjectState } from "~/enums/object/state.enum";
 
@@ -14,27 +14,49 @@ const emit = defineEmits(["handleSubmitUpdate", "cancelEdit"]);
 
 const imagesText = ref<string>("");
 
+const dimensions = ref({
+  longueur: '',
+  largeur: '',
+  epaisseur: ''
+})
+
+const splitDimensions = (dimensionsOneString: string) => {
+  const [l, la, e] = dimensionsOneString.split('x')
+  dimensions.value = {
+    longueur: l ?? '',
+    largeur: la ?? '',
+    epaisseur: e ?? ''
+  }
+}
+
+// Recompose la string à chaque changement des dimensions
+watch(dimensions, (val) => {
+  editForm.dimensions = `${val.longueur}x${val.largeur}x${val.epaisseur}`
+}, { deep: true })
+
 const editForm = reactive<Omit<IUpdateObjectDto, "id">>({
   images: props.object.images?.slice() ?? [],
   name: props.object.name,
   description: props.object.description,
-  category: props.object.category as EObjectCategories,
+  category: props.object.category,
   weight: props.object.weight,
   dimensions: props.object.dimensions,
-  state: props.object.state as EObjectState,
-  material: props.object.material as EObjectMaterial,
+  state: props.object.stateOfWear,
+  material: props.object.material,
 });
 
 const resetForm = () => {
   editForm.images = props.object.images?.slice() ?? [];
   editForm.name = props.object.name;
   editForm.description = props.object.description;
-  editForm.category = props.object.category as EObjectCategories;
+  editForm.category = props.object.category ;
   editForm.weight = props.object.weight;
   editForm.dimensions = props.object.dimensions;
-  editForm.state = props.object.state as EObjectState;
-  editForm.material = props.object.material as EObjectMaterial;
+  editForm.state = props.object.stateOfWear;
+  editForm.material = props.object.material ;
   imagesText.value = editForm.images?.join("\n") ?? "";
+
+  props.object.dimensions && splitDimensions(props.object.dimensions)
 };
 
 watch(
@@ -67,6 +89,10 @@ const handleCancel = () => {
   resetForm();
   emit("cancelEdit");
 };
+
+const objectCategoryOptions = Object.entries(EObjectCategories).map(([value, label]) => ({ value, label }));
+const objectStateOptions = Object.entries(EObjectState).map(([value, label]) => ({ value, label }));
+const objectMaterialOptions = Object.entries(EObjectMaterial).map(([value, label]) => ({ value, label }));
 </script>
 
 <template>
@@ -85,16 +111,16 @@ const handleCancel = () => {
       <div class="form-group">
         <label for="state">État</label>
         <select id="state" v-model="editForm.state" required>
-          <option v-for="state in Object.values(EObjectState)" :key="state" :value="state">
-            {{ state }}
+          <option v-for="option in objectStateOptions" :key="option.value" :value="option.value">
+            {{ option.label }}
           </option>
         </select>
       </div>
       <div class="form-group">
         <label for="material">Matière</label>
         <select id="material" v-model="editForm.material" required>
-          <option v-for="material in Object.values(EObjectMaterial)" :key="material" :value="material">
-            {{ material }}
+          <option v-for="option in objectMaterialOptions" :key="option.value" :value="option.value">
+            {{ option.label }}
           </option>
         </select>
       </div>
@@ -105,17 +131,42 @@ const handleCancel = () => {
         <label for="weight">Poids (kg)</label>
         <input id="weight" v-model.number="editForm.weight" type="number" min="0" step="0.01" />
       </div>
+
       <div class="form-group">
-        <label for="dimensions">Dimensions</label>
-        <input id="dimensions" v-model.trim="editForm.dimensions" type="text" />
+        <label>Dimensions (cm)</label>
+        <div class="dimensions-inputs">
+          <input
+            v-model.number="dimensions.longueur"
+            type="number"
+            min="0"
+            placeholder="L"
+            title="Longueur"
+          />
+          <span class="separator">x</span>
+          <input
+            v-model.number="dimensions.largeur"
+            type="number"
+            min="0"
+            placeholder="l"
+            title="Largeur"
+          />
+          <span class="separator">x</span>
+          <input
+            v-model.number="dimensions.epaisseur"
+            type="number"
+            min="0"
+            placeholder="é"
+            title="Épaisseur"
+          />
+        </div>
       </div>
     </div>
 
     <div class="form-group">
       <label for="category">Catégorie</label>
       <select id="category" v-model="editForm.category">
-        <option v-for="categorie in Object.values(EObjectCategories)" :key="categorie" :value="categorie">
-          {{ categorie }}
+        <option v-for="option in objectCategoryOptions" :key="option.value" :value="option.value">
+          {{ option.label }}
         </option>
       </select>
     </div>
@@ -166,6 +217,20 @@ const handleCancel = () => {
   border: 1px solid #d1d5db;
   border-radius: 0.5rem;
   background: #fff;
+}
+.dimensions-inputs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dimensions-inputs input {
+  width: 100%;
+  text-align: center;
+}
+.separator {
+  font-weight: bold;
+  color: #6b7280;
+  flex-shrink: 0;
 }
 .form-actions {
   display: flex;

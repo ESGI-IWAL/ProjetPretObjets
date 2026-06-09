@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import useToaster from '~/composables/useToaster';
-import type { IUpdateLendingDto } from '~/dto/lending/update.dto';
 import type { IUpdateObjectDto } from '~/dto/object/update.dto';
-import { deleteLending, getLendingById, updateLending } from '~/services/lending';
 
 import { deleteObject, getObjectById, updateObject } from '~/services/object';
 import type { IObject } from '~/types/object';

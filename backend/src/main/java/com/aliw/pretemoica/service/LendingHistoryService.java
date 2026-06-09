@@ -34,4 +34,8 @@ public class LendingHistoryService {
     LendingHistoryEntity lendingHistoryEntity = getById(id);
     lendingHistoryRepository.delete(lendingHistoryEntity);
   }
+
+  public void deleteAllByObjectId(Long objectId) {
+    lendingHistoryRepository.deleteAllByObjectId(objectId);
+  }
 }

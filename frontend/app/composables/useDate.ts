@@ -28,14 +28,3 @@ export function formatDateForInput(d: Date | null | undefined): string {
   return `${yyyy}-${mm}-${dd}`
 }
 
-export function toInputDate(value: Date | string | null | undefined): string {
-  if (!value) return ""
-  if (typeof value === "string") {
-    const m = value.match(/^(\d{4}-\d{2}-\d{2})/)
-    if (m && m[1]) return m[1]
-    const d = new Date(value)
-    if (isNaN(d.getTime())) return ""
-    return formatDateForInput(d)
-  }
-  return formatDateForInput(value as Date)
-}

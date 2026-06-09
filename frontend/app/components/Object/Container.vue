@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, watch, ref } from "vue";
 import type { IUpdateObjectDto } from "~/dto/object/update.dto";
+import { EObjectCategories } from "~/enums/object/categories.enum";
+import { EObjectMaterial } from "~/enums/object/material.enum";
+import { EObjectState } from "~/enums/object/state.enum";
 import type { IObject } from "~/types/object";
 
 const props = defineProps<{
@@ -112,11 +115,11 @@ const handleCancelEdit = () => {
           <div class="info-row">
             <span>État</span>
             <div>
-              <sub v-if="!object.state"> aucun état renseigné</sub>
-              <strong v-else>{{ object.state }}</strong>
+              <sub v-if="!object.stateOfWear"> aucun état renseigné</sub>
+              <strong v-else>{{ EObjectState[object.stateOfWear] }}</strong>
             </div>
           </div>
-          <div class="info-row" v-if="object.weight !== undefined">
+          <div class="info-row">
             <span>Poids</span>
             <div>
               <sub v-if="!object.weight"> aucun poids renseigné </sub>
@@ -129,7 +132,7 @@ const handleCancelEdit = () => {
               <sub v-if="!object.material">
                 aucune matière renseignée
               </sub>
-              <strong v-else>{{object.material }}</strong>
+              <strong v-else>{{ EObjectMaterial[object.material] }}</strong>
             </div>
           </div>
           <div class="info-row">
@@ -142,10 +145,10 @@ const handleCancelEdit = () => {
           <div class="info-row">
             <span>Catégorie</span>
             <div>
-              <sub v-if="object.category">
+              <sub v-if="!object.category">
                 aucun catégorie renseignée
               </sub>
-              <strong v-else >{{ object.category }}</strong>
+              <strong v-else >{{ EObjectCategories[object.category] }}</strong>
             </div>
           </div>
         </div>

@@ -13,9 +13,16 @@ const props = defineProps<{
   refreshList: () => void;
 }>();
 
+
 const emit = defineEmits(["search"]);
+const date = ref<string>(new Date().toISOString().split('T')[0] as string)
 
 function search(dto: ISearchLendingDto) {
+  if(dto.date) {
+    date.value = dto.date
+  } else {
+    date.value = new Date().toISOString().split('T')[0] as string
+  }
   emit("search", dto);
 }
 const filterIsOpen = ref<boolean>(false);
@@ -29,6 +36,7 @@ const selectedLendingId = ref<number | null>(null);
 const handleSubmitUpdate = async (updateLendingDto: IUpdateLendingDto) => {
   try {
     await updateLending(updateLendingDto);
+    editMode.value  = false
     props.refreshList();
     toaster.show("Votre prêt a bien été modifié", "success");
   } catch {
@@ -101,6 +109,7 @@ const handleLenginEditRequest = async (id: number) => {
       <div v-for="lending in lendings" :key="lending.id">
         <LendingListCard
           :lending="lending"
+          :date="date"
           @lendingEdit="(id) => handleLenginEditRequest(id)"
           @lendingDelete="(id) => handleLendingDeleteRequest(id)"
         />

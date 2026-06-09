@@ -9,6 +9,7 @@ import formatDateLong from '~/utils/date';
 
 const props = defineProps<{
   lending: ILending
+  date: string
 }>()
 
 const showDetails = ref<boolean>(false)
@@ -71,8 +72,21 @@ const getStatusClass = (status: string | ELendingStatus | null | undefined) => {
         <div class="flex flex-wrap items-center gap-2">
           <h3 class="truncate text-lg font-semibold text-gray-900">{{ lending.object.name }}</h3>
         </div>
-        <p v-if="lending.endedAt" class="text-sm text-gray-500">Jusqu'au {{ formatDateLong(lending.endedAt) }}</p>
-        <p v-else class="text-sm text-gray-500">Depuis {{ formatDateLong(lending.startedAt) }}</p>
+<p v-if="!lending.endedAt && (lending.startedAt?.split('T')[0] ?? '') <= date" class="text-sm text-gray-500">
+  Depuis le {{ formatDateLong(lending.startedAt) }}
+</p>
+<p v-else-if="(lending.startedAt?.split('T')[0] ?? '') >= date && !lending.endedAt" class="text-sm text-gray-600">
+  Prochain prêt le {{ formatDateLong(lending.startedAt) }}
+</p>
+<p v-else-if="(lending.endedAt?.split('T')[0] ?? '') <= date" class="text-sm text-gray-600">
+  Terminé le {{ formatDateLong(lending.endedAt) }}
+</p>
+<p v-else-if="(lending.startedAt?.split('T')[0] ?? '') < date && (lending.endedAt?.split('T')[0] ?? '') >= date" class="text-sm text-gray-600">
+  Commencé le : {{ formatDateLong(lending.startedAt) }}
+</p>
+<p v-else-if="(lending.startedAt?.split('T')[0] ?? '') >= date && (lending.endedAt?.split('T')[0] ?? '') >= date" class="text-sm text-gray-600">
+  Prochain prêt le {{ formatDateLong(lending.startedAt) }}
+</p>
       </div>
 
       <img
@@ -89,7 +103,7 @@ const getStatusClass = (status: string | ELendingStatus | null | undefined) => {
     </div>
 
     <div v-if="showDetails" class="pt-2">
-      <LendingListDetailledCard :lending="lending" />
+      <LendingListDetailledCard :lending="lending" :date="date"/>
     </div>
   </article>
 </template>

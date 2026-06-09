@@ -7,6 +7,7 @@ import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.ObjectMapper;
+import com.aliw.pretemoica.repository.LendingHistoryRepository;
 import com.aliw.pretemoica.repository.ObjectRepository;
 import com.aliw.pretemoica.repository.UserRepository;
 import java.util.List;
@@ -17,10 +18,15 @@ public class ObjectService {
 
   private final ObjectRepository objectRepository;
   private final UserRepository userRepository;
+  private final LendingHistoryRepository lendingHistoryRepository;
 
-  public ObjectService(ObjectRepository objectRepository, UserRepository userRepository) {
+  public ObjectService(
+      ObjectRepository objectRepository,
+      UserRepository userRepository,
+      LendingHistoryRepository lendingHistoryRepository) {
     this.objectRepository = objectRepository;
     this.userRepository = userRepository;
+    this.lendingHistoryRepository = lendingHistoryRepository;
   }
 
   public ObjectEntity create(ObjectEntity objectEntity) {
@@ -72,6 +78,7 @@ public class ObjectService {
 
   public void delete(Long id) {
     ObjectEntity objectEntity = getById(id);
+    lendingHistoryRepository.deleteAllByObjectId(id);
     objectRepository.delete(objectEntity);
   }
 

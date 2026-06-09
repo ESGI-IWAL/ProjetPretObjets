@@ -30,7 +30,7 @@ const toggleRefresh = () => {
     refreshToggle.value = !refreshToggle.value
 }
 
-const handleSearch = async (dto : ISearchLendingDto) => {
+const handleSearch = async (dto : Omit<ISearchLendingDto, "date">) => {
     try{
         lendings.value = await searchLending(dto)
     }
