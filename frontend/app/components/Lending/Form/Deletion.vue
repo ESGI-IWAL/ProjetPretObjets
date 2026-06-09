@@ -13,7 +13,7 @@
 <template>
     <PopIn :title="'Suppression du prêt'">
 
-        <p>Êtes-vous sûr de vouloir supprimer ce prêt ?</p>
+        <p style="color: var(--color-text)">Êtes-vous sûr de vouloir supprimer ce prêt ?</p>
         <template #buttons>
             <ButtonForm :cancel-form="() => handleDeletion()" :validate-form="() => handleDelete()"/>
         </template>

@@ -58,7 +58,7 @@ const handleClick = () => {
 }
 
 .sidebar {
-  background-color: var(--color-primary);
+  background-color: var(--color-secondary);
   color: var(--color-background);
   padding: 1rem;
   transition: width 0.3s ease;

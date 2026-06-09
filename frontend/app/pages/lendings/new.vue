@@ -30,7 +30,7 @@ onMounted(async() => {
     <div class="app-page">
         <div class="app-container">
             <div v-if="!users || !objects">
-                Chargement ... 
+                Chargement ...
             </div>
             <div v-else> 
                 <LendingFormCreation :users="users" :objects="objects"  @handleSearchObjects="handleSearchObjects"/>
