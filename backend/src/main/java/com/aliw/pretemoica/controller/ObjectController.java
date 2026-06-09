@@ -6,13 +6,13 @@ import com.aliw.pretemoica.dto.ObjectSearchDto;
 import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.ObjectMapper;
+import com.aliw.pretemoica.security.SecurityUtils;
 import com.aliw.pretemoica.service.ObjectService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.aliw.pretemoica.security.SecurityUtils;
 
 @RestController
 @RequestMapping("/objects")
@@ -29,9 +29,7 @@ public class ObjectController {
     return ResponseEntity.ok(ObjectMapper.toDtoList(objectService.getAll()));
   }
 
-  /**
-   * GET /objects/me - retourne les objets appartenant à l'utilisateur connecté
-   */
+  /** GET /objects/me - retourne les objets appartenant à l'utilisateur connecté */
   @GetMapping("/me")
   public ResponseEntity<List<ObjectDto>> getMyObjects() {
     try {

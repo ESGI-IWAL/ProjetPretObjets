@@ -26,9 +26,7 @@ public class UserService {
     return userRepository.findAll();
   }
 
-  /**
-   * Retourne tous les utilisateurs sauf celui connecté.
-   */
+  /** Retourne tous les utilisateurs sauf celui connecté. */
   public List<UserEntity> getAllExceptCurrentUser(Long currentUserId) {
     return userRepository.findAll().stream()
         .filter(user -> user.getId() == null || !user.getId().equals(currentUserId))

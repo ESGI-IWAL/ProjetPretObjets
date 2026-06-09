@@ -2,8 +2,8 @@ package com.aliw.pretemoica.controller;
 
 import com.aliw.pretemoica.dto.UserDto;
 import com.aliw.pretemoica.mapper.UserMapper;
-import com.aliw.pretemoica.service.UserService;
 import com.aliw.pretemoica.security.SecurityUtils;
+import com.aliw.pretemoica.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

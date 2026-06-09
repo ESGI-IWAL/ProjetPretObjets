@@ -31,5 +31,4 @@ public interface ObjectRepository extends JpaRepository<ObjectEntity, Long> {
 
   // Retourne tous les objets appartenant à un utilisateur (ownedBy.id)
   List<ObjectEntity> findAllByOwnedById(Long ownerId);
-
 }
