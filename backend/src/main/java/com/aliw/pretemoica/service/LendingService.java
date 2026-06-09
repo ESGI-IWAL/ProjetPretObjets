@@ -99,6 +99,11 @@ public class LendingService {
     return all;
   }
 
+  /** * Récupère uniquement les prêts où l'utilisateur est emprunteur */
+  public List<LendingEntity> getBorrowedByCurrentUser(Long userId) {
+    return lendingRepository.findByBorrowerUserId(userId);
+  }
+
   /** * Récupère uniquement les prêts où l'utilisateur est prêteur */
   public List<LendingEntity> getLendedByCurrentUser(Long userId) {
     return lendingRepository.findByLenderUserId(userId);

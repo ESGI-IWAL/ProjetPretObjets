@@ -37,14 +37,26 @@ public class LendingController {
     return ResponseEntity.ok(LendingMapper.toDtoList(lendingService.getAll()));
   }
 
-  /**   * GET /lendings/lent - Récupère uniquement les prêts donnés   */
+  /** * GET /lendings/borrowed - Récupère uniquement les emprunts */
+  @GetMapping("/borrowed")
+  public ResponseEntity<List<LendingDto>> getBorrowedLendings() {
+    try {
+      Long currentUserId = SecurityUtils.getCurrentUserId();
+      List<LendingDto> borrowedLendings =
+          LendingMapper.toDtoList(lendingService.getBorrowedByCurrentUser(currentUserId));
+      return ResponseEntity.ok(borrowedLendings);
+    } catch (IllegalStateException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+  }
+
+  /** * GET /lendings/lent - Récupère uniquement les prêts donnés */
   @GetMapping("/lent")
   public ResponseEntity<List<LendingDto>> getLentLendings() {
     try {
       Long currentUserId = SecurityUtils.getCurrentUserId();
-      List<LendingDto> lentLendings = LendingMapper.toDtoList(
-              lendingService.getLendedByCurrentUser(currentUserId)
-      );
+      List<LendingDto> lentLendings =
+          LendingMapper.toDtoList(lendingService.getLendedByCurrentUser(currentUserId));
       return ResponseEntity.ok(lentLendings);
     } catch (IllegalStateException e) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

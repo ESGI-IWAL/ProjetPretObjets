@@ -82,10 +82,19 @@ order by o.id, l.startedAt desc
       @Param("startDate") LocalDate startDate,
       @Param("endDate") LocalDate endDate);
 
-  @Query("""
+  @Query(
+      """
     SELECT l FROM LendingEntity l
     WHERE l.offeredBy.id = :userId
     ORDER BY l.startedAt DESC
-""")
+    """)
   List<LendingEntity> findByLenderUserId(@Param("userId") Long userId);
+
+  @Query(
+      """
+    SELECT l FROM LendingEntity l
+    WHERE l.borrowedBy.id = :userId
+    ORDER BY l.startedAt DESC
+    """)
+  List<LendingEntity> findByBorrowerUserId(@Param("userId") Long userId);
 }
