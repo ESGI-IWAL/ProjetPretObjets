@@ -1,4 +1,7 @@
 <script setup lang="ts">
+definePageMeta({
+  layout: false,
+});
 const { login, erreurConnexion } = useAuth()
   const form = reactive({
     email:'',
@@ -10,28 +13,107 @@ const { login, erreurConnexion } = useAuth()
   }
 </script>
 
-<template>                  
-  <div class="flex items-center justify-center min-h-screen bg-gray-100">
-    <div class="w-full max-w-md p-8 space-y-6 bg-white rounded shadow">
-      <h2 class="text-2xl font-bold text-center">Connexion</h2>
-      <form @submit.prevent="handleSubmit" class="space-y-4">
-        <div>
-          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-          <input v-model="form.email" id="email" type="email" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300">
+<template>
+  <div class="login-page">
+    <div class="login-card">
+      <h2 class="login-title">Connexion</h2>
+      <form @submit.prevent="handleSubmit" class="login-form">
+        <div class="form-field">
+          <label for="email" class="form-label">Email</label>
+          <input v-model="form.email" id="email" type="email" required class="form-input">
         </div>
-        <div>
-          <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
-          <input v-model="form.password" id="password" type="password" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300">
+        <div class="form-field">
+          <label for="password" class="form-label">Mot de passe</label>
+          <input v-model="form.password" id="password" type="password" required class="form-input">
         </div>
-        <button type="submit" class="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200">Se connecter</button>
+        <button type="submit" class="btn btn-primary w-full">Se connecter</button>
       </form>
-      <NuxtLink to="/register"> Pas encore de compte ? Inscrivez-vous </NuxtLink>
-      <p v-if="erreurConnexion" class="text-red-500 text-sm text-center">{{ erreurConnexion }}</p>     
+      <NuxtLink to="/register" class="register-link">Pas encore de compte ? Inscrivez-vous</NuxtLink>
+      <p v-if="erreurConnexion" class="error-message">{{ erreurConnexion }}</p>
     </div>
-  </div>                                  
+  </div>
 </template>
 
-
 <style scoped>
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
 
+.login-card {
+  width: 100%;
+  max-width: 28rem; /* 448px */
+  padding: 2rem;
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.login-title {
+  font-size: 1.875rem; /* 30px */
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-title);
+  margin-bottom: 1.5rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.form-input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #D1D5DB; /* gray-300 */
+  border-radius: 8px;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(52, 78, 65, 0.2);
+}
+
+.w-full {
+  width: 100%;
+}
+
+.register-link {
+  display: block;
+  margin-top: 1rem;
+  text-align: center;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.register-link:hover {
+  text-decoration: underline;
+  color: var(--color-accent);
+}
+
+.error-message {
+  margin-top: 1rem;
+  color: #EF4444; /* red-500 */
+  font-size: 0.875rem; /* 14px */
+  text-align: center;
+}
 </style>

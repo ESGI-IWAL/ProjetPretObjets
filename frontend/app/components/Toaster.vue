@@ -59,24 +59,25 @@ const list = computed(() => toasts.value)
 	min-width: 220px;
 	max-width: 720px;
 	width: 100%;
-	padding: 10px 12px;
-	border-radius: 8px;
-	box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+	padding: 10px 14px;
+	border-radius: var(--border-radius, 12px);
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	gap: 8px;
 	pointer-events: auto;
+	font-family: var(--font-family-sans);
 }
 .toast.success {
-	background: #ecfdf5;
-	border: 1px solid #34d399;
-	color: #065f46;
+	background-color: #dff0de;
+	border: 1px solid #629460;
+	color: #305430;
 }
 .toast.error {
-	background: #fef2f2;
-	border: 1px solid #f87171;
-	color: #7f1d1d;
+	background-color: #f5e6df;
+	border: 1px solid #c47a5a;
+	color: #7a3a1e;
 }
 .toast-content {
 	display: flex;
