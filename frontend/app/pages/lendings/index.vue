@@ -44,13 +44,13 @@ const handleSearch = async (dto : Omit<ISearchLendingDto, "date">) => {
     <div class="app-page">
         <div class="app-container space-y-6">
             <header class="space-y-2">
-                <p class="form-eyebrow">Gestion des prêts</p>
-                <h1 class="form-title">Liste des prêts</h1>
-                <p class="form-description">Recherche, consultation et suivi des prêts en cours ou terminés.</p>
+                <p class="form-eyebrow" style="color: var(--color-accent)">Gestion des prêts</p>
+                <h1 style="color: var(--color-title); font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em;">Liste des prêts</h1>
+                <p style="color: var(--color-text); opacity: 0.7; font-size: 0.875rem; line-height: 1.6;">Recherche, consultation et suivi des prêts en cours ou terminés.</p>
             </header>
 
             <div v-if="!lendings" class="surface-card">
-                <p class="text-gray-500">Chargement des prêts...</p>
+                <p style="color: var(--color-text); opacity: 0.6">Chargement des prêts...</p>
             </div>
 
             <LendingListContainer
@@ -64,3 +64,8 @@ const handleSearch = async (dto : Omit<ISearchLendingDto, "date">) => {
 </template>
 
 <!-- no page-specific styles -->
+<style scoped>
+:deep(.app-page) {
+  background-color: var(--color-background) !important;
+}
+</style>

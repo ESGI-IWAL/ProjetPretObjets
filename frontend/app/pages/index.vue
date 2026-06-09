@@ -27,7 +27,7 @@
     <section class="cta-section">
       <h2 class="cta-title">Prêt à commencer ?</h2>
       <div class="cta-buttons">
-        <NuxtLink to="/objects" class="btn btn-primary">Voir les objets disponibles</NuxtLink>
+        <NuxtLink to="/objects" class="btn btn-primary">Voir mes objets</NuxtLink>
         <NuxtLink to="/lendings/new" class="btn btn-secondary">Proposer un prêt</NuxtLink>
       </div>
     </section>
