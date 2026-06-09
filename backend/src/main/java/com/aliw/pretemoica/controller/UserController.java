@@ -3,6 +3,7 @@ package com.aliw.pretemoica.controller;
 import com.aliw.pretemoica.dto.UserDto;
 import com.aliw.pretemoica.mapper.UserMapper;
 import com.aliw.pretemoica.service.UserService;
+import com.aliw.pretemoica.security.SecurityUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +19,12 @@ public class UserController {
   @GetMapping
   public java.util.List<UserDto> getAllUsers() {
     return UserMapper.toDtoList(userService.getAll());
+  }
+
+  @GetMapping("/me/others")
+  public java.util.List<UserDto> getAllUsersExceptCurrentUser() {
+    Long currentUserId = SecurityUtils.getCurrentUserId();
+    return UserMapper.toDtoList(userService.getAllExceptCurrentUser(currentUserId));
   }
 
   @GetMapping("/{id}")

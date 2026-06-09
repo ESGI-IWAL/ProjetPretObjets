@@ -6,6 +6,7 @@ import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +24,15 @@ public class UserService {
 
   public List<UserEntity> getAll() {
     return userRepository.findAll();
+  }
+
+  /**
+   * Retourne tous les utilisateurs sauf celui connecté.
+   */
+  public List<UserEntity> getAllExceptCurrentUser(Long currentUserId) {
+    return userRepository.findAll().stream()
+        .filter(user -> user.getId() == null || !user.getId().equals(currentUserId))
+        .collect(Collectors.toList());
   }
 
   public UserEntity getById(Long id) {
