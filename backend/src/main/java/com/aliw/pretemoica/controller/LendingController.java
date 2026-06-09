@@ -8,6 +8,7 @@ import com.aliw.pretemoica.dto.SearchLendingWithIdsObjectsDto;
 import com.aliw.pretemoica.dto.UpdateLendingDto;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.LendingMapper;
+import com.aliw.pretemoica.security.SecurityUtils;
 import com.aliw.pretemoica.service.LendingService;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,20 @@ public class LendingController {
   @GetMapping
   public ResponseEntity<List<LendingDto>> getAllLendings() {
     return ResponseEntity.ok(LendingMapper.toDtoList(lendingService.getAll()));
+  }
+
+  /**   * GET /lendings/lent - Récupère uniquement les prêts donnés   */
+  @GetMapping("/lent")
+  public ResponseEntity<List<LendingDto>> getLentLendings() {
+    try {
+      Long currentUserId = SecurityUtils.getCurrentUserId();
+      List<LendingDto> lentLendings = LendingMapper.toDtoList(
+              lendingService.getLendedByCurrentUser(currentUserId)
+      );
+      return ResponseEntity.ok(lentLendings);
+    } catch (IllegalStateException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
   }
 
   @PostMapping("/search")
