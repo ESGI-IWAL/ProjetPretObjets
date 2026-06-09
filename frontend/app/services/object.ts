@@ -2,6 +2,7 @@ import type { ICreateObjectDto } from "~/dto/object/create.dto";
 import type { ISearchObjectDto } from "~/dto/object/search.dto";
 import type { IUpdateObjectDto } from "~/dto/object/update.dto";
 import type { IObject } from "~/types/object";
+import {getLendingsOfConnectedUser} from "~/services/lending";
 
 const api = () => useNuxtApp().$api;
 
@@ -14,6 +15,10 @@ export const createObject = async (dto: ICreateObjectDto) => {
 
 export const getObjects = async () => {
   return await api()<IObject[]>("/objects");
+};
+
+export const getObjectsOfConnectedUser = async () => {
+  return await api()<IObject[]>("/objects/me");
 };
 
 export const getObjectById = async (id: number) => {

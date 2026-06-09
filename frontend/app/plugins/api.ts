@@ -5,7 +5,7 @@ export default defineNuxtPlugin(() => {
     baseURL: config.public.apiBase,
 
     onRequest({ options }) {
-      const token = process.client ? localStorage.getItem('token') : null
+      const token = localStorage.getItem('token')
 
       if (token) {
         const headers = new Headers(options.headers as HeadersInit)

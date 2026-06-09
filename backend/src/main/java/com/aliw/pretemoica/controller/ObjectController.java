@@ -6,6 +6,7 @@ import com.aliw.pretemoica.dto.ObjectSearchDto;
 import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.ObjectMapper;
+import com.aliw.pretemoica.security.SecurityUtils;
 import com.aliw.pretemoica.service.ObjectService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -26,6 +27,17 @@ public class ObjectController {
   @GetMapping
   public ResponseEntity<List<ObjectDto>> getAllObjects() {
     return ResponseEntity.ok(ObjectMapper.toDtoList(objectService.getAll()));
+  }
+
+  /** GET /objects/me - retourne les objets appartenant à l'utilisateur connecté */
+  @GetMapping("/me")
+  public ResponseEntity<List<ObjectDto>> getMyObjects() {
+    try {
+      Long currentUserId = SecurityUtils.getCurrentUserId();
+      return ResponseEntity.ok(ObjectMapper.toDtoList(objectService.getAllByOwner(currentUserId)));
+    } catch (IllegalStateException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
   }
 
   @PostMapping("/search")
