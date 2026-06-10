@@ -80,38 +80,39 @@ const handleLenginEditRequest = async (id: number) => {
     </div>
     <div class="flex justify-end gap-4">
       <ButtonCreation
-        :navigation-creation="() => navigateTo('/lendings/new')"
-        label="Créer un prêt"
+          :navigation-creation="() => navigateTo('/lendings/new')"
+          label="Créer un prêt"
       />
       <ButtonFilter :open-filter="() => (filterIsOpen = !filterIsOpen)" />
     </div>
 
     <div
-      v-if="lendings.length === 0"
-      class="surface-card text-center text-gray-500"
+        v-if="lendings.length === 0"
+        class="surface-card text-center"
+        style="color: var(--color-text); opacity: 0.6"
     >
       Aucun prêt trouvé.
     </div>
     <div v-if="editMode && modificateLending">
       <LendingFormModification
-        :lending="modificateLending"
-        @handleSubmitUpdate="handleSubmitUpdate"
-        @cancelEdit="editMode = false"
+          :lending="modificateLending"
+          @handleSubmitUpdate="handleSubmitUpdate"
+          @cancelEdit="editMode = false"
       />
     </div>
     <div v-if="deleteMode">
       <LendingFormDeletion
-        @cancelEdit="() => { deleteMode = false; selectedLendingId = null }"
-        @handleDelete="handleSubmitDelete"
+          @cancelEdit="() => { deleteMode = false; selectedLendingId = null }"
+          @handleDelete="handleSubmitDelete"
       />
     </div>
     <div v-else class="list-grid">
       <div v-for="lending in lendings" :key="lending.id">
         <LendingListCard
-          :lending="lending"
-          :date="date"
-          @lendingEdit="(id) => handleLenginEditRequest(id)"
-          @lendingDelete="(id) => handleLendingDeleteRequest(id)"
+            :lending="lending"
+            :date="date"
+            @lendingEdit="(id) => handleLenginEditRequest(id)"
+            @lendingDelete="(id) => handleLendingDeleteRequest(id)"
         />
       </div>
     </div>

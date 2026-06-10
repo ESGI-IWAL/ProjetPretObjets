@@ -5,7 +5,7 @@ import type {
 } from "~/dto/object/search.dto";
 
 import { searchLendingWithObjectsIds } from "~/services/lending";
-import { getObjects, searchObject } from "~/services/object";
+import {getObjects, getObjectsOfConnectedUser, searchObject} from "~/services/object";
 import type { IObject } from "~/types/object";
 
 export interface IObjectInfos {
@@ -19,7 +19,7 @@ const toaster = useToaster();
 
 onMounted(async () => {
   try {
-    objects.value = await getObjects();
+    objects.value = await getObjectsOfConnectedUser();
     getObjectsDateInfo(objects.value, null)
   } catch {
     toaster.show("Erreur lors de la récupération des objets", "error", 5000);

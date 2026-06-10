@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import useToaster from '~/composables/useToaster';
-import type { ISearchLendingPeriodDto } from '~/dto/lending/search.dto';
-import type { ISearchObjectDto, ISearchObjectWithDatesDto } from '~/dto/object/search.dto';
-import { searchLendingsOnDateByIdObject } from '~/services/lending';
-import { getObjects, searchObject } from '~/services/object';
-import { getUsers } from '~/services/user';
+import type { ISearchObjectDto } from '~/dto/object/search.dto';
+import { getObjectsOfConnectedUser, searchObject } from '~/services/object';
+import { getUsersExceptCurrentUser } from '~/services/user';
 import type { IObject } from '~/types/object';
 import type { IUser } from '~/types/user';
 
@@ -13,8 +11,8 @@ const users = ref<IUser[]|null>(null)
 const objects = ref<IObject[]|null>(null)
 
 onMounted(async() => {
-        users.value = await getUsers()
-        objects.value = await getObjects()
+        users.value = await getUsersExceptCurrentUser()
+        objects.value = await getObjectsOfConnectedUser()
     })
     const handleSearchObjects = async (dto: ISearchObjectDto) => {
         try {
@@ -29,8 +27,8 @@ onMounted(async() => {
 <template>
     <div class="app-page">
         <div class="app-container">
-            <div v-if="!users || !objects">
-                Chargement ... 
+            <div v-if="!users || !objects" class="surface-card text-center" style="color: var(--color-text); opacity: 0.6">
+                Chargement...
             </div>
             <div v-else> 
                 <LendingFormCreation :users="users" :objects="objects"  @handleSearchObjects="handleSearchObjects"/>
@@ -40,4 +38,7 @@ onMounted(async() => {
 </template>
 
 <style scoped>
+:deep(.app-page) {
+  background-color: var(--color-background) !important;
+}
 </style>

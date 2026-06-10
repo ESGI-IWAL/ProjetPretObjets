@@ -73,5 +73,73 @@ const handleResetForm = () => {
 
 
 <style>
+/* ── Labels & inputs ── */
+.form-label { color: var(--color-title) !important; }
 
+.form-input {
+  background-color: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border-color: #c9c0ae !important;
+  border-radius: 8px !important;
+}
+.form-input:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(98, 148, 96, 0.2) !important;
+  outline: none !important;
+}
+
+/* ── VueDatePicker ── */
+.dp__main {
+  --dp-background-color: var(--color-surface);
+  --dp-text-color: var(--color-text);
+  --dp-hover-color: var(--color-primary);
+  --dp-hover-text-color: var(--color-background);
+  --dp-primary-color: var(--color-primary);
+  --dp-primary-text-color: var(--color-background);
+  --dp-border-color: #c9c0ae;
+  --dp-border-color-hover: var(--color-primary);
+  --dp-menu-border-color: #c9c0ae;
+  --dp-border-radius: 12px;
+  --dp-font-family: var(--font-family-sans);
+  --dp-font-size: 0.875rem;
+}
+.dp__input {
+  background-color: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border-color: #c9c0ae !important;
+  border-radius: 8px !important;
+  padding: 10px 16px !important;
+}
+.dp__input:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(98, 148, 96, 0.2) !important;
+  outline: none !important;
+}
+.dp__input_icon { color: var(--color-primary) !important; }
+.dp__menu {
+  background-color: var(--color-surface) !important;
+  border-color: #c9c0ae !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+}
+.dp__calendar_header_item { color: var(--color-title) !important; font-weight: 600; }
+.dp__active_date {
+  background-color: var(--color-primary) !important;
+  color: var(--color-background) !important;
+  border-radius: 8px !important;
+}
+.dp__cell_inner:hover {
+  background-color: rgba(98, 148, 96, 0.15) !important;
+  color: var(--color-primary) !important;
+  border-radius: 8px !important;
+}
+.dp__today { border-color: var(--color-accent) !important; color: var(--color-accent) !important; font-weight: 700; }
+.dp__nav_icon { color: var(--color-primary) !important; }
+.dp__nav_btn:hover { background-color: rgba(98, 148, 96, 0.12) !important; border-radius: 8px !important; }
+.dp__overlay { background-color: var(--color-surface) !important; }
+.dp__overlay_cell_active {
+  background-color: var(--color-primary) !important;
+  color: var(--color-background) !important;
+  border-radius: 8px !important;
+}
 </style>

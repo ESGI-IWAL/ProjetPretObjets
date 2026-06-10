@@ -17,6 +17,10 @@ export const getUsers = async () => {
     return await api()<IUser[]>("/users")
 }
 
+export const getUsersExceptCurrentUser = async () => {
+    return await api()<IUser[]>("/users/me/others")
+}
+
 export const searchUser = async (dto : ISearchUserDto) => {
     return await api()<IUser[]>("/users/search", {
         method: "POST",
