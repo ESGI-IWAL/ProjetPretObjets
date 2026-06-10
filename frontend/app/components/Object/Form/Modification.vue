@@ -64,18 +64,18 @@ const resetForm = () => {
 };
 
 watch(
-  () => props.object,
-  () => {
-    resetForm();
-  },
-  { immediate: true },
+    () => props.object,
+    () => {
+      resetForm();
+    },
+    { immediate: true },
 );
 
 const handleSubmit = () => {
   const parsedImages = imagesText.value
-    .split(/\r?\n/)
-    .map((item) => item.trim())
-    .filter(Boolean);
+      .split(/\r?\n/)
+      .map((item) => item.trim())
+      .filter(Boolean);
 
   emit("handleSubmitUpdate", {
     images: parsedImages.length ? parsedImages : undefined,
@@ -93,6 +93,7 @@ const handleCancel = () => {
   resetForm();
   emit("cancelEdit");
 };
+
 </script>
 
 <template>
@@ -154,27 +155,27 @@ const handleCancel = () => {
         <label>Dimensions (cm)</label>
         <div class="dimensions-inputs">
           <input
-            v-model.number="dimensions.longueur"
-            type="number"
-            min="0"
-            placeholder="L"
-            title="Longueur"
+              v-model.number="dimensions.longueur"
+              type="number"
+              min="0"
+              placeholder="L"
+              title="Longueur"
           />
           <span class="separator">x</span>
           <input
-            v-model.number="dimensions.largeur"
-            type="number"
-            min="0"
-            placeholder="l"
-            title="Largeur"
+              v-model.number="dimensions.largeur"
+              type="number"
+              min="0"
+              placeholder="l"
+              title="Largeur"
           />
           <span class="separator">x</span>
           <input
-            v-model.number="dimensions.epaisseur"
-            type="number"
-            min="0"
-            placeholder="é"
-            title="Épaisseur"
+              v-model.number="dimensions.epaisseur"
+              type="number"
+              min="0"
+              placeholder="é"
+              title="Épaisseur"
           />
         </div>
       </div>

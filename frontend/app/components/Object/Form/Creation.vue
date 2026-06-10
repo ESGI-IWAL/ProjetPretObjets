@@ -116,7 +116,7 @@ const handleValidateForm = async () => {
 </script>
 
 <template>
-  <form class="form-card form-content">
+  <form class="form-card form-content" @submit.prevent="handleValidateForm">
     <div class="form-header">
       <h2 class="form-title">{{ steps[currentStep - 1]?.title }}</h2>
       <p class="form-description">{{ steps[currentStep - 1]?.description }}</p>
@@ -218,14 +218,8 @@ const handleValidateForm = async () => {
       </div>
     </div>
     <div class="form-actions">
-      <ButtonStepsForm
-        :nextStep="nextStep"
-        :previousStep="previousStep"
-        :validateForm="handleValidateForm"
-        :finalStep="currentStep === steps.length"
-        :firstStep="currentStep === 1"
-        :isEntryValid="isEntryValid"
-      />
+      <button type="button" class="button-secondary" @click="previousStep" :disabled="currentStep === 1">Précédent</button>
+      <button type="submit" class="button-primary">{{ currentStep === steps.length ? 'Créer' : 'Suivant' }}</button>
     </div>
   </form>
 </template>

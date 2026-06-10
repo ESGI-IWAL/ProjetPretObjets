@@ -1,6 +1,7 @@
 package com.aliw.pretemoica.controller;
 
 import com.aliw.pretemoica.service.ImageStorageService;
+import com.aliw.pretemoica.service.ImageStorageService.StoredImage;
 import java.io.IOException;
 import java.util.Map;
 import org.springframework.http.MediaType;
@@ -22,7 +23,10 @@ public class UploadController {
   public ResponseEntity<Map<String, String>> upload(
       @RequestParam("file") MultipartFile file, @RequestParam("folderName") String folderName)
       throws IOException {
-    String url = imageStorageService.store(file, folderName);
-    return ResponseEntity.ok(Map.of("url", url));
+    StoredImage stored = imageStorageService.store(file, folderName);
+    return ResponseEntity.ok(
+        Map.of(
+            "url", stored.getUrl(),
+            "filename", stored.getFilename()));
   }
 }
