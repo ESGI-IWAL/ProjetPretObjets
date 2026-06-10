@@ -13,6 +13,7 @@ const props = defineProps<{
 const emit = defineEmits(["handleSubmitUpdate", "cancelEdit"]);
 
 const imagesText = ref<string>("");
+const newImageUrl = ref<string>("");
 
 const dimensions = ref({
   longueur: "",

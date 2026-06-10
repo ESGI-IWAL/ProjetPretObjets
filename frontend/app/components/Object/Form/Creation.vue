@@ -88,7 +88,6 @@ const nextStep = () => {
     currentStep.value++;
   }
 };
-
 const previousStep = () => {
   if (currentStep.value > 1) {
     currentStep.value--;

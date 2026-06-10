@@ -19,10 +19,15 @@ public class UploadController {
     this.imageStorageService = imageStorageService;
   }
 
+  /**
+   * Reçoit le fichier sous la clé 'images' (même nom que le champ front). Retourne { "url": "...",
+   * "filename": "..." }
+   */
   @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<Map<String, String>> upload(
-      @RequestParam("file") MultipartFile file, @RequestParam("folderName") String folderName)
+      @RequestParam("images") MultipartFile file, @RequestParam("folderName") String folderName)
       throws IOException {
+
     StoredImage stored = imageStorageService.store(file, folderName);
     return ResponseEntity.ok(
         Map.of(
