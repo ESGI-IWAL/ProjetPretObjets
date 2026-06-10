@@ -150,7 +150,6 @@ async function handleFileInput(event: Event) {
 
   const formData = new FormData()
   formData.append('file', file)
-  formData.append('folderName', props.objectName) // nom de l'objet
 
   const response = await fetch('/api/upload', {
     method: 'POST',
