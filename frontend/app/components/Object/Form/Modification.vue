@@ -2,9 +2,9 @@
 import { reactive, ref, watch } from "vue";
 import type { IObject } from "~/types/object";
 import type { IUpdateObjectDto } from "~/dto/object/update.dto";
-import { EObjectCategories } from "~/enums/object/categories.enum";
-import { EObjectMaterial } from "~/enums/object/material.enum";
-import { EObjectState } from "~/enums/object/state.enum";
+import { objectCategoryOptions } from "~/enums/object/categories.enum";
+import { objectMaterialOptions } from "~/enums/object/material.enum";
+import { objectStateOptions } from "~/enums/object/state.enum";
 
 const props = defineProps<{
   object: IObject;
@@ -15,27 +15,31 @@ const emit = defineEmits(["handleSubmitUpdate", "cancelEdit"]);
 const imagesText = ref<string>("");
 
 const dimensions = ref({
-  longueur: '',
-  largeur: '',
-  epaisseur: ''
-})
+  longueur: "",
+  largeur: "",
+  epaisseur: "",
+});
 
 const splitDimensions = (dimensionsOneString: string) => {
-  const [l, la, e] = dimensionsOneString.split('x')
+  const [l, la, e] = dimensionsOneString.split("x");
   dimensions.value = {
-    longueur: l ?? '',
-    largeur: la ?? '',
-    epaisseur: e ?? ''
-  }
-}
+    longueur: l ?? "",
+    largeur: la ?? "",
+    epaisseur: e ?? "",
+  };
+};
 
 // Recompose la string à chaque changement des dimensions
-watch(dimensions, (val) => {
-  editForm.dimensions = `${val.longueur}x${val.largeur}x${val.epaisseur}`
-}, { deep: true })
+watch(
+  dimensions,
+  (val) => {
+    editForm.dimensions = `${val.longueur}x${val.largeur}x${val.epaisseur}`;
+  },
+  { deep: true },
+);
 
 const editForm = reactive<Omit<IUpdateObjectDto, "id">>({
-  images: props.object.images?.slice() ?? [],
+  images: [...(props.object.images ?? [])],
   name: props.object.name,
   description: props.object.description,
   category: props.object.category,
@@ -46,17 +50,17 @@ const editForm = reactive<Omit<IUpdateObjectDto, "id">>({
 });
 
 const resetForm = () => {
-  editForm.images = props.object.images?.slice() ?? [];
+  editForm.images = [...(props.object.images ?? [])];
   editForm.name = props.object.name;
   editForm.description = props.object.description;
-  editForm.category = props.object.category ;
+  editForm.category = props.object.category;
   editForm.weight = props.object.weight;
   editForm.dimensions = props.object.dimensions;
   editForm.state = props.object.stateOfWear;
-  editForm.material = props.object.material ;
+  editForm.material = props.object.material;
   imagesText.value = editForm.images?.join("\n") ?? "";
 
-  props.object.dimensions && splitDimensions(props.object.dimensions)
+  props.object.dimensions && splitDimensions(props.object.dimensions);
 };
 
 watch(
@@ -89,10 +93,6 @@ const handleCancel = () => {
   resetForm();
   emit("cancelEdit");
 };
-
-const objectCategoryOptions = Object.entries(EObjectCategories).map(([value, label]) => ({ value, label }));
-const objectStateOptions = Object.entries(EObjectState).map(([value, label]) => ({ value, label }));
-const objectMaterialOptions = Object.entries(EObjectMaterial).map(([value, label]) => ({ value, label }));
 </script>
 
 <template>
@@ -104,14 +104,22 @@ const objectMaterialOptions = Object.entries(EObjectMaterial).map(([value, label
 
     <div class="form-group">
       <label for="description">Description</label>
-      <textarea id="description" v-model.trim="editForm.description" rows="3"></textarea>
+      <textarea
+        id="description"
+        v-model.trim="editForm.description"
+        rows="3"
+      ></textarea>
     </div>
 
     <div class="form-row">
       <div class="form-group">
         <label for="state">État</label>
         <select id="state" v-model="editForm.state" required>
-          <option v-for="option in objectStateOptions" :key="option.value" :value="option.value">
+          <option
+            v-for="option in objectStateOptions"
+            :key="option.value"
+            :value="option.value"
+          >
             {{ option.label }}
           </option>
         </select>
@@ -119,7 +127,11 @@ const objectMaterialOptions = Object.entries(EObjectMaterial).map(([value, label
       <div class="form-group">
         <label for="material">Matière</label>
         <select id="material" v-model="editForm.material" required>
-          <option v-for="option in objectMaterialOptions" :key="option.value" :value="option.value">
+          <option
+            v-for="option in objectMaterialOptions"
+            :key="option.value"
+            :value="option.value"
+          >
             {{ option.label }}
           </option>
         </select>
@@ -129,7 +141,13 @@ const objectMaterialOptions = Object.entries(EObjectMaterial).map(([value, label
     <div class="form-row">
       <div class="form-group">
         <label for="weight">Poids (kg)</label>
-        <input id="weight" v-model.number="editForm.weight" type="number" min="0" step="0.01" />
+        <input
+          id="weight"
+          v-model.number="editForm.weight"
+          type="number"
+          min="0"
+          step="0.01"
+        />
       </div>
 
       <div class="form-group">
@@ -165,24 +183,29 @@ const objectMaterialOptions = Object.entries(EObjectMaterial).map(([value, label
     <div class="form-group">
       <label for="category">Catégorie</label>
       <select id="category" v-model="editForm.category">
-        <option v-for="option in objectCategoryOptions" :key="option.value" :value="option.value">
+        <option
+          v-for="option in objectCategoryOptions"
+          :key="option.value"
+          :value="option.value"
+        >
           {{ option.label }}
         </option>
       </select>
     </div>
 
     <div class="form-group">
-      <label for="images">Images (1 URL par ligne)</label>
-      <textarea
-        id="images"
-        v-model="imagesText"
-        rows="4"
-        placeholder="https://..."
-      ></textarea>
+      <PhotoPicker
+        :max-photos="8"
+        v-model="editForm.images"
+        @update:modelValue="editForm.images = $event"
+        :object-name="editForm.name"
+      />
     </div>
 
     <div class="form-actions">
-      <button type="button" class="button-secondary" @click="handleCancel">Annuler</button>
+      <button type="button" class="button-secondary" @click="handleCancel">
+        Annuler
+      </button>
       <button type="submit" class="button-primary">Enregistrer</button>
     </div>
   </form>

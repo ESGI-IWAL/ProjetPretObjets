@@ -4,3 +4,5 @@ export enum EObjectState {
   WORN = "Usé",
   DAMAGED = "Endommagé"
 }
+
+export const objectStateOptions = Object.entries(EObjectState).map(([value, label]) => ({ value, label }));

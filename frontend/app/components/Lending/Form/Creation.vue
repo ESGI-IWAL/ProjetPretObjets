@@ -19,6 +19,13 @@ interface IStep {
 
 const today = new Date().toISOString().split('T')[0] as string
 
+const initalValues:ICreateLendingDto = {
+  borrowerId: 0,
+  objectId: 0,
+  startAt: today,
+  endAt: null,
+}
+
 
 const props = defineProps({
   users: {
@@ -34,12 +41,7 @@ const emit = defineEmits(["handleSearchObjects"]);
 
 const toaster = useToaster();
 
-const form = reactive<ICreateLendingDto>({
-  borrowerId: 0,
-  objectId: 0,
-  startAt: today,
-  endAt: null,
-});
+const form = reactive<ICreateLendingDto>(initalValues);
 
 const namesOfSelected = reactive({
   borrowerName: "",
@@ -214,13 +216,8 @@ const handleValidateForm = async () => {
   }
 };
 
-const resetForm = () => {
-  form.borrowerId = 0;
-  form.objectId = 0;
-  form.startAt = today;
-  form.endAt = null;
-  currentStep.value = 1;
-};
+const resetForm = () => Object.assign(form, initalValues)
+
 </script>
 
 <template>

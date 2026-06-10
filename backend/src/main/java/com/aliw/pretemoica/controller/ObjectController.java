@@ -67,7 +67,8 @@ public class ObjectController {
   @PostMapping
   public ResponseEntity<Object> createObject(@Valid @RequestBody CreateObjectDto createObjectDto) {
     try {
-      ObjectDto createdObject = objectService.create(createObjectDto, createObjectDto.getOwnerId());
+      Long currentUserId = SecurityUtils.getCurrentUserId();
+      ObjectDto createdObject = objectService.create(createObjectDto, currentUserId);
       return ResponseEntity.status(HttpStatus.CREATED).body(createdObject.getId());
     } catch (IllegalArgumentException e) {
       // retourne le message de l'exception pour faciliter le debug côté client

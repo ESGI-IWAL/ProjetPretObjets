@@ -2,9 +2,9 @@
 import type { IOption } from '~/components/AutoComplete.vue';
 import useToaster from '~/composables/useToaster';
 import type { ISearchObjectWithDatesDto } from '~/dto/object/search.dto';
-import { EObjectCategories } from '~/enums/object/categories.enum';
-import { EObjectState } from '~/enums/object/state.enum';
-import { EObjectMaterial } from '~/enums/object/material.enum';
+import { EObjectCategories, objectCategoryOptions } from '~/enums/object/categories.enum';
+import { EObjectState, objectStateOptions } from '~/enums/object/state.enum';
+import { EObjectMaterial, objectMaterialOptions } from '~/enums/object/material.enum';
 import { getObjects } from '~/services/object';
 
 defineProps<{
@@ -21,9 +21,7 @@ const form = reactive<ISearchObjectWithDatesDto>({
 });
 
 const objectsIOption = ref<IOption[] | null>(null);
-const objectCategoryOptions = Object.entries(EObjectCategories).map(([value, label]) => ({ value, label }));
-const objectStateOptions = Object.entries(EObjectState).map(([value, label]) => ({ value, label }));
-const objectMaterialOptions = Object.entries(EObjectMaterial).map(([value, label]) => ({ value, label }));
+
 
 const handleSubmit = () => {
   const dto: ISearchObjectWithDatesDto = {

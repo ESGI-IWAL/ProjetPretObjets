@@ -5,7 +5,7 @@ import type {
 } from "~/dto/object/search.dto";
 
 import { searchLendingWithObjectsIds } from "~/services/lending";
-import {getObjects, getObjectsOfConnectedUser, searchObject} from "~/services/object";
+import { getObjectsOfConnectedUser, searchObject} from "~/services/object";
 import type { IObject } from "~/types/object";
 
 export interface IObjectInfos {
