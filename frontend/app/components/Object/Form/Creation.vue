@@ -48,8 +48,6 @@ const isEntryValid = computed(() => {
   switch (currentStep.value) {
     case 1:
       return !!form.name;
-    case 2:
-      return !!form.images;
     case 3:
       return !!form.material && !!form.state && !!form.category;
     case 4:
@@ -102,6 +100,9 @@ const previousStep = () => {
 
 const handleValidateForm = async () => {
   try {
+    if(form.images.length === 0){
+      form.images = ['/objectImage.png']
+    }
     await createObject(form);
     resetForm();
     navigateTo("/objects");
