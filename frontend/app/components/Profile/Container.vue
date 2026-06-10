@@ -1,16 +1,10 @@
 <script setup lang="ts">
-import type { IUser } from '~/types/user';
+import type { IUser } from "~/types/user";
 
-const props = defineProps<(
-    user: IUser
-)>()
-
+const props = defineProps<{
+  user: IUser;
+}>();
 </script>
-<template>
-    
-</template>
+<template></template>
 
-
-<style scoped>
-
-</style>
+<style scoped></style>

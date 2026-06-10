@@ -97,12 +97,13 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { addObjectImage } from '~/services/object';
 
 const toaster = useToaster()
 const props = withDefaults(defineProps<{
   maxPhotos?: number
   modelValue?: string[]
-  objectName?:string
+  objectName:string
 }>(), {
   maxPhotos: 8,
   modelValue: () => [],
@@ -151,15 +152,9 @@ async function handleFileInput(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0]
     if (!file) return
     
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('folderName', props.objectName ?? 'object');
-    
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData
-    })
-    
+    const response:any = await addObjectImage(file, props.objectName )
+    console.log(response)
+
     if (!response.ok) {
       const text = await response.text();
       toaster.show(`Erreur lors de l'envoie de votre image : ${text}`, "error");
@@ -169,7 +164,7 @@ async function handleFileInput(event: Event) {
     addPhoto(url) // url retournée par le backend
   }
   catch {
-    toaster.show("Erreur lors de l'ajout de votre image")
+    toaster.show("Erreur lors de l'ajout de votre image", "error")
   }
 
 

@@ -217,8 +217,14 @@ const handleValidateForm = async () => {
       </div>
     </div>
     <div class="form-actions">
-      <button type="button" class="button-secondary" @click="previousStep" :disabled="currentStep === 1">Précédent</button>
-      <button type="submit" class="button-primary">{{ currentStep === steps.length ? 'Créer' : 'Suivant' }}</button>
+     <ButtonStepsForm
+        :nextStep="nextStep"
+        :previousStep="previousStep"
+        :validateForm="handleValidateForm"
+        :finalStep="currentStep === steps.length"
+        :firstStep="currentStep === 1"
+        :isEntryValid="isEntryValid"
+      />
     </div>
   </form>
 </template>
