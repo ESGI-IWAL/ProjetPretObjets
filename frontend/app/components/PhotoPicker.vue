@@ -4,7 +4,7 @@ const props = defineProps<{
   modelValue: string[];
   objectName?: string;
 }>();
-
+const toaster = useToaster()
 const emit = defineEmits<{
   (e: "update:modelValue", value: string[]): void;
 }>();
@@ -42,8 +42,7 @@ const handleFileChange = async (event: Event) => {
       });
 
       if (!response.ok) {
-        const text = await response.text();
-        throw new Error(`Erreur upload : ${response.status} — ${text}`);
+        toaster.show("Erreur d'en la réponse de l'image", "error")
       }
 
       const data = await response.json();
