@@ -58,7 +58,9 @@ public class ImageStorageService {
       throw new IllegalStateException("Chemin de destination invalide");
     }
 
-    file.transferTo(targetFile.toFile());
+    try (var inputStream = file.getInputStream()) {
+      Files.copy(inputStream, targetFile, StandardCopyOption.REPLACE_EXISTING);
+    }
 
     String url = properties.getPublicPath() + "/" + generatedFileName;
     return new StoredImage(url, generatedFileName);

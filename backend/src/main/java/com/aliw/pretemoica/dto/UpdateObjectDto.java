@@ -3,6 +3,7 @@ package com.aliw.pretemoica.dto;
 import com.aliw.pretemoica.entity.ObjectEntity.ObjectCategories;
 import com.aliw.pretemoica.entity.ObjectEntity.ObjectMaterial;
 import com.aliw.pretemoica.entity.ObjectEntity.ObjectStateOfWear;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,8 @@ public class UpdateObjectDto {
   private ObjectStateOfWear state;
 
   private ObjectMaterial material;
+
+  private List<String> images;
 
   // ownerId is intentionally omitted: on ne doit pas pouvoir changer le propriétaire via l'update
   // DTO
