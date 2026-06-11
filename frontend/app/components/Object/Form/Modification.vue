@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from "vue";
+
+import { objectStateOptions } from "../../../enums/object/state.enum";
+import { objectMaterialOptions } from "../../../enums/object/material.enum";
+import { objectCategoryOptions } from "../../../enums/object/categories.enum";
 import type { IObject } from "~/types/object";
 import type { IUpdateObjectDto } from "~/dto/object/update.dto";
-import { objectCategoryOptions } from "~/enums/object/categories.enum";
-import { objectMaterialOptions } from "~/enums/object/material.enum";
-import { objectStateOptions } from "~/enums/object/state.enum";
+
 
 const props = defineProps<{
   object: IObject;
