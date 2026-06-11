@@ -49,13 +49,25 @@ export const historyObjectById = async (id: number) => {
   return await api()<IObject[]>(`/objects/${id}/history`);
 };
 
+// export const addObjectImage = async (file: File, folderName: string) => {
+//       return await api()('/api/upload', {
+//       method: 'POST',
+//       body:
+//       {file, folderName}
+//     })
+// }
+
+
 export const addObjectImage = async (file: File, folderName: string) => {
-      return await api()('/api/upload', {
-      method: 'POST',
-      body: 
-      {file, folderName}
-    })
-}
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("folderName", folderName);
+
+  return await api()('/api/upload', {
+    method: 'POST',
+    body: formData,
+  });
+};
 // GET all
 // GET by ID
 // POST RECHERCHE { via categorie, via pret en cours ou non, via date de creation}

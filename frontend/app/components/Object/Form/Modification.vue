@@ -75,13 +75,13 @@ watch(
 );
 
 const handleSubmit = () => {
-  const parsedImages = imagesText.value
-      .split(/\r?\n/)
-      .map((item) => item.trim())
-      .filter(Boolean);
+  // On récupère directement le tableau d'images mis à jour par le PhotoPicker
+  const finalImages = editForm.images && editForm.images.length > 0
+      ? editForm.images
+      : [];
 
   emit("handleSubmitUpdate", {
-    images: parsedImages.length ? parsedImages : undefined,
+    images: finalImages, //  On envoie les vraies images !
     name: editForm.name,
     description: editForm.description,
     category: editForm.category,
