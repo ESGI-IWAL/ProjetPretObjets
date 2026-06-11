@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const toaster = useToaster()
 const props = defineProps<{
   maxPhotos?: number;
   modelValue: string[];
@@ -36,18 +37,15 @@ const handleFileChange = async (event: Event) => {
       formData.append("images", file);
       formData.append("folderName", props.objectName ?? "objet");
 
-      const response = await fetch("/api/upload", {
+      const response = await $fetch<{ url: string; filename: string }>("/api/upload", {
         method: "POST",
         body: formData,
       });
 
-      if (!response.ok) {
-        const text = await response.text();
-        throw new Error(`Erreur upload : ${response.status} — ${text}`);
+      if (!response) {
+        toaster.show("Erreur d'en la réponse de l'image", "error")
       }
-
-      const data = await response.json();
-      uploadedUrls.push(data.url);
+      uploadedUrls.push(response.url);
     }
 
     emit("update:modelValue", [...props.modelValue, ...uploadedUrls]);

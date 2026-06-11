@@ -6,9 +6,9 @@ export interface ICreateObjectDto {
   images: string[];
   name: string;
   description: string;
-  category: keyof typeof EObjectCategories;
+  category: keyof typeof EObjectCategories | null;
   weight: number;
   dimensions: string;
-  state: keyof typeof EObjectState;
-  material: keyof typeof EObjectMaterial;
+  state: keyof typeof EObjectState | null;
+  material: keyof typeof EObjectMaterial | null;
 }
