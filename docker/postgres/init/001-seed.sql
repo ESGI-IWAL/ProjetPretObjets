@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS object (
   owned_by_id BIGINT NOT NULL REFERENCES app_user(id),
   state_of_wear VARCHAR(32),
   category VARCHAR(32),
-  material VARCHAR(32)
+  material VARCHAR(32),
+  images TEXT[] DEFAULT '{}'
 );
 
 CREATE TABLE IF NOT EXISTS lending (

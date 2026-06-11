@@ -1,5 +1,6 @@
 export interface IUpdateLendingDto {
     id: number;
-    startAt?: Date | string;
-    endAt?: Date | string | null;
+    startedAt?: string | null;
+    endedAt?: string | null;
+    status?: string;
 }

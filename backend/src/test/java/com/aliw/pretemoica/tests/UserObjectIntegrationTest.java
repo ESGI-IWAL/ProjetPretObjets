@@ -118,7 +118,7 @@ class UserObjectIntegrationTest {
       assertNotNull(saved.getId());
     }
 
-    assertEquals(6, objectService.getAll().size());
+    assertEquals(7, objectService.getAll().size());
   }
 
   /** Test : vérifier l'unicité du username et email pour les utilisateurs */
@@ -156,7 +156,7 @@ class UserObjectIntegrationTest {
     }
 
     List<UserEntity> allUsers = userService.getAll();
-    assertEquals(6, allUsers.size());
+    assertEquals(7, allUsers.size());
   }
 
   /** Test : créer plusieurs objets avec des états d'usure différents */

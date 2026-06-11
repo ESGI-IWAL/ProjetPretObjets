@@ -4,12 +4,12 @@ import type { EObjectState } from "~/enums/object/state.enum";
 
 export interface IUpdateObjectDto {
     id: number;
-    images?: string[];
-    name?: string;
+    images: string[];
+    name: string;
     description?: string;
-    category?: EObjectCategories;
+    category?: keyof typeof EObjectCategories;
     weight?: number;
     dimensions?: string;
-    state?: EObjectState;
-    material?: EObjectMaterial;
+    state?: keyof typeof EObjectState;
+    material?: keyof typeof EObjectMaterial;
 }

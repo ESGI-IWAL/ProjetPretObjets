@@ -18,10 +18,10 @@ defineProps<{
       :title="action.label"
       :aria-label="action.label"
       :class="[
-        'inline-flex items-center justify-center w-10 h-10 transition-shadow shadow-sm',
+        'inline-flex items-center justify-center w-9 h-9 rounded-full transition-all shadow-sm',
         action.label && action.label.toLowerCase().includes('supprimer')
-          ? 'bg-red-600 text-white hover:bg-red-700 rounded-full'
-          : 'bg-blue-600 text-white hover:bg-blue-700 rounded-full'
+          ? 'text-[#8B4A2F] hover:bg-[#F2DDD5] hover:shadow-md'
+          : 'text-[var(--color-secondary)] hover:bg-[#D6E8D5] hover:shadow-md'
       ]"
     >
       <!-- show provided svg if any, else fallback to inline icons by label -->

@@ -1,6 +1,7 @@
 package com.aliw.pretemoica.service;
 
 import com.aliw.pretemoica.dto.CreateLendingDto;
+import com.aliw.pretemoica.dto.LendingPeriodDto;
 import com.aliw.pretemoica.dto.LendingSearchDto;
 import com.aliw.pretemoica.dto.ObjectInfoDisponibilityDto;
 import com.aliw.pretemoica.dto.SearchLendingWithIdsObjectsDto;
@@ -13,6 +14,8 @@ import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.LendingMapper;
 import com.aliw.pretemoica.repository.LendingRepository;
 import com.aliw.pretemoica.repository.ObjectRepository;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -96,6 +99,16 @@ public class LendingService {
     return all;
   }
 
+  /** * Récupère uniquement les prêts où l'utilisateur est emprunteur */
+  public List<LendingEntity> getBorrowedByCurrentUser(Long userId) {
+    return lendingRepository.findByBorrowerUserId(userId);
+  }
+
+  /** * Récupère uniquement les prêts où l'utilisateur est prêteur */
+  public List<LendingEntity> getLendedByCurrentUser(Long userId) {
+    return lendingRepository.findByLenderUserId(userId);
+  }
+
   public List<LendingEntity> search(LendingSearchDto searchDto) {
     if (searchDto == null) {
       return lendingRepository.search(null, null, null, null, null);
@@ -159,18 +172,19 @@ public class LendingService {
       searchDto = new SearchLendingWithIdsObjectsDto();
       searchDto.setIdsObject(allObjectIds);
 
-      return buildObjectsDisponibility(allObjectIds, lendings);
+      return buildObjectsDisponibility(allObjectIds, lendings, searchDto.getDisponibilityDate());
     }
 
     // Récupère les prêts pour les IDs d'objets demandés
     List<LendingEntity> lendings =
         lendingRepository.findLendingsForObjects(searchDto.getIdsObject());
 
-    return buildObjectsDisponibility(searchDto.getIdsObject(), lendings);
+    return buildObjectsDisponibility(
+        searchDto.getIdsObject(), lendings, searchDto.getDisponibilityDate());
   }
 
   private List<ObjectInfoDisponibilityDto> buildObjectsDisponibility(
-      List<Long> objectIds, List<LendingEntity> lendings) {
+      List<Long> objectIds, List<LendingEntity> lendings, java.time.LocalDate referenceDate) {
     // Construit la réponse groupée par objet
     return objectIds.stream()
         .map(
@@ -178,26 +192,86 @@ public class LendingService {
               List<LendingEntity> objectLendings =
                   lendings.stream()
                       .filter(l -> l.getObject().getId().equals(objectId))
-                      .sorted(Comparator.comparing(LendingEntity::getStartedAt).reversed())
+                      .sorted(Comparator.comparing(LendingEntity::getStartedAt))
                       .toList();
 
               ObjectInfoDisponibilityDto dto = new ObjectInfoDisponibilityDto();
               dto.setId(objectId);
 
-              if (!objectLendings.isEmpty()) {
-                // Le prêt courant (le plus récent avec startedAt)
-                LendingEntity currentLending = objectLendings.get(0);
-                dto.setEndCurrentLending(currentLending.getEndedAt());
+              // Trouver le prêt actif à la date donnée
+              LendingEntity activeLending = null;
+              for (LendingEntity lending : objectLendings) {
+                if (isLendingActiveOnDate(lending, referenceDate)) {
+                  activeLending = lending;
+                  break;
+                }
+              }
 
-                // Le prochain prêt (le 2ème le plus récent, ou null si pas de suivant)
-                if (objectLendings.size() > 1) {
-                  dto.setNextLending(objectLendings.get(1).getStartedAt());
+              if (activeLending != null) {
+                // Il y a un prêt actif à cette date
+                if (activeLending.getEndedAt() != null) {
+                  dto.setEndCurrentLending(activeLending.getEndedAt());
+                } else {
+                  dto.setCurrentLendingStart(activeLending.getStartedAt());
+                }
+
+                // Trouver le prochain prêt uniquement si le prêt actif a une date de fin
+                if (activeLending.getEndedAt() != null) {
+                  java.time.LocalDateTime activeLendingEnd = activeLending.getEndedAt();
+                  for (LendingEntity lending : objectLendings) {
+                    if (lending.getStartedAt().isAfter(activeLendingEnd)) {
+                      dto.setNextLending(lending.getStartedAt());
+                      break;
+                    }
+                  }
+                }
+              } else if (referenceDate != null) {
+                // Si l'objet est libre à la date de référence, renvoyer le prochain prêt futur
+                java.time.LocalDateTime referenceDateTime = referenceDate.atStartOfDay();
+                for (LendingEntity lending : objectLendings) {
+                  if (lending.getStartedAt().isAfter(referenceDateTime)) {
+                    dto.setNextLending(lending.getStartedAt());
+                    break;
+                  }
                 }
               }
 
               return dto;
             })
         .toList();
+  }
+
+  /**
+   * Vérifie si un prêt est actif à une date donnée.
+   *
+   * <p>Règles: 1. Si le prêt a une date de fin: la date de fin doit être >= à la date donnée 2. La
+   * date de début du prêt doit être <= à la date donnée
+   *
+   * @param lending le prêt à vérifier
+   * @param date la date à vérifier (peut être null)
+   * @return true si le prêt est actif à cette date
+   */
+  private boolean isLendingActiveOnDate(LendingEntity lending, java.time.LocalDate date) {
+    if (lending == null || lending.getStartedAt() == null) {
+      return false;
+    }
+
+    // Convertir la LocalDate en LocalDateTime pour comparaison
+    java.time.LocalDateTime lendingStart = lending.getStartedAt();
+    java.time.LocalDateTime lendingEnd = lending.getEndedAt();
+
+    // Si aucune date de référence, considérer le prêt comme actif
+    if (date == null) {
+      return true;
+    }
+
+    java.time.LocalDateTime refDateTime = date.atStartOfDay();
+
+    // Le prêt est actif si:
+    // 1. La date de début du prêt <= la date donnée
+    // 2. Et (la date de fin du prêt est null OU la date de fin du prêt >= la date donnée)
+    return !lendingStart.isAfter(refDateTime)
+        && (lendingEnd == null || !lendingEnd.isBefore(refDateTime));
   }
 
   public List<LendingEntity> searchLendingsByObjectsAndDates(
@@ -210,17 +284,16 @@ public class LendingService {
       return lendingRepository.findAll();
     }
 
-    // Si les deux dates sont nulles, retourner tous les lendings pour ces objets
-    if (searchDto.getDisponibilityStartDate() == null
-        && searchDto.getDisponibilityEndDate() == null) {
+    // Si la date est nulle, retourner tous les lendings pour ces objets
+    if (searchDto.getDisponibilityDate() == null) {
       return lendingRepository.findByObjectIdIn(searchDto.getIdsObject());
     }
 
-    // Sinon, filtrer par dates
+    // Sinon, filtrer par date
     return lendingRepository.findByObjectIdInAndDates(
         searchDto.getIdsObject(),
-        searchDto.getDisponibilityStartDate(),
-        searchDto.getDisponibilityEndDate());
+        searchDto.getDisponibilityDate(),
+        searchDto.getDisponibilityDate());
   }
 
   private Long requiredId(UserEntity entity) {
@@ -333,5 +406,30 @@ public class LendingService {
       case CANCELED:
         throw new IllegalArgumentException("Aucune transition autorisée depuis un état terminal");
     }
+  }
+
+  /**
+   * Récupère les périodes de prêt (date de début et de fin) pour un objet, à partir de la date du
+   * jour. Filtre uniquement les prêts avec une date de fin égale ou après la date d'aujourd'hui.
+   *
+   * @param objectId l'identifiant de l'objet
+   * @return liste des périodes de prêt
+   * @throws ResourceNotFoundException si l'objet n'existe pas
+   */
+  public List<LendingPeriodDto> getLendingPeriodsForObject(Long objectId) {
+    // Vérifier que l'objet existe
+    if (objectService.getById(objectId) == null)
+      throw new ResourceNotFoundException("Objet introuvable avec l'id: " + objectId);
+
+    LocalDateTime today = LocalDate.now().atStartOfDay();
+
+    // Récupérer tous les lendings pour cet objet
+    List<LendingEntity> lendings =
+        lendingRepository.findByObjectIdInAfterDate(List.of(objectId), today);
+
+    // Filtrer les lendings à partir d'aujourd'hui et mapper vers LendingPeriodDto
+    return lendings.stream()
+        .map(lending -> new LendingPeriodDto(lending.getStartedAt(), lending.getEndedAt()))
+        .toList();
   }
 }

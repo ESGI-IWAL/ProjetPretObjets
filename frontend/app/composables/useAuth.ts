@@ -13,8 +13,8 @@ export const useAuth = () => {
       isAuthenticated.value = true;
       navigateTo('/');
     }
-    catch (error) {
-      console.error("Erreur lors de la connexion", error);
+    catch {
+      erreurConnexion.value = "Erreur lors de la connexion"
     }
   }
 
@@ -24,8 +24,8 @@ export const useAuth = () => {
       localStorage.setItem('token', token)
       isAuthenticated.value = true;
       navigateTo('/');
-    } catch (error) {
-      console.error("Erreur lors de l'inscription", error);
+    } catch {
+      erreurConnexion.value = "Erreur lors de l'inscription"
     }
   };
 

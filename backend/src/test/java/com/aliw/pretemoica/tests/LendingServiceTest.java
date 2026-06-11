@@ -17,6 +17,7 @@ import com.aliw.pretemoica.repository.LendingRepository;
 import com.aliw.pretemoica.service.LendingService;
 import com.aliw.pretemoica.service.ObjectService;
 import com.aliw.pretemoica.service.UserService;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -304,7 +305,7 @@ class LendingServiceTest {
     LendingEntity nextLending = new LendingEntity();
     nextLending.setId(11L);
     nextLending.setStatus(LendingStatus.PENDING);
-    nextLending.setStartedAt(LocalDateTime.of(2026, 5, 10, 9, 0));
+    nextLending.setStartedAt(LocalDateTime.of(2026, 6, 10, 9, 0));
     nextLending.setEndedAt(null);
     ObjectEntity obj2 = new ObjectEntity();
     obj2.setId(1L);
@@ -318,7 +319,34 @@ class LendingServiceTest {
     assertEquals(1, result.size());
     assertEquals(1L, result.get(0).getId());
     assertEquals(LocalDateTime.of(2026, 5, 30, 18, 0), result.get(0).getEndCurrentLending());
-    assertEquals(LocalDateTime.of(2026, 5, 10, 9, 0), result.get(0).getNextLending());
+    assertEquals(LocalDateTime.of(2026, 6, 10, 9, 0), result.get(0).getNextLending());
+  }
+
+  @Test
+  void searchObjectsDisponibilityShouldReturnOngoingLendingStartWhenNoEndDate() {
+    SearchLendingWithIdsObjectsDto searchDto = new SearchLendingWithIdsObjectsDto();
+    searchDto.setIdsObject(Arrays.asList(1L));
+    searchDto.setDisponibilityDate(LocalDate.of(2026, 6, 25));
+
+    LendingEntity ongoingLending = new LendingEntity();
+    ongoingLending.setId(10L);
+    ongoingLending.setStatus(LendingStatus.IN_PROGRESS);
+    ongoingLending.setStartedAt(LocalDateTime.of(2024, 5, 17, 0, 0));
+    ongoingLending.setEndedAt(null);
+    ObjectEntity obj = new ObjectEntity();
+    obj.setId(1L);
+    ongoingLending.setObject(obj);
+
+    when(lendingRepository.findLendingsForObjects(Arrays.asList(1L)))
+        .thenReturn(Arrays.asList(ongoingLending));
+
+    List<ObjectInfoDisponibilityDto> result = lendingService.searchObjectsDisponibility(searchDto);
+
+    assertEquals(1, result.size());
+    assertEquals(1L, result.get(0).getId());
+    assertNull(result.get(0).getEndCurrentLending());
+    assertEquals(LocalDateTime.of(2024, 5, 17, 0, 0), result.get(0).getCurrentLendingStart());
+    assertNull(result.get(0).getNextLending());
   }
 
   @Test

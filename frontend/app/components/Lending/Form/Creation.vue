@@ -1,138 +1,225 @@
 <script setup lang="ts">
-    import type { IOption } from '~/components/AutoComplete.vue';
-import type { ICreateLendingDto } from '~/dto/lending/create.dto';
-    import { createLending } from '~/services/lending';
-import { getObjects } from '~/services/object';
-import { getUsers } from '~/services/user';
-    import type { IObject } from '~/types/object';
-    import type { IUser } from '~/types/user';
+import type { IOption } from "~/components/AutoComplete.vue";
+import useToaster from "~/composables/useToaster";
+import type { ICreateLendingDto } from "~/dto/lending/create.dto";
+import type { ISearchObjectDto } from "~/dto/object/search.dto";
+import { createLending, searchLendingsOnDateByIdObject } from "~/services/lending";
+import type { IObject } from "~/types/object";
+import type { IUser } from "~/types/user";
+import type { ISearchLendingPeriodDto } from "~/dto/lending/search.dto";
+import { VueDatePicker } from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
+import { fr } from 'date-fns/locale'
 
-    interface IStep {
-        id: number;
-        title: string;
-        description: string;
-    }
+interface IStep {
+  id: number;
+  title: string;
+  description: string;
+}
 
-    defineProps({
-        users: {
-            type: Array as () => IUser[],
-            required: true
-        },
-        objects: {
-            type: Array as () => IObject[],
-            required: true
-        }
-    })
+const today = new Date().toISOString().split('T')[0] as string
 
-    const form = reactive<ICreateLendingDto>({
-        borrowerId: 0,
-        objectId: 0,
-        startAt: new Date(),
-        endAt: null
-    })
+const initalValues:ICreateLendingDto = {
+  borrowerId: 0,
+  objectId: 0,
+  startAt: today,
+  endAt: null,
+}
 
-    const formatDateForInput = (d: Date | null) => {
-        if (!d) return ''
-        const year = d.getFullYear()
-        const month = String(d.getMonth() + 1).padStart(2, '0')
-        const day = String(d.getDate()).padStart(2, '0')
-        return `${year}-${month}-${day}`
-    }
 
-    const onStartAtInput = (e: Event) => {
-        const v = (e.target as HTMLInputElement).value
-        form.startAt = v ? new Date(v + 'T00:00:00') : new Date()
-    }
+const props = defineProps({
+  users: {
+    type: Array as () => IUser[],
+    required: true,
+  },
+  objects: {
+    type: Array as () => IObject[] | null,
+  },
+});
 
-    const onEndAtInput = (e: Event) => {
-        const v = (e.target as HTMLInputElement).value
-        form.endAt = v ? new Date(v + 'T00:00:00') : null
-    }
+const emit = defineEmits(["handleSearchObjects"]);
 
-    const namesOfSelected= reactive({
-        borrowerName:"",
-        objectName:""
-    })
-const objectsIOption = ref<IOption[]| null>(null)
-const usersIOption = ref<IOption[]|null>(null)
+const toaster = useToaster();
+
+const form = reactive<ICreateLendingDto>(initalValues);
+
+const namesOfSelected = reactive({
+  borrowerName: "",
+  objectName: "",
+});
+
+const blockedDates = ref<ISearchLendingPeriodDto[]>([]);
+const usersIOption = ref<IOption[] | null>(null);
+const currentStep = ref<number>(1);
+const steps = ref<IStep[]>([
+  {
+    id: 1,
+    title: "Sélection de l'utilisateur",
+    description: "Choisissez l'utilisateur qui emprunte",
+  },
+  {
+    id: 2,
+    title: "Sélection de l'objet",
+    description: "Choisissez l'objet à emprunter",
+  },
+  {
+    id: 3,
+    title: "Dates de prêt",
+    description: "Indiquez les dates de début et de fin du prêt.",
+  },
+]);
+
 onMounted(async () => {
-    try{
-        const objects = await getObjects()
-        const users = await getUsers()
-        objectsIOption.value = objects.map(objet => {return {id: objet.id, label: objet.name}} )
-        usersIOption.value = users.map(user => {return {id: user.id, label: user.username}})
+  try {
+    usersIOption.value = props.users.map((user) => {
+      return { id: user.id, label: user.username };
+    });
+  } catch {
+    usersIOption.value = [];
+  }
+});
 
-    } catch {
-        objectsIOption.value= []
-        usersIOption.value = []
-    }
-})
-    const steps = ref<IStep[]>([
-        {
-            id: 1,
-            title: "Sélection de l'utilisateur",
-            description: "Choisissez l'utilisateur qui emprunte"
-        },
-        {id: 2,
-            title: "Sélection de l'objet",
-            description: "Choisissez l'objet à emprunter"
-        },
-        {
-            id: 3,
-            title: "Dates de prêt",
-            description: "Indiquez les dates de début et de fin du prêt."
-        }
-    ])
+// ─── Computed v-model pour VueDatePicker (string <-> Date) ───────────────────
 
-    const currentStep = ref<number>(1)
+const startDatePicker = computed({
+  get: () => (form.startAt ? new Date(form.startAt) : null),
+  set: (val: Date | null) => {
+    form.startAt =  val?.toISOString().split('T')[0] ?? "";
+  },
+});
 
-    const endDateVerification = () : boolean =>{
-        if(form.endAt) return form.startAt >= form.endAt
-        else return true
-    }
+const endDatePicker = computed({
+  get: () => (form.endAt ? new Date(form.endAt) : null),
+  set: (val: Date | null) => {
+    form.endAt = val?.toISOString().split('T')[0] ?? null;
+  },
+});
 
-    const isEntryValid = computed(() => {
-        switch(currentStep.value) {
-            case 1:
-                return !!form.borrowerId
-            case 2:
-                return !!form.objectId
-            case 3:
-                return !!form.startAt && endDateVerification()
-            default:
-                return true
-        }
-    })
+// ─── Format d'affichage dd/MM/yyyy ──────────────────────────────────────────
 
-    const nextStep = () => {
-        if (currentStep.value < steps.value.length) {
-            currentStep.value++
-        }
-    }
+const formatDate = (date: Date) => {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
 
-    const previousStep = () => {
-        if (currentStep.value > 1) {
-            currentStep.value--
-        } else {
-            resetForm()
-            navigateTo('/lendings')
-        }
-    }
+// ─── Dates désactivées (gestion timezone) ───────────────────────────────────
 
-    const handleValidateForm = async () => {
-        await createLending(form)
-        resetForm()
-        navigateTo('/lendings')
-    }
+function isDisabled(date: Date): boolean {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
 
-    const resetForm = () => {
-        form.borrowerId = 0
-        form.objectId = 0
-        form.startAt = new Date()
-        form.endAt = null
-        currentStep.value = 1
-    }
+return blockedDates.value.some((period) => {
+    const startStr = period.startedAt.split('T')[0];
+    const endStr = period.endedAt?.split('T')[0] ?? "";
+
+    if (!startStr || !endStr) return false;
+
+    const [sy, sm, sd] = startStr.split('-').map(Number);
+    const [ey, em, ed] = endStr.split('-').map(Number);
+
+    if(!sy || !sm || !sd || !ey || !em || !ed) return false
+    const start = new Date(sy, sm - 1, sd, 0, 0, 0);
+    const end = new Date(ey, em - 1, ed, 23, 59, 59);
+
+    return d >= start && d <= end;
+  });
+}
+
+// ─── Handlers ────────────────────────────────────────────────────────────────
+
+const handleSearchPeriodOnObjects = async (id: number) => {
+  try {
+    blockedDates.value = await searchLendingsOnDateByIdObject(id);
+  } catch {
+    blockedDates.value = [];
+    toaster.show(
+      "Erreur lors de la récupération des objects correspondants à cette date",
+      "error",
+      5000
+    );
+  }
+};
+
+const handleSearchObjects = async (dto: ISearchObjectDto) => {
+  emit("handleSearchObjects", dto);
+};
+
+const handleSelectionObject = (id: number) => {
+  form.objectId = id;
+};
+
+const isEntryValid = computed(() => {
+  switch (currentStep.value) {
+    case 1:
+      return !!form.borrowerId;
+    case 2:
+      return !!form.objectId;
+    case 3:
+      return !!form.startAt ;
+    default:
+      return true;
+  }
+});
+
+const nextStep = () => {
+  if (currentStep.value === 2) {
+    handleSearchPeriodOnObjects(form.objectId);
+  }
+  if (currentStep.value < steps.value.length) {
+    currentStep.value++;
+  }
+};
+
+const previousStep = () => {
+  if (currentStep.value > 1) {
+    currentStep.value--;
+  } else {
+    resetForm();
+    navigateTo("/lendings");
+  }
+};
+
+const hasConflict = computed(() => {
+  if (!form.startAt || !form.endAt) return false;
+
+  const start = new Date(form.startAt);
+  const end = new Date(form.endAt);
+
+  return blockedDates.value.some((period) => {
+
+    const pStart = new Date(period.startedAt);
+    const pEnd = new Date(period.endedAt ?? "");
+
+    // Chevauchement si les périodes se croisent
+    return start <= pEnd && end >= pStart;
+  });
+});
+
+
+
+const handleValidateForm = async () => {
+    if (hasConflict.value) {
+    toaster.show("Un prêt existe déjà sur cette période", "error", 5000);
+    return;
+  }
+  try {
+    await createLending(form);
+    resetForm();
+    navigateTo("/lendings");
+    toaster.show("Le prêt a bien été créé");
+  } catch {
+    resetForm();
+    navigateTo("/lendings");
+    toaster.show("Erreur lors de la création de votre prêt", "error", 5000);
+  }
+};
+
+const resetForm = () => Object.assign(form, initalValues)
+
 </script>
+
 <template>
   <form class="form-card form-content">
     <div class="form-header">
@@ -143,41 +230,138 @@ onMounted(async () => {
     <div>
       <div v-if="currentStep === 1" class="form-field">
         <label for="borrower" class="form-label">Utilisateur</label>
-        <AutoComplete id="borrowerId" v-model:selectedId="form.borrowerId" v-model:modelValue="namesOfSelected.borrowerName" :options="usersIOption ?? []" :placeholder="'Nom de l\'utilisateur'"/>
-
+        <AutoComplete
+          id="borrowerId"
+          v-model:selectedId="form.borrowerId"
+          v-model:modelValue="namesOfSelected.borrowerName"
+          :options="usersIOption ?? []"
+          :placeholder="'Nom de l\'utilisateur'"
+        />
       </div>
 
-      <div v-if="currentStep === 2" class="form-field">
-        <label for="object" class="form-label">Objet</label>
-            <AutoComplete id="objectId" v-model:selectedId="form.objectId" v-model:modelValue="namesOfSelected.objectName" :options="objectsIOption ?? []" :placeholder="'Nom de l\'objet'"/>
+      <div v-if="currentStep === 2 && objects" class="form-field">
+        <div>
+          <ObjectFormSearch
+            @handleSearch="handleSearchObjects"
+            :optionDisponibilityDate="false"
+          />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          <ObjectListCardSelection
+            v-for="object in objects"
+            :key="object.id"
+            :object="object"
+            @handleSelection="handleSelectionObject"
+            :selected="form.objectId === object.id"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div v-if="currentStep === 3" class="form-grid">
+      <div class="form-field">
+        <label class="form-label">Date de début</label>
+        <VueDatePicker
+          v-model="startDatePicker"
+          :disabled-dates="isDisabled"
+          :enable-time-picker="false"
+          :format="formatDate"
+          placeholder="Sélectionner une date"
+          :locale="fr"
+          auto-apply
+        />
       </div>
 
-      <div v-if="currentStep === 3" class="form-grid">
-        <div class="form-field">
-          <label for="startAt" class="form-label">Date de début</label>
-                    <input id="startAt" type="date" :value="formatDateForInput(form.startAt)" @input="onStartAtInput" class="form-input" />
-                                        <div style="margin-top:6px;font-size:0.9rem;color:#666">Date du jour: {{ formatDateLong(form.startAt) }}</div>
-        </div>
-
-        <div class="form-field">
-          <label for="endAt" class="form-label">Date de fin</label>
-                    <input id="endAt" type="date" :value="formatDateForInput(form.endAt)" @input="onEndAtInput" class="form-input" />
-        </div>
+      <div class="form-field">
+        <label class="form-label">Date de fin</label>
+        <VueDatePicker
+          v-model="endDatePicker"
+          :disabled-dates="isDisabled"
+          :enable-time-picker="false"
+          :key="form.startAt"
+          :format="formatDate"
+          placeholder="Sélectionner une date"
+          :locale="fr"
+          auto-apply
+          :min-date="startDatePicker ?? undefined"
+        />
       </div>
     </div>
 
     <div class="form-actions">
       <ButtonStepsForm
-          :nextStep="nextStep"
-          :previousStep="previousStep"
-          :validateForm="handleValidateForm"
-          :finalStep="currentStep === steps.length"
-          :firstStep="currentStep === 1"
-          :isEntryValid="isEntryValid"
+        :nextStep="nextStep"
+        :previousStep="previousStep"
+        :validateForm="handleValidateForm"
+        :finalStep="currentStep === steps.length"
+        :firstStep="currentStep === 1"
+        :isEntryValid="isEntryValid"
       />
     </div>
   </form>
 </template>
 
-<style scoped>
+<style>
+/* ── Surcharges VueDatePicker — thème naturel ── */
+.dp__main {
+  --dp-background-color: var(--color-surface);
+  --dp-text-color: var(--color-text);
+  --dp-hover-color: var(--color-primary);
+  --dp-hover-text-color: var(--color-background);
+  --dp-primary-color: var(--color-primary);
+  --dp-primary-text-color: var(--color-background);
+  --dp-border-color: #c9c0ae;
+  --dp-border-color-hover: var(--color-primary);
+  --dp-menu-border-color: #c9c0ae;
+  --dp-border-radius: 12px;
+  --dp-font-family: var(--font-family-sans);
+  --dp-font-size: 0.875rem;
+}
+.dp__input {
+  background-color: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border-color: #c9c0ae !important;
+  border-radius: 8px !important;
+  padding: 10px 16px !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.dp__input:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(98, 148, 96, 0.2) !important;
+  outline: none !important;
+}
+.dp__input_icon { color: var(--color-primary) !important; }
+.dp__menu {
+  background-color: var(--color-surface) !important;
+  border-color: #c9c0ae !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+}
+.dp__calendar_header_item { color: var(--color-title) !important; font-weight: 600; }
+.dp__active_date, .dp__range_start, .dp__range_end {
+  background-color: var(--color-primary) !important;
+  color: var(--color-background) !important;
+  border-radius: 8px !important;
+}
+.dp__cell_inner:hover {
+  background-color: rgba(98, 148, 96, 0.15) !important;
+  color: var(--color-primary) !important;
+  border-radius: 8px !important;
+}
+.dp__today { border-color: var(--color-accent) !important; color: var(--color-accent) !important; font-weight: 700; }
+.dp__cell_disabled {
+  color: #b0a898 !important;
+  background-color: transparent !important;
+  cursor: not-allowed !important;
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+.dp__nav_icon { color: var(--color-primary) !important; }
+.dp__nav_btn:hover { background-color: rgba(98, 148, 96, 0.12) !important; border-radius: 8px !important; }
+.dp__overlay { background-color: var(--color-surface) !important; }
+.dp__overlay_cell_active {
+  background-color: var(--color-primary) !important;
+  color: var(--color-background) !important;
+  border-radius: 8px !important;
+}
 </style>

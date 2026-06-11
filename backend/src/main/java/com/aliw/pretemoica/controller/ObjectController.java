@@ -6,6 +6,7 @@ import com.aliw.pretemoica.dto.ObjectSearchDto;
 import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.ObjectMapper;
+import com.aliw.pretemoica.security.SecurityUtils;
 import com.aliw.pretemoica.service.ObjectService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -26,6 +27,17 @@ public class ObjectController {
   @GetMapping
   public ResponseEntity<List<ObjectDto>> getAllObjects() {
     return ResponseEntity.ok(ObjectMapper.toDtoList(objectService.getAll()));
+  }
+
+  /** GET /objects/me - retourne les objets appartenant à l'utilisateur connecté */
+  @GetMapping("/me")
+  public ResponseEntity<List<ObjectDto>> getMyObjects() {
+    try {
+      Long currentUserId = SecurityUtils.getCurrentUserId();
+      return ResponseEntity.ok(ObjectMapper.toDtoList(objectService.getAllByOwner(currentUserId)));
+    } catch (IllegalStateException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
   }
 
   @PostMapping("/search")
@@ -53,12 +65,13 @@ public class ObjectController {
   }
 
   @PostMapping
-  public ResponseEntity<Object> createObject(@Valid @RequestBody CreateObjectDto createObjectDto) {
+  public ResponseEntity<?> createObject(@Valid @RequestBody CreateObjectDto createObjectDto) {
     try {
-      ObjectDto createdObject = objectService.create(createObjectDto, createObjectDto.getOwnerId());
-      return ResponseEntity.status(HttpStatus.CREATED).body(createdObject.getId());
+      Long currentUserId = SecurityUtils.getCurrentUserId();
+      ObjectDto createdObject = objectService.create(createObjectDto, currentUserId);
+      // Pratique standard : renvoyer l'ID ou le DTO complet
+      return ResponseEntity.status(HttpStatus.CREATED).body(createdObject);
     } catch (IllegalArgumentException e) {
-      // retourne le message de l'exception pour faciliter le debug côté client
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -66,15 +79,21 @@ public class ObjectController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<ObjectDto> updateObject(
+  public ResponseEntity<?> updateObject(
       @PathVariable Long id, @Valid @RequestBody UpdateObjectDto updateObjectDto) {
     try {
+      // Hypothèse : Ton service a peut-être besoin de l'ID utilisateur pour valider la modification
+      // ?
+      // Long currentUserId = SecurityUtils.getCurrentUserId();
+
       ObjectDto updatedObject = objectService.update(id, updateObjectDto);
       return ResponseEntity.ok(updatedObject);
     } catch (ResourceNotFoundException rnfe) {
       return ResponseEntity.notFound().build();
     } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      // Permet de voir l'erreur réelle dans tes logs de console
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
   }
 

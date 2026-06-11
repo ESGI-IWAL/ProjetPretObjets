@@ -1,3 +1,10 @@
+app:
+  upload:
+    dir : ./uploads
+    public-path: /uploads
+
+
+
 spring:
   application:
     name: pretemoica
@@ -9,6 +16,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
 
 jwt:
   secret: ${JWT_SECRET:mySecretKeyForJwtTokenGenerationAndValidation12345}

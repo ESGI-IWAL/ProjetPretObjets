@@ -9,6 +9,7 @@ import {
 
 defineProps<{
   lending: ILending,
+  date: string
 }>()
 
 const getStatusClass = (status: string | ELendingStatus | null | undefined) => {
@@ -32,18 +33,18 @@ const getStatusClass = (status: string | ELendingStatus | null | undefined) => {
 </script>
 
 <template>
-  <div class="surface-card bg-gray-50 space-y-6">
+  <div class="surface-card space-y-6" style="background-color: var(--color-surface)">
     <!-- En-tête avec statut à droite -->
     <div class="flex items-start justify-between gap-4">
       <div class="space-y-2">
-        <p class="text-sm font-semibold text-gray-700">Objet emprunté</p>
-        <div @click="() => navigateTo(`/object/${lending.object.id}`)" class="card-link flex items-center gap-4">
+        <p class="text-sm font-semibold" style="color: var(--color-title)">Objet emprunté</p>
+        <div @click="() => navigateTo(`/objects/${lending.object.id}`)" class="card-link flex items-center gap-4">
           <img
               :src="lending?.object?.images?.[0] ?? '/objectImage.png'"
               alt="Objet emprunté"
               class="thumb-md"
           />
-          <p class="font-medium text-gray-900">{{ lending.object.name }}</p>
+          <p class="font-medium" style="color: var(--color-text)">{{ lending.object.name }}</p>
         </div>
       </div>
 
@@ -53,37 +54,36 @@ const getStatusClass = (status: string | ELendingStatus | null | undefined) => {
     </div>
 
     <!-- Emprunteur -->
-    <div @click="() => navigateTo(`/users/${lending.borrowedBy.id}`)" class="card-link space-y-3">
-      <p class="text-sm font-semibold text-gray-700">Emprunteur</p>
+    <div class="card-link space-y-3">
+      <p class="text-sm font-semibold" style="color: var(--color-title)">Emprunteur</p>
       <div class="flex items-center gap-4">
         <img
             :src="lending?.borrowedBy.avatar ?? 'https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar-thumbnail.png'"
             alt="Avatar de l'emprunteur"
             class="avatar-md"
         />
-        <p class="font-medium text-gray-900">{{ lending.borrowedBy.username }}</p>
+        <p class="font-medium" style="color: var(--color-text)">{{ lending.borrowedBy.username }}</p>
       </div>
     </div>
 
-    <!-- Durée + bouton -->
     <div class="space-y-3">
-      <p class="text-sm font-semibold text-gray-700">Emprunt</p>
-      <p v-if="lending.endAt" class="text-sm text-gray-600">
-        Début {{ formatDateLong(lending.startAt) }} jusqu’au {{ formatDateLong(lending.endAt) }}
-      </p>
-      <p v-else class="text-sm text-gray-600">
-        Depuis le {{ formatDateLong(lending.startAt) }}
-      </p>
+      <p class="text-sm font-semibold" style="color: var(--color-title)">Emprunt</p>
 
-      <div class="flex justify-end">
-        <button
-            @click="() => navigateTo(`/lendings/${lending.id}`)"
-            type="button"
-            class="form-button-primary w-fit"
-        >
-          Voir plus
-        </button>
-      </div>
+      <p v-if="!lending.endedAt && (lending.startedAt?.split('T')[0] ?? '') <= date" class="text-sm" style="color: var(--color-text); opacity: 0.7">
+        Depuis le {{ formatDateLong(lending.startedAt) }}
+      </p>
+      <p v-else-if="(lending.startedAt?.split('T')[0] ?? '') >= date && !lending.endedAt" class="text-sm" style="color: var(--color-text)">
+        Prochain prêt le {{ formatDateLong(lending.startedAt) }} sans fin déterminée
+      </p>
+      <p v-else-if="(lending.endedAt?.split('T')[0] ?? '') <= date" class="text-sm" style="color: var(--color-text)">
+        Terminé le {{ formatDateLong(lending.endedAt) }}
+      </p>
+      <p v-else-if="(lending.startedAt?.split('T')[0] ?? '') < date && (lending.endedAt?.split('T')[0] ?? '') >= date" class="text-sm" style="color: var(--color-text)">
+        Commencé le : {{ formatDateLong(lending.startedAt) }} ; Fini le {{ formatDateLong(lending.endedAt) }}
+      </p>
+      <p v-else-if="(lending.startedAt?.split('T')[0] ?? '') >= date && (lending.endedAt?.split('T')[0] ?? '') >= date" class="text-sm" style="color: var(--color-text)">
+        Prochain prêt le {{ formatDateLong(lending.startedAt) }} finissant le {{ formatDateLong(lending.endedAt) }}
+      </p>
     </div>
   </div>
 </template>

@@ -2,11 +2,13 @@ package com.aliw.pretemoica.controller;
 
 import com.aliw.pretemoica.dto.CreateLendingDto;
 import com.aliw.pretemoica.dto.LendingDto;
+import com.aliw.pretemoica.dto.LendingPeriodDto;
 import com.aliw.pretemoica.dto.ObjectInfoDisponibilityDto;
 import com.aliw.pretemoica.dto.SearchLendingWithIdsObjectsDto;
 import com.aliw.pretemoica.dto.UpdateLendingDto;
 import com.aliw.pretemoica.exception.ResourceNotFoundException;
 import com.aliw.pretemoica.mapper.LendingMapper;
+import com.aliw.pretemoica.security.SecurityUtils;
 import com.aliw.pretemoica.service.LendingService;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,32 @@ public class LendingController {
   @GetMapping
   public ResponseEntity<List<LendingDto>> getAllLendings() {
     return ResponseEntity.ok(LendingMapper.toDtoList(lendingService.getAll()));
+  }
+
+  /** * GET /lendings/borrowed - Récupère uniquement les emprunts */
+  @GetMapping("/borrowed")
+  public ResponseEntity<List<LendingDto>> getBorrowedLendings() {
+    try {
+      Long currentUserId = SecurityUtils.getCurrentUserId();
+      List<LendingDto> borrowedLendings =
+          LendingMapper.toDtoList(lendingService.getBorrowedByCurrentUser(currentUserId));
+      return ResponseEntity.ok(borrowedLendings);
+    } catch (IllegalStateException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+  }
+
+  /** * GET /lendings/lent - Récupère uniquement les prêts donnés */
+  @GetMapping("/lent")
+  public ResponseEntity<List<LendingDto>> getLentLendings() {
+    try {
+      Long currentUserId = SecurityUtils.getCurrentUserId();
+      List<LendingDto> lentLendings =
+          LendingMapper.toDtoList(lendingService.getLendedByCurrentUser(currentUserId));
+      return ResponseEntity.ok(lentLendings);
+    } catch (IllegalStateException e) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
   }
 
   @PostMapping("/search")
@@ -89,5 +117,15 @@ public class LendingController {
   public List<ObjectInfoDisponibilityDto> searchObjectsDisponibility(
       @RequestBody SearchLendingWithIdsObjectsDto searchDto) {
     return lendingService.searchObjectsDisponibility(searchDto);
+  }
+
+  @GetMapping("/objects/{objectId}/periods")
+  public ResponseEntity<List<LendingPeriodDto>> getLendingPeriodsForObject(
+      @PathVariable Long objectId) {
+    try {
+      return ResponseEntity.ok(lendingService.getLendingPeriodsForObject(objectId));
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
   }
 }

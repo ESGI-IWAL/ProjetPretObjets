@@ -9,3 +9,5 @@ PAPER = 'Papier',
 RUBBER = 'Caoutchouc',
 OTHERS = 'Autres'
 }
+
+export const objectMaterialOptions = Object.entries(EObjectMaterial).map(([value, label]) => ({ value, label }));

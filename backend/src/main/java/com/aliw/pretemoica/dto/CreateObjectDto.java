@@ -5,6 +5,7 @@ import com.aliw.pretemoica.entity.ObjectEntity.ObjectMaterial;
 import com.aliw.pretemoica.entity.ObjectEntity.ObjectStateOfWear;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,5 @@ public class CreateObjectDto {
 
   private ObjectMaterial material;
 
-  @NotNull(message = "L'id du propriétaire est obligatoire")
-  private Long ownerId;
+  private List<String> images;
 }

@@ -8,3 +8,5 @@ TOYS = 'Jouets',
 SPORTS = 'Sports',
 OTHERS = 'Autres'
 }
+
+export const objectCategoryOptions = Object.entries(EObjectCategories).map(([value, label]) => ({ value, label }));

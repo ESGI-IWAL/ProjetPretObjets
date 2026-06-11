@@ -1,19 +1,42 @@
 <script setup lang="ts">
+import useToaster from '~/composables/useToaster';
 import type { ISearchLendingDto } from '~/dto/lending/search.dto';
-import { getLendings, searchLending } from '~/services/lending';
+import { getLendingsOfConnectedUser, searchLending } from '~/services/lending';
 import type { ILending } from '~/types/lending';
 
 const lendings = ref<ILending[]|null>(null)
-onMounted(async ()=> {
+const refreshToggle = ref<boolean>(false)
+const toaster = useToaster()
+
+const refreshList = async () => {
     try{
-        lendings.value = await getLendings()
+        lendings.value = await getLendingsOfConnectedUser()
     }
     catch{
         lendings.value = []
+        toaster.show("Erreur lors de la récupération des prêts", "error", 5000)
     }
+}
+
+onMounted(async ()=> {
+    await refreshList()
 })
-const handleSearch = async (dto : ISearchLendingDto) => {
-     lendings.value = await searchLending(dto)
+
+watch(refreshToggle, async () => {
+    await refreshList()
+})
+
+const toggleRefresh = () => {
+    refreshToggle.value = !refreshToggle.value
+}
+
+const handleSearch = async (dto : Omit<ISearchLendingDto, "date">) => {
+    try{
+        lendings.value = await searchLending(dto)
+    }
+    catch{
+        toaster.show("Erreur lors de la recherche des prêts ", "error", 5000)
+    }
 }
 </script>
 
@@ -21,23 +44,28 @@ const handleSearch = async (dto : ISearchLendingDto) => {
     <div class="app-page">
         <div class="app-container space-y-6">
             <header class="space-y-2">
-                <p class="form-eyebrow">Gestion des prêts</p>
-                <h1 class="form-title">Liste des prêts</h1>
-                <p class="form-description">Recherche, consultation et suivi des prêts en cours ou terminés.</p>
+                <p class="form-eyebrow" style="color: var(--color-accent)">Gestion des prêts</p>
+                <h1 style="color: var(--color-title); font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em;">Liste des prêts</h1>
+                <p style="color: var(--color-text); opacity: 0.7; font-size: 0.875rem; line-height: 1.6;">Recherche, consultation et suivi des prêts en cours ou terminés.</p>
             </header>
 
             <div v-if="!lendings" class="surface-card">
-                <p class="text-gray-500">Chargement des prêts...</p>
+                <p style="color: var(--color-text); opacity: 0.6">Chargement des prêts...</p>
             </div>
 
             <LendingListContainer
                 v-else
                 :lendings="lendings"
+                :refresh-list="toggleRefresh"
                 @search="handleSearch"
             />
         </div>
     </div>
 </template>
 
+<!-- no page-specific styles -->
 <style scoped>
+:deep(.app-page) {
+  background-color: var(--color-background) !important;
+}
 </style>

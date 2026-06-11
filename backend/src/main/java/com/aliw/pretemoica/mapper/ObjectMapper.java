@@ -6,6 +6,7 @@ import com.aliw.pretemoica.dto.UpdateObjectDto;
 import com.aliw.pretemoica.entity.ObjectEntity;
 import com.aliw.pretemoica.entity.UserEntity;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,8 @@ public final class ObjectMapper {
     dto.setStateOfWear(entity.getStateOfWear());
     dto.setCategory(entity.getCategory());
     dto.setMaterial(entity.getMaterial());
+    dto.setImages(
+        entity.getImages() != null ? Arrays.asList(entity.getImages()) : new ArrayList<>());
     return dto;
   }
 
@@ -45,6 +48,8 @@ public final class ObjectMapper {
     entity.setStateOfWear(dto.getStateOfWear());
     entity.setCategory(dto.getCategory());
     entity.setMaterial(dto.getMaterial());
+    entity.setImages(
+        dto.getImages() != null ? dto.getImages().toArray(new String[0]) : new String[0]);
     if (dto.getOwnedById() != null) {
       entity.setOwnedBy(toUserReference(dto.getOwnedById()));
     }
@@ -82,11 +87,8 @@ public final class ObjectMapper {
     entity.setStateOfWear(dto.getState());
     entity.setCategory(dto.getCategory());
     entity.setMaterial(dto.getMaterial());
-    if (dto.getOwnerId() != null) {
-      entity.setOwnedBy(toUserReference(dto.getOwnerId()));
-    } else {
-      throw new IllegalArgumentException("OwnerId is required for creating an object");
-    }
+    entity.setImages(
+        dto.getImages() != null ? dto.getImages().toArray(new String[0]) : new String[0]);
     return entity;
   }
 
@@ -116,7 +118,9 @@ public final class ObjectMapper {
     if (dto.getMaterial() != null) {
       entity.setMaterial(dto.getMaterial());
     }
-    // ownerId is handled only on create. During update, owner must not be changed here.
+    if (dto.getImages() != null) {
+      entity.setImages(dto.getImages().toArray(new String[0]));
+    }
     return entity;
   }
 

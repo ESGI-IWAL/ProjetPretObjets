@@ -36,9 +36,10 @@ public class ObjectEntity {
   @Enumerated(EnumType.STRING)
   private ObjectMaterial material;
 
-  public ObjectEntity() {
-    // En attente
-  }
+  @Column(columnDefinition = "TEXT[]")
+  private String[] images = new String[0];
+
+  public ObjectEntity() {}
 
   public enum ObjectStateOfWear {
     NEW,

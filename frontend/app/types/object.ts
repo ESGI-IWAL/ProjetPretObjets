@@ -10,8 +10,9 @@ export interface IObject {
     description?: string,
     weight?: number;
     dimensions?: string;
-    category?: EObjectCategories,
-    state?: EObjectState | string,
-    material?: EObjectMaterial,
-    status?: string
+    category?: keyof typeof EObjectCategories,
+    stateOfWear: keyof typeof EObjectState,
+    material: keyof typeof EObjectMaterial,
+    nextLending?: Date
+    endCurrentLending?: Date
 }

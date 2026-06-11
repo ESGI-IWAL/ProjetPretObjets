@@ -60,6 +60,17 @@ order by o.id, l.startedAt desc
 
   @Query(
       """
+      select l from LendingEntity l
+      where l.object.id in :objectIds
+      and (l.startedAt >= :startDate
+        or l.endedAt IS NULL or l.endedAt >= :startDate)
+      order by l.startedAt desc
+      """)
+  List<LendingEntity> findByObjectIdInAfterDate(
+      @Param("objectIds") List<Long> objectIds, @Param("startDate") LocalDateTime startDate);
+
+  @Query(
+      """
   select l from LendingEntity l
   where l.object.id in :objectIds
   and ((:startDate is null or l.startedAt >= :startDate)
@@ -70,4 +81,20 @@ order by o.id, l.startedAt desc
       @Param("objectIds") List<Long> objectIds,
       @Param("startDate") LocalDate startDate,
       @Param("endDate") LocalDate endDate);
+
+  @Query(
+      """
+    SELECT l FROM LendingEntity l
+    WHERE l.offeredBy.id = :userId
+    ORDER BY l.startedAt DESC
+    """)
+  List<LendingEntity> findByLenderUserId(@Param("userId") Long userId);
+
+  @Query(
+      """
+    SELECT l FROM LendingEntity l
+    WHERE l.borrowedBy.id = :userId
+    ORDER BY l.startedAt DESC
+    """)
+  List<LendingEntity> findByBorrowerUserId(@Param("userId") Long userId);
 }

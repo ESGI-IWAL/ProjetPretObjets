@@ -13,6 +13,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SearchLendingWithIdsObjectsDto {
   private List<Long> idsObject;
-  private LocalDate disponibilityStartDate;
-  private LocalDate disponibilityEndDate;
+  private LocalDate disponibilityDate;
 }
