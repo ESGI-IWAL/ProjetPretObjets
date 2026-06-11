@@ -18,6 +18,8 @@ onMounted( async () => {
 const handleSubmit = async(dto : IUpdateUserDto) => {
   try {
     await updateUser(dto)
+        currentUser.value = await getCurrentUser();
+
     toaster.show("Votre profil a bien été modifié", "success")
   }
   catch{
