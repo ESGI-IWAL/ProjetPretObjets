@@ -64,6 +64,10 @@ public class UserService {
       currentUser.setRating(userDto.getRating());
     }
 
+    if (userDto.getDescription() != null) {
+      currentUser.setDescription(userDto.getDescription());
+    }
+
     return userRepository.save(currentUser);
   }
 

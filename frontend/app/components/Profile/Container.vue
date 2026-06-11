@@ -8,7 +8,6 @@ const props = defineProps<{
 
 const editMode = ref<boolean>(false);
 
-
 const emit = defineEmits(["handleSubmitUpdate"]);
 
 const handleSubmitUpdate = (updateObject: Omit<IUpdateUserDto, "id">) => {
@@ -19,47 +18,47 @@ const handleSubmitUpdate = (updateObject: Omit<IUpdateUserDto, "id">) => {
 const handleCancelEdit = () => {
   editMode.value = false;
 };
-
 </script>
+
 <template>
-    <div>
-      <ButtonOptions
-        :actions="[
-          {
-            function: () => {
-              editMode = true;
-            },
-            label: 'Modifier',
-            svg: '/icons/edit.svg',
-          }
-        ]"
-      />
-      <ProfileEdition
-        v-if="editMode"
-        :user="user"
-        @handleSubmitUpdate="handleSubmitUpdate"
-        @cancelEdit="handleCancelEdit"
-      />
-       <div v-else>
-
-         <div>
-           <img src="/image.png" alt="Profil utilisateur"/>
-          </div>
-          <div>
-            <label> Pseudo du profil </label>
-            <p> {{ user.username }}</p>
-          </div>
-          <div>
-            <label> Email </label>
-            <p> {{ user.email }}</p>
-          </div>
-          <div>
-            <label> Votre déscription </label>
-            <p> {{  user.description }}</p>
-          </div>
-        </div>
+  <div>
+    <ButtonOptions
+      :actions="[
+        {
+          function: () => {
+            editMode = true;
+          },
+          label: 'Modifier',
+          svg: '/icons/edit.svg',
+        }
+      ]"
+    />
+    
+    <ProfileEdition
+      v-if="editMode"
+      :user="user"
+      @handleSubmitUpdate="handleSubmitUpdate"
+      @cancelEdit="handleCancelEdit"
+    />
+    
+    <div v-else>
+      <div>
+        <img src="/image.png" alt="Profil utilisateur"/>
+      </div>
+      <div>
+        <label> Pseudo du profil </label>
+        <p> {{ user.username }}</p>
+      </div>
+      <div>
+        <label> Email </label>
+        <p> {{ user.email }}</p>
+      </div>
+      <div>
+        <label> Votre description </label>
+        <p> {{ user.description }}</p>
+      </div>
     </div>
-
+  </div>
 </template>
 
 <style scoped></style>

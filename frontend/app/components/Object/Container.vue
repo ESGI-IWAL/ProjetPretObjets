@@ -96,6 +96,7 @@ const handleCancelEdit = () => {
         </div>
         <div class="image-empty" v-else>
           <img src="/objectImage.png" alt="Object" />
+
         </div>
         <p class="image-counter" v-if="images.length">
           Image {{ indexRenderedImage + 1 }} / {{ images.length }}

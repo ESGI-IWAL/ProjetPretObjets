@@ -65,13 +65,13 @@ public class ObjectController {
   }
 
   @PostMapping
-  public ResponseEntity<Object> createObject(@Valid @RequestBody CreateObjectDto createObjectDto) {
+  public ResponseEntity<?> createObject(@Valid @RequestBody CreateObjectDto createObjectDto) {
     try {
       Long currentUserId = SecurityUtils.getCurrentUserId();
       ObjectDto createdObject = objectService.create(createObjectDto, currentUserId);
-      return ResponseEntity.status(HttpStatus.CREATED).body(createdObject.getId());
+      // Pratique standard : renvoyer l'ID ou le DTO complet
+      return ResponseEntity.status(HttpStatus.CREATED).body(createdObject);
     } catch (IllegalArgumentException e) {
-      // retourne le message de l'exception pour faciliter le debug côté client
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -79,15 +79,21 @@ public class ObjectController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<ObjectDto> updateObject(
+  public ResponseEntity<?> updateObject(
       @PathVariable Long id, @Valid @RequestBody UpdateObjectDto updateObjectDto) {
     try {
+      // Hypothèse : Ton service a peut-être besoin de l'ID utilisateur pour valider la modification
+      // ?
+      // Long currentUserId = SecurityUtils.getCurrentUserId();
+
       ObjectDto updatedObject = objectService.update(id, updateObjectDto);
       return ResponseEntity.ok(updatedObject);
     } catch (ResourceNotFoundException rnfe) {
       return ResponseEntity.notFound().build();
     } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      // Permet de voir l'erreur réelle dans tes logs de console
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
   }
 

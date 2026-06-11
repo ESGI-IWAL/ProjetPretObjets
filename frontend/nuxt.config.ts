@@ -1,7 +1,7 @@
 /// <reference types="nuxt" />
-// https://nuxt.com/docs/api/configuration/nuxt-config
 import tailwindcss from "@tailwindcss/vite";
 import { defineNuxtConfig } from 'nuxt/config';
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
@@ -16,9 +16,13 @@ export default defineNuxtConfig({
   experimental: {
     Islands: true
   },
-   runtimeConfig: {
+  runtimeConfig: {
     public: {
       apiBase: "http://localhost:8080"
     }
+  },
+  routeRules: {
+    '/api/**': { proxy: 'http://backend:8080/api/**' },
+    '/uploads/**': { proxy: 'http://backend:8080/uploads/**' }
   }
 })

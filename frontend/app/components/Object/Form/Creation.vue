@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import {
-  objectCategoryOptions,
-} from "~/enums/object/categories.enum";
+import { objectCategoryOptions } from "~/enums/object/categories.enum";
 import { EObjectState, objectStateOptions } from "~/enums/object/state.enum";
 import {
-  EObjectMaterial,
   objectMaterialOptions,
 } from "~/enums/object/material.enum";
 import type { ICreateObjectDto } from "~/dto/object/create.dto";
@@ -19,9 +16,9 @@ const initalValues: ICreateObjectDto = {
   name: "",
   images: [],
   dimensions: "",
-  category: "OTHERS",
-  material: "OTHERS",
-  state: "NEW",
+  category: null,
+  material: null,
+  state: null,
   weight: 0,
   description: "",
 };
@@ -88,7 +85,6 @@ const nextStep = () => {
     currentStep.value++;
   }
 };
-
 const previousStep = () => {
   if (currentStep.value > 1) {
     currentStep.value--;
@@ -100,8 +96,8 @@ const previousStep = () => {
 
 const handleValidateForm = async () => {
   try {
-    if(form.images.length === 0){
-      form.images = ['/objectImage.png']
+    if (form.images.length === 0) {
+      form.images = ["/objectImage.png"];
     }
     await createObject(form);
     resetForm();
@@ -116,7 +112,11 @@ const handleValidateForm = async () => {
 </script>
 
 <template>
-  <form class="form-card form-content">
+  <form
+    class="form-card form-content"
+    @submit.prevent="handleValidateForm"
+    @keydown.enter.prevent="nextStep"
+  >
     <div class="form-header">
       <h2 class="form-title">{{ steps[currentStep - 1]?.title }}</h2>
       <p class="form-description">{{ steps[currentStep - 1]?.description }}</p>
