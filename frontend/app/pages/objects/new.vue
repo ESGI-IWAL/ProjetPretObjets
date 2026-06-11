@@ -10,4 +10,7 @@
 </template>
 
 <style scoped>
+:deep(.app-page) {
+  background-color: var(--color-background) !important;
+}
 </style>

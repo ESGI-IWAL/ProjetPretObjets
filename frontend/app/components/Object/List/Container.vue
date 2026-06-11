@@ -34,7 +34,8 @@ const filterIsOpen = ref<boolean>(false);
 
   <div
     v-if="objects.length === 0"
-    class="surface-card text-center text-gray-500"
+    class="surface-card text-center"
+    style="color: var(--color-text); opacity: 0.6"
   >
     Aucun objet trouvé.
   </div>

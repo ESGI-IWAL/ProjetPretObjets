@@ -32,7 +32,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .form-button-secondary {
-  background-color: var(--color-surface);
+  background-color: #FFFFFF;
   color: var(--color-title);
   border: 1px solid #c9c0ae;
   border-radius: 10px;

@@ -36,13 +36,19 @@ const handleDelete = async() => {
 }
 </script>
 <template>
-    <div v-if="!object">
-        <p>Cet objet n'existe pas</p>
+    <div class="app-page">
+        <div class="app-container">
+            <div v-if="!object" class="surface-card text-center" style="color: var(--color-text); opacity: 0.6">
+                <p>Cet objet n'existe pas ou a été supprimé.</p>
+            </div>
+            <ObjectContainer v-else :object="object" @handleSubmitUpdate="handleSubmitUpdate" @handleDelete="handleDelete" />
+        </div>
     </div>
-    <ObjectContainer v-else :object="object" @handleSubmitUpdate="handleSubmitUpdate" @handleDelete="handleDelete" />
 </template>
 
 
-<style>
-
+<style scoped>
+:deep(.app-page) {
+  background-color: var(--color-background) !important;
+}
 </style>

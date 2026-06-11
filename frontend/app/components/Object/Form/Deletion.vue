@@ -12,7 +12,7 @@
 
 <template>
     <PopIn :title="'Suppression de l\'objet'">
-        <p>Êtes-vous sûr de vouloir supprimer cet objet ?</p>
+        <p style="color: var(--color-text)">Êtes-vous sûr de vouloir supprimer cet objet ?</p>
         <template #buttons>
             <ButtonForm :cancel-form="() => handleDeletion()" :validate-form="() => handleDelete()"/>
         </template>

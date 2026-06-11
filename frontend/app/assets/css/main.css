@@ -3,7 +3,7 @@
 :root {
   /* Palette de couleurs */
   --color-background: #F2EDE4; /* Beige naturel */
-  --color-surface: #E8E1D4;    /* Beige sable */
+  --color-surface: #FFFFFF;    /* Beige sable */
   --color-accent: #DF810E;      /* Vert sauge */
   --color-primary: #629460;     /* Vert forêt profond */
   --color-secondary: #305430;     /* Vert forêt profond */

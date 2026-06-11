@@ -101,103 +101,57 @@ const handleCancel = () => {
 
 <template>
   <form class="edit-form" @submit.prevent="handleSubmit">
-    <div class="form-group">
-      <label for="name">Nom</label>
-      <input id="name" v-model.trim="editForm.name" type="text" required />
+
+    <div class="form-field">
+      <label class="form-label" for="name">Nom</label>
+      <input id="name" v-model.trim="editForm.name" type="text" required class="form-input" />
     </div>
 
-    <div class="form-group">
-      <label for="description">Description</label>
-      <textarea
-        id="description"
-        v-model.trim="editForm.description"
-        rows="3"
-      ></textarea>
+    <div class="form-field">
+      <label class="form-label" for="description">Description</label>
+      <textarea id="description" v-model.trim="editForm.description" rows="3" class="form-textarea"></textarea>
     </div>
 
     <div class="form-row">
-      <div class="form-group">
-        <label for="state">État</label>
-        <select id="state" v-model="editForm.state" required>
-          <option
-            v-for="option in objectStateOptions"
-            :key="option.value"
-            :value="option.value"
-          >
-            {{ option.label }}
-          </option>
+      <div class="form-field">
+        <label class="form-label" for="state">État</label>
+        <select id="state" v-model="editForm.state" required class="form-select">
+          <option v-for="option in objectStateOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
         </select>
       </div>
-      <div class="form-group">
-        <label for="material">Matière</label>
-        <select id="material" v-model="editForm.material" required>
-          <option
-            v-for="option in objectMaterialOptions"
-            :key="option.value"
-            :value="option.value"
-          >
-            {{ option.label }}
-          </option>
+      <div class="form-field">
+        <label class="form-label" for="material">Matière</label>
+        <select id="material" v-model="editForm.material" required class="form-select">
+          <option v-for="option in objectMaterialOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
         </select>
       </div>
     </div>
 
     <div class="form-row">
-      <div class="form-group">
-        <label for="weight">Poids (kg)</label>
-        <input
-          id="weight"
-          v-model.number="editForm.weight"
-          type="number"
-          min="0"
-          step="0.01"
-        />
+      <div class="form-field">
+        <label class="form-label" for="weight">Poids (kg)</label>
+        <input id="weight" v-model.number="editForm.weight" type="number" min="0" step="0.01" class="form-input" />
       </div>
-
-      <div class="form-group">
-        <label>Dimensions (cm)</label>
+      <div class="form-field">
+        <label class="form-label">Dimensions (cm)</label>
         <div class="dimensions-inputs">
-          <input
-              v-model.number="dimensions.longueur"
-              type="number"
-              min="0"
-              placeholder="L"
-              title="Longueur"
-          />
-          <span class="separator">x</span>
-          <input
-              v-model.number="dimensions.largeur"
-              type="number"
-              min="0"
-              placeholder="l"
-              title="Largeur"
-          />
-          <span class="separator">x</span>
-          <input
-              v-model.number="dimensions.epaisseur"
-              type="number"
-              min="0"
-              placeholder="é"
-              title="Épaisseur"
-          />
+          <input v-model.number="dimensions.longueur" type="number" min="0" placeholder="L" title="Longueur" class="form-input" />
+          <span class="separator">×</span>
+          <input v-model.number="dimensions.largeur" type="number" min="0" placeholder="l" title="Largeur" class="form-input" />
+          <span class="separator">×</span>
+          <input v-model.number="dimensions.epaisseur" type="number" min="0" placeholder="é" title="Épaisseur" class="form-input" />
         </div>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="category">Catégorie</label>
-      <select id="category" v-model="editForm.category">
-        <option
-          v-for="option in objectCategoryOptions"
-          :key="option.value"
-          :value="option.value"
-        >
-          {{ option.label }}
-        </option>
+    <div class="form-field">
+      <label class="form-label" for="category">Catégorie</label>
+      <select id="category" v-model="editForm.category" class="form-select">
+        <option v-for="option in objectCategoryOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
       </select>
     </div>
 
-    <div class="form-group">
+    <div class="form-field">
       <PhotoPicker
         :max-photos="8"
         v-model="editForm.images"
@@ -207,10 +161,8 @@ const handleCancel = () => {
     </div>
 
     <div class="form-actions">
-      <button type="button" class="button-secondary" @click="handleCancel">
-        Annuler
-      </button>
-      <button type="submit" class="button-primary">Enregistrer</button>
+      <button type="button" class="btn-cancel" @click="handleCancel">Annuler</button>
+      <button type="submit" class="btn-save">Enregistrer</button>
     </div>
   </form>
 </template>
@@ -219,64 +171,61 @@ const handleCancel = () => {
 .edit-form {
   margin-top: 1.5rem;
   display: grid;
-  gap: 1rem;
-}
-.form-group {
-  display: grid;
-  gap: 0.5rem;
+  gap: 1.1rem;
 }
 .form-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
-.form-row .form-group {
-  margin: 0;
-}
-.form-group label {
-  font-weight: 600;
-}
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
-  background: #fff;
-}
 .dimensions-inputs {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
-.dimensions-inputs input {
-  width: 100%;
+.dimensions-inputs .form-input {
   text-align: center;
+  flex: 1;
 }
 .separator {
-  font-weight: bold;
-  color: #6b7280;
+  font-weight: 700;
+  color: var(--color-title);
+  opacity: 0.5;
   flex-shrink: 0;
 }
 .form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
+  padding-top: 0.5rem;
 }
-.button-primary,
-.button-secondary {
+.btn-save {
+  background-color: var(--color-primary);
+  color: var(--color-background);
   border: none;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 0.875rem;
   cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
-.button-primary {
-  background: #2563eb;
-  color: white;
+.btn-save:hover {
+  background-color: var(--color-secondary);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-.button-secondary {
-  background: #f3f4f6;
-  color: #111827;
+.btn-cancel {
+  background-color: var(--color-surface);
+  color: var(--color-title);
+  border: 1px solid #c9c0ae;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.btn-cancel:hover {
+  background-color: #d9d2c5;
 }
 </style>

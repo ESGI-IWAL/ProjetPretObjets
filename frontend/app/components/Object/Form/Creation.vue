@@ -118,12 +118,13 @@ const handleValidateForm = async () => {
     @keydown.enter.prevent="nextStep"
   >
     <div class="form-header">
-      <h2 class="form-title">{{ steps[currentStep - 1]?.title }}</h2>
-      <p class="form-description">{{ steps[currentStep - 1]?.description }}</p>
+      <h2 class="form-title" style="color: var(--color-title)">{{ steps[currentStep - 1]?.title }}</h2>
+      <p class="form-description" style="color: var(--color-text); opacity: 0.7">{{ steps[currentStep - 1]?.description }}</p>
     </div>
     <div>
       <div v-if="currentStep === 1" class="form-field">
-        <input id="name" v-model.trim="form.name" type="text" required />
+        <label class="form-label" for="name">Nom de l'objet</label>
+        <input id="name" v-model.trim="form.name" type="text" required class="form-input" placeholder="Ex. Perceuse Bosch…" />
       </div>
 
       <div v-if="currentStep === 2" class="form-field">
@@ -136,84 +137,44 @@ const handleValidateForm = async () => {
       </div>
 
       <div v-if="currentStep === 3" class="form-grid">
-        <label for="material">Matière</label>
-        <select id="material" v-model="form.material" required>
-          <option
-            v-for="option in objectMaterialOptions"
-            :key="option.value"
-            :value="option.value"
-          >
-            {{ option.label }}
-          </option>
-        </select>
-        <label for="state">État</label>
-        <select id="state" v-model="form.state" required>
-          <option
-            v-for="option in objectStateOptions"
-            :key="option.value"
-            :value="option.value"
-          >
-            {{ option.label }}
-          </option>
-        </select>
-        <label for="category">Catégorie</label>
-        <select id="category" v-model="form.category">
-          <option
-            v-for="option in objectCategoryOptions"
-            :key="option.value"
-            :value="option.value"
-          >
-            {{ option.label }}
-          </option>
-        </select>
+        <div class="form-field">
+          <label class="form-label" for="material">Matière</label>
+          <select id="material" v-model="form.material" required class="form-select">
+            <option v-for="option in objectMaterialOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="state">État</label>
+          <select id="state" v-model="form.state" required class="form-select">
+            <option v-for="option in objectStateOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="category">Catégorie</label>
+          <select id="category" v-model="form.category" class="form-select">
+            <option v-for="option in objectCategoryOptions" :key="option.value" :value="option.value">{{ option.label }}</option>
+          </select>
+        </div>
       </div>
 
       <div v-if="currentStep === 4" class="form-grid">
-        <div>
-          <label>Dimensions (cm)</label>
+        <div class="form-field">
+          <label class="form-label">Dimensions (cm)</label>
           <div class="dimensions-inputs">
-            <input
-              v-model.number="dimensions.longueur"
-              type="number"
-              min="0"
-              placeholder="L"
-              title="Longueur"
-            />
-            <span class="separator">x</span>
-            <input
-              v-model.number="dimensions.largeur"
-              type="number"
-              min="0"
-              placeholder="l"
-              title="Largeur"
-            />
-            <span class="separator">x</span>
-            <input
-              v-model.number="dimensions.epaisseur"
-              type="number"
-              min="0"
-              placeholder="é"
-              title="Épaisseur"
-            />
+            <input v-model.number="dimensions.longueur" type="number" min="0" placeholder="L" title="Longueur" class="form-input" />
+            <span class="separator">×</span>
+            <input v-model.number="dimensions.largeur" type="number" min="0" placeholder="l" title="Largeur" class="form-input" />
+            <span class="separator">×</span>
+            <input v-model.number="dimensions.epaisseur" type="number" min="0" placeholder="é" title="Épaisseur" class="form-input" />
           </div>
         </div>
-        <div>
-          <label for="weight">Poids (kg)</label>
-          <input
-            id="weight"
-            v-model.number="form.weight"
-            type="number"
-            min="0"
-            step="0.01"
-          />
+        <div class="form-field">
+          <label class="form-label" for="weight">Poids (kg)</label>
+          <input id="weight" v-model.number="form.weight" type="number" min="0" step="0.01" class="form-input" />
         </div>
-        <div>
-          <label for="description">Description</label>
-          <textarea
-            id="description"
-            v-model.trim="form.description"
-            rows="3"
-          ></textarea>
+        <div class="form-field">
+          <label class="form-label" for="description">Description</label>
+          <textarea id="description" v-model.trim="form.description" rows="3" class="form-textarea"></textarea>
         </div>
       </div>
     </div>
@@ -230,4 +191,20 @@ const handleValidateForm = async () => {
   </form>
 </template>
 
-<style scoped></style>
+<style scoped>
+.dimensions-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dimensions-inputs .form-input {
+  text-align: center;
+  flex: 1;
+}
+.separator {
+  font-weight: 700;
+  color: var(--color-title);
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+</style>

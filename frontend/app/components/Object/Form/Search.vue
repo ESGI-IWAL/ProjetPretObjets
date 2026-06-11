@@ -109,3 +109,20 @@ onMounted(async () => {
     </div>
   </form>
 </template>
+
+<style scoped>
+.form-label { color: var(--color-title) !important; }
+.form-select,
+.form-input {
+  background-color: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  border-color: #c9c0ae !important;
+  border-radius: 8px !important;
+}
+.form-select:focus,
+.form-input:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(98,148,96,0.2) !important;
+  outline: none !important;
+}
+</style>

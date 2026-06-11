@@ -19,23 +19,24 @@ const handleSelection = () => {
     <div 
         @click="handleSelection" 
         :class="[
-            'relative cursor-pointer rounded-lg border-2 transition-all duration-200 overflow-hidden hover:shadow-lg',
+            'relative cursor-pointer rounded-xl border-2 transition-all duration-200 overflow-hidden',
             props.selected 
-                ? 'border-green-500 bg-green-50 shadow-md' 
-                : 'border-gray-200 bg-white hover:border-gray-300'
+                ? 'shadow-md' 
+                : 'hover:shadow-md'
         ]"
+        :style="props.selected
+            ? 'border-color: var(--color-primary); background-color: #dff0de;'
+            : 'border-color: #c9c0ae; background-color: var(--color-surface);'"
     >
         <!-- Checkbox indicator -->
         <div class="absolute top-3 right-3 z-10">
             <div 
-                :class="[
-                    'w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200',
-                    props.selected 
-                        ? 'bg-green-500 border-green-500' 
-                        : 'border-gray-300 bg-white hover:border-gray-400'
-                ]"
+                class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200"
+                :style="props.selected
+                    ? 'background-color: var(--color-primary); border-color: var(--color-primary);'
+                    : 'border-color: #c9c0ae; background-color: var(--color-surface);'"
             >
-                <svg v-if="props.selected" class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg v-if="props.selected" class="w-4 h-4" style="color: var(--color-background)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
                 </svg>
             </div>
@@ -46,9 +47,9 @@ const handleSelection = () => {
             <img 
                 :src="object?.images?.[0] ?? '/objectImage.png'" 
                 alt="Objet"
-                class="w-full h-48 object-cover rounded-md mb-3"
+                class="w-full h-48 object-cover rounded-lg mb-3"
             />
-            <p class="font-semibold text-gray-800 truncate">{{ object.name }}</p>
+            <p class="font-semibold truncate" style="color: var(--color-title)">{{ object.name }}</p>
         </div>
     </div>
 </template>

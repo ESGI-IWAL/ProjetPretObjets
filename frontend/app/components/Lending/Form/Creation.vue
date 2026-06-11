@@ -304,7 +304,7 @@ const resetForm = () => Object.assign(form, initalValues)
 <style>
 /* ── Surcharges VueDatePicker — thème naturel ── */
 .dp__main {
-  --dp-background-color: var(--color-surface);
+  --dp-background-color: #FFFFFF;
   --dp-text-color: var(--color-text);
   --dp-hover-color: var(--color-primary);
   --dp-hover-text-color: var(--color-background);
@@ -318,7 +318,7 @@ const resetForm = () => Object.assign(form, initalValues)
   --dp-font-size: 0.875rem;
 }
 .dp__input {
-  background-color: var(--color-surface) !important;
+  background-color: #FFFFFF!important;
   color: var(--color-text) !important;
   border-color: #c9c0ae !important;
   border-radius: 8px !important;
@@ -332,7 +332,7 @@ const resetForm = () => Object.assign(form, initalValues)
 }
 .dp__input_icon { color: var(--color-primary) !important; }
 .dp__menu {
-  background-color: var(--color-surface) !important;
+  background-color: #FFFFFF !important;
   border-color: #c9c0ae !important;
   border-radius: var(--border-radius) !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;

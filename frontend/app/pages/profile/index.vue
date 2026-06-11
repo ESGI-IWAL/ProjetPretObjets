@@ -27,15 +27,23 @@ const handleSubmit = async (dto: IUpdateUserDto) => {
 </script>
 
 <template>
-  <div v-if="!currentUser">
-    Chargement de l'utilisateur ...
-  </div>
-  <div v-else> 
-    <ProfileContainer 
-      :user="currentUser" 
-      @handleSubmitUpdate="handleSubmit"
-    />
+  <div class="app-page">
+    <div class="app-container">
+      <div v-if="!currentUser" class="surface-card text-center" style="color: var(--color-text); opacity: 0.6">
+        Chargement du profil...
+      </div>
+      <div v-else>
+        <ProfileContainer
+          :user="currentUser"
+          @handleSubmitUpdate="handleSubmit"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+:deep(.app-page) {
+  background-color: var(--color-background) !important;
+}
+</style>

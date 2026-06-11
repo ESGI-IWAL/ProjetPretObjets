@@ -65,15 +65,15 @@ const handleSearch = async (dto: ISearchObjectWithDatesDto) => {
   <div class="app-page">
     <div class="app-container space-y-6">
       <header class="space-y-2">
-        <p class="form-eyebrow">Gestion des objets</p>
-        <h1 class="form-title">Liste des objets</h1>
-        <p class="form-description">
+        <p class="form-eyebrow" style="color: var(--color-accent)">Gestion des objets</p>
+        <h1 style="color: var(--color-title); font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em;">Liste des objets</h1>
+        <p style="color: var(--color-text); opacity: 0.7; font-size: 0.875rem; line-height: 1.6;">
           Recherche, consultation et suivi des objets possédés.
         </p>
       </header>
 
-      <div v-if="!objects || !objectsInfo" class="surface-card">
-        <p class="text-gray-500">Chargement des objets...</p>
+      <div v-if="!objects || !objectsInfo" class="surface-card text-center">
+        <p style="color: var(--color-text); opacity: 0.6">Chargement des objets...</p>
       </div>
 
       <ObjectListContainer
@@ -86,4 +86,8 @@ const handleSearch = async (dto: ISearchObjectWithDatesDto) => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+:deep(.app-page) {
+  background-color: var(--color-background) !important;
+}
+</style>

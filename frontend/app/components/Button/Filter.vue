@@ -15,7 +15,7 @@
 <style scoped>
 .form-button-primary {
   background-color: var(--color-primary);
-  color: var(--color-background);
+  color: #FFFFFF;
   border-radius: 10px;
   padding: 10px 20px;
   font-weight: 600;

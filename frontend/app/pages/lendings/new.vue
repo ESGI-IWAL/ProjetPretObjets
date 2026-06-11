@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import useToaster from '~/composables/useToaster';
-import type { ISearchObjectDto } from '~/dto/object/search.dto';
-import { getObjectsOfConnectedUser, searchObject } from '~/services/object';
-import { getUsersExceptCurrentUser } from '~/services/user';
+import type { ISearchLendingPeriodDto } from '~/dto/lending/search.dto';
+import type { ISearchObjectDto, ISearchObjectWithDatesDto } from '~/dto/object/search.dto';
+import { searchLendingsOnDateByIdObject } from '~/services/lending';
+import {getObjects, getObjectsOfConnectedUser, searchObject} from '~/services/object';
+import { getUsers } from '~/services/user';
 import type { IObject } from '~/types/object';
 import type { IUser } from '~/types/user';
 
@@ -11,7 +13,7 @@ const users = ref<IUser[]|null>(null)
 const objects = ref<IObject[]|null>(null)
 
 onMounted(async() => {
-        users.value = await getUsersExceptCurrentUser()
+        users.value = await getUsers()
         objects.value = await getObjectsOfConnectedUser()
     })
     const handleSearchObjects = async (dto: ISearchObjectDto) => {

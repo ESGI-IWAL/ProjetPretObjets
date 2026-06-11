@@ -77,7 +77,7 @@ const handleResetForm = () => {
 .form-label { color: var(--color-title) !important; }
 
 .form-input {
-  background-color: var(--color-surface) !important;
+  background-color: #FFFFFF !important;
   color: var(--color-text) !important;
   border-color: #c9c0ae !important;
   border-radius: 8px !important;

@@ -43,7 +43,7 @@
   cursor: not-allowed;
 }
 .form-button-secondary {
-  background-color: var(--color-surface);
+  background-color: #FFFFFF;
   color: var(--color-title);
   border: 1px solid #c9c0ae;
   border-radius: 10px;

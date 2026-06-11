@@ -61,209 +61,223 @@ const handleCancelEdit = () => {
       @handleDelete="handleDelete"
     />
   </div>
-  <div>
-    <header>
-      <h1>{{ object.name }}</h1>
-      <ButtonOptions
-        :actions="[
-          {
-            function: () => {
-              editMode = true;
-            },
-            label: 'Modifier',
-            svg: '/icons/edit.svg',
-          },
-          {
-            function: () => {
-              deleteAsked = true;
-            },
-            label: 'Supprimer',
-            svg: '/icons/delete.svg',
-          },
-        ]"
-      />
-    </header>
-    <main>
-      <div>
-        <div class="image-carousel" v-if="images.length">
-          <button type="button" class="nav prev" @click="handlePrevImage">
-            ←
-          </button>
-          <img :src="currentImage" alt="Object" />
-          <button type="button" class="nav next" @click="handleNextImage">
-            →
-          </button>
-        </div>
-        <div class="image-empty" v-else>
-          <img src="/objectImage.png" alt="Object" />
 
-        </div>
-        <p class="image-counter" v-if="images.length">
-          Image {{ indexRenderedImage + 1 }} / {{ images.length }}
-        </p>
-      </div>
+  <div class="app-page">
+    <div class="app-container space-y-6">
 
-      <ObjectFormModification
-        v-if="editMode"
-        :object="object"
-        @handleSubmitUpdate="handleSubmitUpdate"
-        @cancelEdit="handleCancelEdit"
-      />
+      <!-- Header -->
+      <header class="object-header">
+        <h1 class="object-title">{{ object.name }}</h1>
+        <ButtonOptions
+          :actions="[
+            { function: () => { editMode = true }, label: 'Modifier', svg: '/icons/edit.svg' },
+            { function: () => { deleteAsked = true }, label: 'Supprimer', svg: '/icons/delete.svg' },
+          ]"
+        />
+      </header>
 
-      <div v-else>
-        <div class="info-block">
-          <p class="block-title">Informations</p>
-          <div class="info-row">
-            <span>État</span>
-            <div>
-              <sub v-if="!object.stateOfWear"> aucun état renseigné</sub>
-              <strong v-else>{{ EObjectState[object.stateOfWear] }}</strong>
-            </div>
+      <main class="object-main">
+
+        <!-- Carousel -->
+        <div class="object-media">
+          <div class="image-carousel" v-if="images.length">
+            <button type="button" class="nav" @click="handlePrevImage">←</button>
+            <img :src="currentImage" alt="Object" class="carousel-img" />
+            <button type="button" class="nav" @click="handleNextImage">→</button>
           </div>
-          <div class="info-row">
-            <span>Poids</span>
-            <div>
-              <sub v-if="!object.weight"> aucun poids renseigné </sub>
-              <strong v-else>{{ object.weight }} kg</strong>
-            </div>
+          <div class="image-empty" v-else>
+            <img src="/objectImage.png" alt="Object" class="carousel-img" />
           </div>
-          <div class="info-row">
-            <span>Matière</span>
-            <div>
-              <sub v-if="!object.material">
-                aucune matière renseignée
-              </sub>
-              <strong v-else>{{ EObjectMaterial[object.material] }}</strong>
-            </div>
-          </div>
-          <div class="info-row">
-            <span>Dimensions</span>
-            <div>
-              <sub v-if="!object.dimensions"> aucune dimension renseignée</sub>
-              <strong v-else>{{ object.dimensions }}</strong>
-            </div>
-          </div>
-          <div class="info-row">
-            <span>Catégorie</span>
-            <div>
-              <sub v-if="!object.category">
-                aucun catégorie renseignée
-              </sub>
-              <strong v-else >{{ EObjectCategories[object.category] }}</strong>
-            </div>
-          </div>
+          <p class="image-counter" v-if="images.length">
+            {{ indexRenderedImage + 1 }} / {{ images.length }}
+          </p>
         </div>
 
-        <div class="info-block">
-          <p class="block-title">Description supplémentaire</p>
-          <p v-if="!object.description">Informations supplémentaires sur {{ object.name }}</p>
-          <p v-else>{{ object.description }}</p>
+        <!-- Formulaire de modification -->
+        <ObjectFormModification
+          v-if="editMode"
+          :object="object"
+          @handleSubmitUpdate="handleSubmitUpdate"
+          @cancelEdit="handleCancelEdit"
+        />
+
+        <!-- Infos en lecture -->
+        <div v-else class="object-info-section">
+
+          <div class="info-block">
+            <p class="block-title">Informations</p>
+            <div class="info-row">
+              <span class="info-label">État</span>
+              <span v-if="!object.stateOfWear" class="info-empty">Non renseigné</span>
+              <strong v-else class="info-value">{{ EObjectState[object.stateOfWear] }}</strong>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Poids</span>
+              <span v-if="!object.weight" class="info-empty">Non renseigné</span>
+              <strong v-else class="info-value">{{ object.weight }} kg</strong>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Matière</span>
+              <span v-if="!object.material" class="info-empty">Non renseignée</span>
+              <strong v-else class="info-value">{{ EObjectMaterial[object.material] }}</strong>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Dimensions</span>
+              <span v-if="!object.dimensions" class="info-empty">Non renseignées</span>
+              <strong v-else class="info-value">{{ object.dimensions }}</strong>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Catégorie</span>
+              <span v-if="!object.category" class="info-empty">Non renseignée</span>
+              <strong v-else class="info-value">{{ EObjectCategories[object.category] }}</strong>
+            </div>
+          </div>
+
+          <div class="info-block">
+            <p class="block-title">Description</p>
+            <p v-if="!object.description" class="info-empty">Aucune description pour {{ object.name }}.</p>
+            <p v-else class="info-description">{{ object.description }}</p>
+          </div>
+
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   </div>
 </template>
 
 <style scoped>
+/* ── Layout ── */
+:deep(.app-page) { background-color: var(--color-background) !important; }
+
+.object-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.object-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-title);
+  margin: 0;
+}
+
+.object-main {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* ── Carousel ── */
+.object-media {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .image-carousel {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  width: 100%;
 }
-.image-carousel img {
-  max-width: 100%;
-  max-height: 360px;
+
+.carousel-img {
+  flex: 1;
+  width: 100%;
+  max-height: 380px;
   object-fit: contain;
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
+  background-color: var(--color-surface);
+  border: 1px solid #d4ccc0;
 }
+
 .nav {
-  border: none;
-  background: rgba(0, 0, 0, 0.65);
-  color: #fff;
-  font-size: 1.5rem;
+  flex-shrink: 0;
+  background-color: var(--color-surface);
+  color: var(--color-title);
+  border: 1px solid #c9c0ae;
+  font-size: 1.2rem;
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
   cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .nav:hover {
-  background: rgba(0, 0, 0, 0.8);
+  background-color: #d9d2c5;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
+
 .image-counter {
-  margin-top: 0.5rem;
-  color: #555;
-}
-.image-empty {
-  padding: 1rem;
-  color: #666;
-}
-.edit-form {
-  margin-top: 1.5rem;
-  display: grid;
-  gap: 1rem;
-}
-.form-group {
-  display: grid;
-  gap: 0.5rem;
-}
-.form-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-.form-row .form-group {
+  font-size: 0.8rem;
+  color: var(--color-text);
+  opacity: 0.5;
   margin: 0;
 }
-.form-group label {
-  font-weight: 600;
+
+/* ── Info blocks ── */
+.object-info-section {
+  display: grid;
+  gap: 1rem;
 }
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
-  background: #fff;
-}
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-}
-.button-primary,
-.button-secondary {
-  border: none;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-}
-.button-primary {
-  background: #2563eb;
-  color: white;
-}
-.button-secondary {
-  background: #f3f4f6;
-  color: #111827;
-}
+
 .info-block {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  background: #f9fafb;
+  background-color: var(--color-surface);
+  border: 1px solid #d4ccc0;
+  border-radius: var(--border-radius);
+  padding: 1.25rem 1.5rem;
 }
+
+.block-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  margin: 0 0 0.875rem;
+}
+
 .info-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 1rem;
   padding: 0.5rem 0;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e2d9cd;
 }
-.info-row:last-child {
-  border-bottom: none;
+
+.info-row:last-child { border-bottom: none; }
+
+.info-label {
+  font-size: 0.875rem;
+  color: var(--color-text);
+  opacity: 0.7;
 }
-.block-title {
-  font-weight: 700;
-  margin-bottom: 0.75rem;
+
+.info-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-title);
+}
+
+.info-empty {
+  font-size: 0.8rem;
+  color: var(--color-text);
+  opacity: 0.4;
+  font-style: italic;
+}
+
+.info-description {
+  font-size: 0.875rem;
+  color: var(--color-text);
+  line-height: 1.6;
+  margin: 0;
 }
 </style>
