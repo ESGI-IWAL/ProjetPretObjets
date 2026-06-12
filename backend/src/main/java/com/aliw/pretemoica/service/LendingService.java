@@ -42,7 +42,7 @@ public class LendingService {
   public LendingEntity create(LendingEntity lendingEntity) {
     // Assurer le statut par défaut lors de la création
     if (lendingEntity.getStatus() == null) {
-      lendingEntity.setStatus(LendingStatus.PENDING);
+      lendingEntity.setStatus(LendingStatus.VALIDATED);
     }
     return lendingRepository.save(lendingEntity);
   }
@@ -106,7 +106,16 @@ public class LendingService {
 
   /** * Récupère uniquement les prêts où l'utilisateur est prêteur */
   public List<LendingEntity> getLendedByCurrentUser(Long userId) {
-    return lendingRepository.findByLenderUserId(userId);
+    List<LendingEntity> all = lendingRepository.findByLenderUserId(userId);
+    // Rafraîchit le statut basé sur les dates et persiste si nécessaire
+    for (int i = 0; i < all.size(); i++) {
+      LendingEntity l = all.get(i);
+      LendingEntity updated = refreshStatusIfNeeded(l);
+      if (updated != null) {
+        all.set(i, updated);
+      }
+    }
+    return all;
   }
 
   public List<LendingEntity> search(LendingSearchDto searchDto) {
@@ -329,7 +338,10 @@ public class LendingService {
     boolean changed = false;
 
     java.time.LocalDate today = java.time.LocalDate.now();
-
+    if(current == LendingStatus.PENDING){
+      lending.setStatus(LendingStatus.VALIDATED);
+      changed = true;
+    }
     // Si le prêt est VALIDATED et que la date de début arrive -> IN_PROGRESS
     if (current == LendingStatus.VALIDATED
         && lending.getStartedAt() != null

@@ -19,7 +19,7 @@
 
       <!-- Bouton + pour ajouter -->
       <div
-        v-if="photos.length < maxPhotos"
+        v-if="maxPhotos>photos.length"
         class="add-slot"
         @click="openModal"
         role="button"

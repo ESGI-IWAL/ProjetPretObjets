@@ -36,5 +36,5 @@ public class UploadController {
         Map.of(
             "url", stored.getUrl(),
             "filename", stored.getFilename()));
-    }
+  }
 }

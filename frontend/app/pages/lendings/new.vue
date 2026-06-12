@@ -4,7 +4,7 @@ import type { ISearchLendingPeriodDto } from '~/dto/lending/search.dto';
 import type { ISearchObjectDto, ISearchObjectWithDatesDto } from '~/dto/object/search.dto';
 import { searchLendingsOnDateByIdObject } from '~/services/lending';
 import {getObjects, getObjectsOfConnectedUser, searchObject} from '~/services/object';
-import { getUsers } from '~/services/user';
+import { getUsersExceptCurrentUser} from '~/services/user';
 import type { IObject } from '~/types/object';
 import type { IUser } from '~/types/user';
 
@@ -13,7 +13,7 @@ const users = ref<IUser[]|null>(null)
 const objects = ref<IObject[]|null>(null)
 
 onMounted(async() => {
-        users.value = await getUsers()
+        users.value = await getUsersExceptCurrentUser()
         objects.value = await getObjectsOfConnectedUser()
     })
     const handleSearchObjects = async (dto: ISearchObjectDto) => {

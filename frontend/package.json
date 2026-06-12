@@ -13,7 +13,8 @@
     "test:coverage": "vitest --coverage",
     "test:unit": "vitest --project unit",
     "test:nuxt": "vitest --project nuxt",
-    "test:e2e": "vitest --project e2e"
+    "test:e2e": "vitest --project test/e2e",
+    "test:playwright": "playwright test"
   },
   "dependencies": {
     "@nuxt/eslint": "^1.15.2",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.14.0",
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4.2.2",
     "@types/node": "^25.9.1",
     "@vitest/coverage-v8": "^4.0.18",

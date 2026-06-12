@@ -3,8 +3,8 @@ import { ref, reactive, onMounted } from 'vue'
 import AutoComplete, { type IOption } from '~/components/AutoComplete.vue';
 import useToaster from '~/composables/useToaster';
 import type { ISearchLendingDto } from '~/dto/lending/search.dto';
-import { getObjects } from '~/services/object';
-import { getUsers } from '~/services/user';
+import { getObjectsOfConnectedUser } from '~/services/object';
+import { getUsersOfConnectedUser } from '~/services/user';
 import { fr } from 'date-fns/locale'
 
 const emit = defineEmits(['search'])
@@ -19,8 +19,8 @@ const objectsIOption = ref<IOption[]| null>(null)
 const usersIOption = ref<IOption[]|null>(null)
 onMounted(async () => {
     try{
-        const objects = await getObjects()
-        const users = await getUsers()
+        const objects = await getObjectsOfConnectedUser()
+        const users = await getUsersOfConnectedUser()
         objectsIOption.value = objects.map(objet => {return { label: objet.name}} )
         usersIOption.value = users.map(user => {return {label: user.username}})
         form.date = new Date().toISOString().split('T')[0] as string

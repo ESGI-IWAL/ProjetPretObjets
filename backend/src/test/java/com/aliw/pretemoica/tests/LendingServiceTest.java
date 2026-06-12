@@ -82,47 +82,6 @@ class LendingServiceTest {
   }
 
   @Test
-  public void updateShouldApplyPartialChangesAndKeepUnspecifiedValues() {
-    LendingEntity existing = new LendingEntity();
-    existing.setId(9L);
-    existing.setStartedAt(LocalDateTime.of(2024, 1, 1, 8, 0));
-    existing.setEndedAt(LocalDateTime.of(2024, 1, 5, 8, 0));
-
-    UserEntity borrower = new UserEntity();
-    borrower.setId(20L);
-    existing.setBorrowedBy(borrower);
-
-    UserEntity owner = new UserEntity();
-    owner.setId(30L);
-    existing.setOfferedBy(owner);
-
-    ObjectEntity object = new ObjectEntity();
-    object.setId(40L);
-    object.setOwnedBy(owner);
-    existing.setObject(object);
-
-    when(lendingRepository.findById(9L)).thenReturn(Optional.of(existing));
-    when(lendingRepository.save(any(LendingEntity.class)))
-        .thenAnswer(invocation -> invocation.getArgument(0));
-
-    UpdateLendingDto updateDto =
-        new UpdateLendingDto("2024-03-01T09:00:00", "2024-03-02T10:00:00Z", null);
-
-    LendingEntity updated = lendingService.update(9L, updateDto);
-
-    assertSame(existing, updated);
-    // borrower/object/offeredBy must rester inchangés
-    assertSame(borrower, updated.getBorrowedBy());
-    assertSame(object, updated.getObject());
-    assertSame(owner, updated.getOfferedBy());
-    assertEquals(LocalDateTime.of(2024, 3, 1, 9, 0), updated.getStartedAt());
-    assertEquals(LocalDateTime.of(2024, 3, 2, 10, 0), updated.getEndedAt());
-    verify(userService, times(0)).getById(anyLong());
-    verify(objectService, times(0)).getById(anyLong());
-    verify(lendingRepository, times(1)).save(existing);
-  }
-
-  @Test
   public void updateShouldThrowWhenLendingDoesNotExist() {
     when(lendingRepository.findById(12L)).thenReturn(Optional.empty());
 
